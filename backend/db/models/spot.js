@@ -11,15 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(models.User, {foreignKey: 'ownerId'})
-      Spot.hasMany(models.Review, {foreignKey: 'spotId'})
-      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId'})
+      Spot.belongsTo(models.User, {foreignKey: 'ownerId',  onDelete: 'CASCADE', hooks: true})
+      Spot.hasMany(models.Review, {foreignKey: 'spotId',  onDelete: 'CASCADE', hooks: true})
+      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId',  onDelete: 'CASCADE', hooks: true})
     }
   }
   Spot.init({
     ownerId: {
      type: DataTypes.INTEGER,
-     allowNull: false
+     allowNull: false,
+     onDelete: 'CASCADE',
+     hooks: true
     },
     address: {
       type: DataTypes.STRING,
