@@ -15,13 +15,14 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      review: {
-        type: Sequelize.STRING,
+        allowNull: false,
         references: {
           model: 'User'
         }
+      },
+      review: {
+        type: Sequelize.STRING,
+
       },
       stars: {
         type: Sequelize.INTEGER
