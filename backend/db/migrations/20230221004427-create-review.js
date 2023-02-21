@@ -18,7 +18,10 @@ module.exports = {
         allowNull: false
       },
       review: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {
+          model: 'User'
+        }
       },
       stars: {
         type: Sequelize.INTEGER
