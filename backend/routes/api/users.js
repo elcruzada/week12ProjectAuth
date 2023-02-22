@@ -42,7 +42,7 @@ router.post(
     }
   );
 
-
-
+//Sign up a User
+// router.post('/signup', )
 
 module.exports = router;
