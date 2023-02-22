@@ -54,9 +54,7 @@ router.post(
 
     for (let i = 0; i < userEmails.length; i++) {
       let userEmail = userEmails[i].email
-      if (credential === userEmail) {
-
-      }
+      if (credential === userEmail) break
       if (i === userEmails.length - 1) {
         const err = new Error('Login failed');
         err.status = 401;
