@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Review.hasMany(models.ReviewImage, {foreignKey: 'reviewId', onDelete: 'CASCADE', hooks: true})
+      Review.hasMany(models.ReviewImage, {foreignKey: 'reviewId', onDelete: 'CASCADE'})
       Review.belongsTo(models.User, {foreignKey: 'userId'})
       Review.belongsTo(models.Spot, {foreignKey: 'spotId'})
     }
@@ -27,11 +27,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     review: {
      type: DataTypes.STRING,
-     validate: {
-      len: [2,500]
-     }
     },
-    stars: DataTypes.INTEGER
+    stars: {
+     type: DataTypes.INTEGER,
+      validate: {
+      isInt: true,
+      min: 0,
+      max: 5
+      }
+    }
   }, {
     sequelize,
     modelName: 'Review',

@@ -13,7 +13,7 @@ module.exports = {
       {
         spotId: 1,
         userId: 1,
-        startDate: '2021-03-30',
+        startDate: "2021-03-30",
         endDate: '2022-03-30'
       },
       {
@@ -35,7 +35,7 @@ module.exports = {
     options.tableName = 'Bookings';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1, 2, 3] }
+      spotId: { [Op.in]: [1, 2, 3] }
     }, {});
   }
 };

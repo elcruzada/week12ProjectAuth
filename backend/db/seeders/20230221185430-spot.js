@@ -52,11 +52,22 @@ module.exports = {
         ownerId: 2,
         address: '0000 Chill Avenue',
         city: 'Lelel',
-        state: 'Demo-lition',
+        state: 'Lit',
         country: 'United States of Boop',
         lat: 43.98711575011169,
         lng: -88.57833823015774,
-        name: 'BoopBoopBaLooop',
+        name: 'BoopBaLooop',
+        description: 'Waterfalls and unicorns',
+        price: 80.00
+      }, {
+        ownerId: 3,
+        address: '00001 Chill Avenuea',
+        city: 'Lelel',
+        state: 'Lit',
+        country: 'United States of Boop',
+        lat: 43.98711575011169,
+        lng: -88.57833823015774,
+        name: 'BoopBaLooop',
         description: 'Waterfalls and unicorns',
         price: 80.00
       }
@@ -67,7 +78,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      address: { [Op.in]: ['1337 Kewl Avenue', '0000 Chill Avenue'] }
+      address: { [Op.in]: ['1337 Kewl Avenue', '0000 Chill Avenue', '00001 Chill Avenuea'] }
     }, {});
   }
 };

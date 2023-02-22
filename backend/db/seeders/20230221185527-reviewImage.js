@@ -11,15 +11,15 @@ module.exports = {
     options.tableName = 'ReviewImages';
     return queryInterface.bulkInsert(options, [
       {
-        spotId: 1,
+        reviewId: 1,
         url: 'images.url'
       },
       {
-        spotId: 2,
+        reviewId: 2,
         url: 'images.url'
       },
       {
-        spotId: 3,
+        reviewId: 3,
         url: 'images.url'
       }
     ], {});
