@@ -17,27 +17,79 @@ const validateLogin = [
 ];
 
 
-
 router.post(
     '/',
     validateLogin,
     async (req, res, next) => {
       const { credential, password } = req.body;
+      // let errorResult = { errors: [] }
+      const userOutput = await User.login({ credential, password });
 
-      const user = await User.login({ credential, password });
+      const userEmails = await User.findAll({
+        attributes: ['email']
+      })
 
-      if (!user) {
+      const userPasswords = await User.findAll({
+        attributes: ['hashedPassword']
+      })
+      // return res.json(userEmails[3].email)
+      // return res.json(userPasswords)
+      // const userEmailLength = userEmails.length
+      // let count = 0
+//was userOutput
+
+      // if (!credential && !password) {
+      //   const thisErr = new Error('No credential or password')
+      //   thisErr.status = 400
+      //   res.status(400)
+      //   res.json({
+      //     "message": "Validation error",
+      //     "statusCode": thisErr.status,
+      //     "errors": {
+      //       "credential": "Email or username is required",
+      //       "password": "Password is required"
+      //     }
+      //   })
+      // }
+
+    for (let i = 0; i < userEmails.length; i++) {
+      let userEmail = userEmails[i].email
+      if (credential === userEmail) {
+
+      }
+      if (i === userEmails.length - 1) {
         const err = new Error('Login failed');
         err.status = 401;
-        err.title = 'Login failed';
-        err.errors = ['The provided credentials were invalid.'];
-        return next(err);
+        // const err = new Error('Login failed');
+        // err.status = 401;
+        // err.title = 'Login failed';
+        // err.errors = ['The provided credentials were invalid.'];
+        // return next(err);
+
+        // errorResult.errors.push({
+        //  "message": "Invalid credentials",
+        //  "statusCode": err.status
+        // })
+       return res.json({
+        "message": "Invalid credentials",
+        "statusCode": err.status
+       })
       }
+    }
+      await setTokenCookie(res, userOutput);
 
-      await setTokenCookie(res, user);
 
-      return res.json({
-        user: user
+      // const { id, email, firstName, lastName, username } = req.query
+      const user = await User.findOne({
+        where: {
+          email: credential
+        },
+        attributes: ['id', 'firstName', 'lastName', 'email', 'username']
+      })
+
+      return res.status(200).json({
+            user
+            // userOutput
       });
     }
   );
