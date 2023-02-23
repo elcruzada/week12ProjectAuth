@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router();
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Spot, Review, SpotImage, sequelize } = require('../../db/models');
+const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
+const { User, Spot, Review, ReviewImage, SpotImage, sequelize } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const spot = require('../../db/models/spot');
 // const Sequelize = require("sequelize")
 
 router.get('/', async (req, res) => {
@@ -91,7 +92,11 @@ router.get('/', async (req, res) => {
     //     }
     // }
 
-    res.json(spotsObjects)
+    res.json(
+        {
+            Spots: spotsObjects
+        }
+        )
     // let total = 0
 
 
@@ -115,6 +120,101 @@ router.get('/', async (req, res) => {
     //     // Rating
     // })
 })
+
+
+router.post('/', requireAuth, async (req, res) => {
+    const { address, city, state, country, lat, lng, name, description, price} = req.body
+    const ownerId = req.user.id
+
+    const createdSpot = await Spot.create({
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+    })
+
+    let error = {
+      "message": "Validation Error",
+      "statusCode": 400,
+      "errors": {}
+    }
+
+    if (!address) error.errors.address = "Street address is required"
+    if (!city) error.errors.city = "City is required"
+    if (!state) error.errors.state = "State is required"
+    if (!country) error.errors.country = "Country is required"
+    if (!lat) error.errors.lat = "Latitude is not valid"
+    if (!lng) error.errors.lng = "Longitude is not valid"
+    if (!name) error.errors.name = "Name must be less than 50 characters"
+    if (!description) error.errors.description = "Description is required"
+    if (!price) error.errors.price = "Price per day is required"
+
+    if (!address || !city || !state || !country
+        || !lat || !lng || !name || !description || !price) {
+            res.status(400).json(error)
+        }
+
+    res.status(201).json(createdSpot)
+
+})
+
+router.post('/:spotId/images', restoreUser, async (req, res) => {
+        const pk = req.params.spotId
+        const getSpotPk = await Spot.findByPk(pk)
+
+        // console.log(req.user)
+        console.log(getSpotPk)
+        // if (!getSpotPk || req.user.id !== getSpotPk.ownerId) {
+        //     res.status(404).json({
+        //         "message": "Spot couldn't be found",
+        //         "statusCode": 404
+        //       })
+        // }
+        if (!getSpotPk || req.user.id !== getSpotPk.ownerId || req.user.id !== pk) {
+            res.status(404).json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+              })
+        }
+
+        let newSpotImage = await SpotImage.create({
+            "spotId": pk,
+            "url": "image url",
+            "preview": true
+        })
+
+        let result = {
+            id: newSpotImage.id,
+            url: newSpotImage.url,
+            preview: newSpotImage.preview
+        }
+        // console.log(result)
+        res.status(200).json(result)
+})
+
+router.get('/current', restoreUser, async (req, res) => {
+    const currentUserId = req.user.id
+
+    const currentUserSpots = await Spot.findAll({
+        where: {
+            ownerId: currentUserId
+        }
+    })
+
+//   const {user} = req.body
+//   if (user) {
+
+//   }
+
+    res.json(currentUserSpots)
+})
+
 
 
 module.exports = router
