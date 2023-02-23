@@ -60,11 +60,13 @@ router.get('/', async (req, res) => {
             where: {
                 spotId: spot.id
             },
-            attributes: {
-                include: [
+            attributes: [
+            // {
+                // include: [
                     [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
-                ]
-            }
+                // ]
+            // }
+            ]
         })
         // console.log(reviewStars.toJSON())
         let starAVG = reviewStars.toJSON().avgRating
