@@ -31,16 +31,29 @@ router.post(
     '/',
     validateSignup,
     async (req, res) => {
+      console.log(res)
       const { firstName, lastName, email, password, username } = req.body;
       const user = await User.signup({ firstName, lastName, email, username, password });
+      // console.log(res)
+      const sessionToken = await setTokenCookie(res, user);
+      const userInfo = user.firstName
 
-      await setTokenCookie(res, user);
 
-      return res.json({
-        user: user
+      return res.status(200).json({
+        // user: user
+        "id": user.id,
+        firstName,
+        lastName,
+        email,
+        username,
+        "token": sessionToken
       });
     }
   );
+
+// router.get('/', async (req, res) => {
+//   const {firstName, lastName }
+// })
 
 //Sign up a User
 // router.post('/signup', )

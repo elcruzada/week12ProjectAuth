@@ -28,6 +28,12 @@ module.exports = {
         review: 'You really not cool bro',
         stars: 1
       },
+      {
+      spotId: 1,
+      userId: 1,
+      review: 'Wut mate',
+      stars: 2
+      }
     ], {});
   },
 
