@@ -29,14 +29,69 @@ const validateSignup = [
 
 router.post(
     '/',
-    validateSignup,
+    // validateSignup,
     async (req, res) => {
-      console.log(res)
+      // console.log(res)
       const { firstName, lastName, email, password, username } = req.body;
+
+      let validateSignupError = {
+        "message": "User already exists",
+        "statusCode": 403,
+        "errors": ""
+    }
+
+      const existingEmail = await User.findOne({
+        where: {
+          email
+        }
+      })
+      const existingUsername = await User.findOne({
+        where: {
+          username
+        }
+      })
+
+      if (existingEmail && existingUsername) {
+        validateSignupError.errors = {
+          "email": "User with that email already exists",
+          "username": "User with that username already exists"
+        }
+      }
+
+        //condition for if user username exists
+        if (existingEmail && !existingUsername) {
+          validateSignupError.errors = {
+           "email": "User with that email already exists"
+          }
+        }
+
+        if (!existingEmail && existingUsername) {
+          validateSignupError.errors = {
+           "username": "User with that username already exists"
+          }
+        }
+
+      if (existingEmail || existingUsername) return res.status(403).json(validateSignupError)
+
+
+        if (!email || !username || !firstName || !lastName ) {
+          res.status(400).json({
+            "message": "Validation error",
+            "statusCode": 400,
+            "errors": {
+            "email": "Invalid email",
+            "username": "Username is required",
+            "firstName": "First Name is required",
+            "lastName": "Last Name is required"
+            }
+          })
+        }
+
+
       const user = await User.signup({ firstName, lastName, email, username, password });
       // console.log(res)
       const sessionToken = await setTokenCookie(res, user);
-      const userInfo = user.firstName
+      // const userInfo = user.firstName
 
 
       return res.status(200).json({
