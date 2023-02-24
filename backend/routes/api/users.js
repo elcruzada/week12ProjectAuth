@@ -73,18 +73,30 @@ router.post(
 
       if (existingEmail || existingUsername) return res.status(403).json(validateSignupError)
 
+      let validationBodyError = {
+        "message": "Validation error",
+        "statusCode": 400,
+        "errors": {}
+      }
+
+        if (!email) {
+          validationBodyError.errors.email = "Invalid email"
+        }
+
+        if (!username) {
+          validationBodyError.errors.username = "Username is required"
+        }
+
+        if (!firstName) {
+          validationBodyError.errors.firstName = "First Name is required"
+        }
+
+        if (!lastName) {
+          validationBodyError.errors.lastName = "Last Name is required"
+        }
 
         if (!email || !username || !firstName || !lastName ) {
-          res.status(400).json({
-            "message": "Validation error",
-            "statusCode": 400,
-            "errors": {
-            "email": "Invalid email",
-            "username": "Username is required",
-            "firstName": "First Name is required",
-            "lastName": "Last Name is required"
-            }
-          })
+          res.status(400).json(validationBodyError)
         }
 
 

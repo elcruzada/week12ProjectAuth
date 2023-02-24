@@ -10,12 +10,36 @@ const spot = require('../../db/models/spot');
 // const Sequelize = require("sequelize")
 
 router.get('/', async (req, res) => {
+    let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
-    const Spots = await Spot.findAll()
+    page = parseInt(page)
+    size = parseInt(size)
 
-    const Rating = await Review.findAll({
-        attributes: ['spotId', 'stars']
-    })
+    if (!page) page = 1
+    if (!size) size = 20
+
+
+
+
+
+
+
+    let pagination = {}
+
+    if (page && size) {
+    pagination.limit = size
+    pagination.offset = (page - 1) * size
+    }
+
+    let result = {}
+
+
+
+    // const Spots = await Spot.findAll()
+
+    // const Rating = await Review.findAll({
+    //     attributes: ['spotId', 'stars']
+    // })
 
     const spotsWithReviewImage = await Spot.findAll({
         include:[
@@ -78,25 +102,41 @@ router.get('/', async (req, res) => {
             spot.avgRating = 'No stars yet'
         }
     }
-    // for (let i = 0; i < spotsReviewImage.length; i++) {
-    //     let oneSpot = spotsReviewImage[i]
 
-    //     let reviews = oneSpot.Reviews
-    //     let spotImages = oneSpot.spotImages
 
-    //     let totalStar = 0
-
-    //     for (let j = 0; j < reviews.length; j++) {
-    //         let review = reviews[j]
-
-    //     }
+    // let errorObj = {
+    //     "message": "Validation Error",
+    //     "statusCode": 400,
+    //     "errors": {}
     // }
 
-    res.json(
-        {
-            Spots: spotsObjects
-        }
-        )
+    // if (!maxLat) maxLat = 180
+    // if (!minLat) minLat = -180
+    // if (!minLng) minLng = -180
+    // if (!maxLng) maxLng = 180
+    // if (!minPrice) minPrice = 0
+    // if (!maxPrice) maxPrice = 1337133713371337
+
+    // if (page < 1) errorObj.errors.page = "Page must be greater than or equal to 1"
+    // if (size > 20) errorObj.errors.size = "Size must be greater than or equal to 1"
+    // if (maxLat > 180) errorObj.errors.maxLat = "Maximum latitude is invalid"
+    // if (minLat < -180) errorObj.errors.minLat = "Minimum latitude is invalid"
+    // if (minLng < -180) errorObj.errors.minLng = "Maximum longitude is invalid"
+    // if (maxLng > 180) errorObj.errors.maxLng = "Minimum longitude is invalid"
+    // if (minPrice < 0) errorObj.errors.minPrice = "Maximum price must be greater than or equal to 0"
+    // if (maxPrice > 1337133713371337) errorObj.errors.maxPrice = "Minimum price must be greater than or equal to 0"
+
+    // if (!page || !size || maxLat > 180 || minLat < -180 || minLng < 180
+    //     || maxLng > 180 || minPrice < 0 || maxPrice > 1337133713371337) {
+    //         return res.status(400).json(errorObj)
+    //     }
+
+
+    result.Spots = spotsObjects
+    result.page = page
+    result.size = size
+
+    res.status(200).json(result)
     // let total = 0
 
 
