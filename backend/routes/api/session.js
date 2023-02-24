@@ -29,7 +29,7 @@ router.post(
         attributes: ['email']
       })
 
-      const userPasswords = await User.findAll({
+      const username = await User.findAll({
         attributes: ['hashedPassword']
       })
       // return res.json(userEmails[3].email)
@@ -51,6 +51,11 @@ router.post(
       //     }
       //   })
       // }
+      
+      console.log(credential.split(''))
+      if (!credential.split('').includes('@')) {
+
+      }
 
     for (let i = 0; i < userEmails.length; i++) {
       let userEmail = userEmails[i].email
