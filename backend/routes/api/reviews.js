@@ -21,26 +21,40 @@ router.get('/current',[restoreUser, requireAuth], async (req, res) => {
             },
             {
                 model: Spot
-            }
+            },
             // {
             //     model: ReviewImage,
-            //     where: {
-            //         reviewId: id
-            //     }
+            //     // where: {
+            //     //     reviewId: id
+            //     // }
             // }
         ]
     })
 
-    const reviewImages = await ReviewImage.findAll({
-        where: {
+    // console.log(currentUserReviews)
 
+    const reviewImages = await ReviewImage.findAll({
+        // where: {
+        attributes: {
+            exclude: ['reviewId', 'createdAt', 'updatedAt']
         }
+        // }
     })
     //need to put review images there
-    console.log(reviewImages)
+    const reviewImageArray = []
+    for (let i = 0; i < reviewImages.length; i++) {
+        let review = reviewImages[i].dataValues
+        // console.log(review)
+        reviewImageArray.push(review)
+        // if (ReviewImage)
+    }
+
+    // console.log(reviewImageArray)
+    console.log(currentUserReviews.dataValues)
+    // if (currentUserReviews.dataValues.ReviewImages) currentUserReviews.dataValues.ReviewImages = reviewImageArray
 
     res.status(200).json({
-        currentUserReviews
+        Reviews: currentUserReviews
     })
 })
 
