@@ -21,22 +21,33 @@ router.get('/current',[restoreUser, requireAuth], async (req, res) => {
             },
             {
                 model: Spot
-            },
-            {
-                model: ReviewImage
             }
+            // {
+            //     model: ReviewImage,
+            //     where: {
+            //         reviewId: id
+            //     }
+            // }
         ]
     })
 
-    res.json({
-        "Reviews": currentUserReviews
+    const reviewImages = await ReviewImage.findAll({
+        where: {
+
+        }
+    })
+    //need to put review images there
+    console.log(reviewImages)
+
+    res.status(200).json({
+        currentUserReviews
     })
 })
 
 router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
     const reviewToDelete = await Review.findByPk(req.params.reviewId)
 
-    console.log(reviewToDelete)
+    // console.log(reviewToDelete)
     if (!reviewToDelete) {
         res.status(404)
         res.json({
@@ -59,21 +70,112 @@ router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
 
 })
 
-// const reviews = await Review.findAll({
-//     include: [
-//         {model: User,
-//         attributes: { exclude: ['username']}
-//         },
-//         {
-//             model: Spot
-//         },
-//         {
-//             model: ReviewImage
-//         }
-//     ],
-//     where: {userId: req.user.id},
-//     attributes: {exclude: ['userId']}
-// })
+router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) => {
 
-// res.json(reviews)
+    const { url } = req.body
+
+    // console.log(req.params.reviewId)
+
+    const reviewToAddImage = await Review.findByPk(req.params.reviewId)
+
+    const reviewImageCheck = await ReviewImage.findAll({
+        where: {
+            reviewId: reviewToAddImage.id
+        }
+    })
+
+    // console.log(reviewImageCheck.length)
+
+    if (reviewImageCheck.length > 10) {
+        res.status(403).json({
+            "message": "Maximum number of images for this resource was reached",
+            "statusCode": 403
+          })
+    }
+    // console.log(reviewImageToAdd)
+    //check if user owns the review
+
+    if (!reviewToAddImage) {
+        res.status(404).json({
+            "message": "Review couldn't be found",
+            "statusCode": 404
+          })
+    }
+
+    const createdImage = await ReviewImage.create({
+        reviewId: req.params.reviewId,
+        "url": url
+    })
+
+    const jsonResponse = {
+        "id": createdImage.id,
+        "url": createdImage.url
+    }
+
+
+
+    res.status(200).json(jsonResponse)
+})
+
+
+router.put('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
+    const { review, stars } = req.body
+
+
+    const reviewToEdit = await Review.findByPk(req.params.reviewId)
+
+    const validationError = {
+    "message": "Validation error",
+      "statusCode": 400,
+      "errors": {}
+    }
+
+    if (!review) validationError.errors.review = "Review text is required"
+    if (!stars || parseInt(stars) < 1 || parseInt(stars) > 5) validationError.errors.stars = "Stars must be an integer from 1 to 5"
+
+    if (!review || !stars) {
+        res.status(400).json(validationError)
+    }
+
+    if (!reviewToEdit) {
+        res.status(404).json({
+            "message": "Review couldn't be found",
+            "statusCode": 404
+          })
+    }
+
+    if (review) reviewToEdit.review = review
+    if (stars) reviewToEdit.stars = stars
+
+    await reviewToEdit.save()
+
+    res.status(200).json(reviewToEdit)
+})
+
+router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
+
+    const reviewToDelete = await Review.findByPk(req.params.reviewId)
+
+
+    if (!reviewToDelete) {
+        res.status(404)
+        res.json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        })
+    }
+
+    if (reviewToDelete.userId !== req.user.id) {
+        throw new Error('Invalid')
+    }
+
+    await reviewToDelete.destroy()
+
+    res.status(200)
+    res.json({
+      "message": "Successfully deleted",
+      "statusCode": 200
+    })
+})
+
 module.exports = router
