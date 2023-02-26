@@ -254,7 +254,7 @@ router.get('/current', restoreUser, async (req, res) => {
 
     const spotsWithReviewImage = await Spot.findAll({
         where: {
-            ownerId: currentUserId
+            ownerId: currentUserId,
         },
         include:[
             // {
@@ -282,7 +282,7 @@ router.get('/current', restoreUser, async (req, res) => {
             for (let k = 0; k < spot.SpotImages.length; k++) {
                 const image = spot.SpotImages[k]
                 // console.log(image.preview)
-                console.log(spot)
+                // console.log(spot)
                 if (image.preview === true) {
                     spot.previewImage = image.url
                 }
@@ -667,12 +667,40 @@ router.get('/:spotId/reviews', async (req, res) => {
                     },
                     {
                         model: ReviewImage,
+                    //     // where: {
+                    //     //     id: reviewId
+                    //     // }
                         attributes: {
                             exclude: ['reviewId', 'createdAt', 'updatedAt']
                         }
                     }
                 ]
     })
+
+    for (let i = 0; i < allSpotReviews.length; i++) {
+        let spotReview = allSpotReviews[i]
+        // console.log(spotReview)
+
+        const allReviewImagesOfSpot = await ReviewImage.findAll({
+            where: {
+                reviewId: spotReview.id
+            },
+            attributes: {
+                exclude: ['reviewId', 'createdAt', 'updatedAt']
+            }
+        })
+
+
+        // for (let reviewImage of allReviewImagesOfSpot) {
+
+        // }
+
+    }
+
+
+
+
+    // console.log(allSpotReviews[0].dataValues.ReviewImages)
 
     res.status(200).json({Reviews:allSpotReviews})
 })

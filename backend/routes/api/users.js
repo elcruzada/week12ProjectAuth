@@ -96,7 +96,7 @@ router.post(
         }
 
         if (!email || !username || !firstName || !lastName ) {
-          res.status(400).json(validationBodyError)
+         return res.status(400).json(validationBodyError)
         }
 
 

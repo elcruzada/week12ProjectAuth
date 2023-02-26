@@ -28,9 +28,9 @@ router.delete('/:imageId', [restoreUser, requireAuth], async (req, res) => {
 
     if (authorizedUser.dataValues.id !== req.user.id) {
         return res.status(403).json({
-            "message": "Unauthorized user",
+            "message": "Forbidden",
             "statusCode": 403
-        })
+          })
     }
 
     await reviewImageToDelete.destroy()
