@@ -48,7 +48,8 @@ router.get('/', async (req, res) => {
             //     model: Review
             // },
             {
-                model: SpotImage
+                model: SpotImage,
+                attributes: ['url', 'preview']
             }
         ],
 
@@ -64,21 +65,25 @@ router.get('/', async (req, res) => {
 
     for (let j = 0; j < spotsObjects.length; j++) {
         const spot = spotsObjects[j]
-        // console.log(spot.SpotImages)
-        if (spot.SpotImages.length > 0) {
+        // console.log(spot)
+        // if (spot.SpotImages.length > 0) {
             for (let k = 0; k < spot.SpotImages.length; k++) {
                 const image = spot.SpotImages[k]
-                // console.log(image.preview)
-                console.log(spot)
+                console.log(image)
+                // console.log(spot)
                 if (image.preview === true) {
                     spot.previewImage = image.url
                 }
 
-                if (!image.preview) {
-                    spot.previewImage = "No preview for this image"
-                }
-            }
-        }
+                    // else {
+                    // console.log(spot.previewImage)
+                    // }
+                    // if (!image.preview) {
+                        //     spot.previewImage = "No preview for this image"
+                        // }
+                    }
+                    // }
+        if (!spot.previewImage) spot.previewImage = "No preview for this image"
         delete spot.SpotImages
 
         //aggregate data
@@ -596,12 +601,17 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     }
 
 
-
+let {spotId} = req.params
     const existingUser = await Review.findOne({
         where: {
-            userId: req.user.id
+            userId: req.user.id,
+            spotId
         }
     })
+//querying for current user's reviews
+//also need logic for
+//current spot is req.params.spotId
+    // console.log(existingUser)
 
     if (existingUser) {
       return  res.status(403).json({

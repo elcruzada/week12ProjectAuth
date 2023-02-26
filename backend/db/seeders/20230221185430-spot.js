@@ -70,6 +70,18 @@ module.exports = {
         name: 'BoopBaLooop',
         description: 'Waterfalls and unicorns',
         price: 80.00
+      },
+      {
+        ownerId: 1,
+        address: '111 No associations',
+        city: 'Lelel',
+        state: 'Lit',
+        country: 'United States of Boop',
+        lat: 43.98711575011169,
+        lng: -88.57833823015774,
+        name: 'No associations',
+        description: 'Waterfalls and unicorns',
+        price: 80.00
       }
     ], {});
   },
