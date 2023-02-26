@@ -19,19 +19,35 @@ const validateLogin = [
 
 router.post(
     '/',
-    validateLogin,
+    // validateLogin,
     async (req, res, next) => {
       const { credential, password } = req.body;
       // let errorResult = { errors: [] }
       const userOutput = await User.login({ credential, password });
 
-      const userEmails = await User.findAll({
-        attributes: ['email']
-      })
+      // const userEmails = await User.findAll({
+      //   attributes: ['email']
+      // })
 
-      const username = await User.findAll({
-        attributes: ['hashedPassword']
-      })
+      // const allUsernames = await User.findAll({
+      //   attributes: ['username']
+      // })
+
+
+      // const username = await User.findAll({
+      //   attributes: ['hashedPassword']
+      // })
+
+
+
+      // let emailTruthy = false
+      // for (let email of userEmails) {
+      //   // console.log(email)
+
+      // }
+
+
+      // console.log(userEmails)
       // return res.json(userEmails[3].email)
       // return res.json(userPasswords)
       // const userEmailLength = userEmails.length
@@ -51,47 +67,66 @@ router.post(
       //     }
       //   })
       // }
-      
-      console.log(credential.split(''))
-      if (!credential.split('').includes('@')) {
 
+      const loginUserError = {
+        "message": "Validation error",
+        "statusCode": 400,
+        "errors": {}
       }
 
-    for (let i = 0; i < userEmails.length; i++) {
-      let userEmail = userEmails[i].email
-      if (credential === userEmail) break
-      if (i === userEmails.length - 1) {
-        const err = new Error('Login failed');
-        err.status = 401;
-        // const err = new Error('Login failed');
-        // err.status = 401;
-        // err.title = 'Login failed';
-        // err.errors = ['The provided credentials were invalid.'];
-        // return next(err);
+    if (!credential) loginUserError.errors.credential = "Email or username is required"
+    if (!password) loginUserError.errors.password = "Password is required"
 
-        // errorResult.errors.push({
-        //  "message": "Invalid credentials",
-        //  "statusCode": err.status
-        // })
-       return res.json({
+      if (!credential || !password) {
+       return res.status(400).json(loginUserError)
+      }
+
+      if (credential && password && !userOutput) {
+       res.status(401).json({
         "message": "Invalid credentials",
-        "statusCode": err.status
-       })
-      }
+        "statusCode": 401
+      })
     }
+    //   console.log(credential.split(''))
+    //   if (!credential.split('').includes('@')) {
+
+    //   }
+
+    // for (let i = 0; i < userEmails.length; i++) {
+    //   let userEmail = userEmails[i].email
+    //   if (credential === userEmail) break
+    //   if (i === userEmails.length - 1) {
+    //     const err = new Error('Login failed');
+    //     err.status = 401;
+    //     // const err = new Error('Login failed');
+    //     // err.status = 401;
+    //     // err.title = 'Login failed';
+    //     // err.errors = ['The provided credentials were invalid.'];
+    //     // return next(err);
+
+    //     // errorResult.errors.push({
+    //     //  "message": "Invalid credentials",
+    //     //  "statusCode": err.status
+    //     // })
+    //    return res.json({
+    //     "message": "Invalid credentials",
+    //     "statusCode": err.status
+    //    })
+    //   }
+    // }
       await setTokenCookie(res, userOutput);
 
 
       // const { id, email, firstName, lastName, username } = req.query
-      const user = await User.findOne({
-        where: {
-          email: credential
-        },
-        attributes: ['id', 'firstName', 'lastName', 'email', 'username']
-      })
+      // const user = await User.findOne({
+      //   where: {
+      //     email: credential
+      //   },
+      //   attributes: ['id', 'firstName', 'lastName', 'email', 'username']
+      // })
 
       return res.status(200).json({
-            user
+          userOutput
             // userOutput
       });
     }
