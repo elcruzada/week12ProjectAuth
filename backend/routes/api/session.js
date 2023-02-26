@@ -32,6 +32,10 @@ router.post(
       const username = await User.findAll({
         attributes: ['hashedPassword']
       })
+
+      
+
+      console.log(userEmails)
       // return res.json(userEmails[3].email)
       // return res.json(userPasswords)
       // const userEmailLength = userEmails.length
@@ -51,34 +55,36 @@ router.post(
       //     }
       //   })
       // }
-      
-      console.log(credential.split(''))
-      if (!credential.split('').includes('@')) {
 
-      }
 
-    for (let i = 0; i < userEmails.length; i++) {
-      let userEmail = userEmails[i].email
-      if (credential === userEmail) break
-      if (i === userEmails.length - 1) {
-        const err = new Error('Login failed');
-        err.status = 401;
-        // const err = new Error('Login failed');
-        // err.status = 401;
-        // err.title = 'Login failed';
-        // err.errors = ['The provided credentials were invalid.'];
-        // return next(err);
 
-        // errorResult.errors.push({
-        //  "message": "Invalid credentials",
-        //  "statusCode": err.status
-        // })
-       return res.json({
-        "message": "Invalid credentials",
-        "statusCode": err.status
-       })
-      }
-    }
+    //   console.log(credential.split(''))
+    //   if (!credential.split('').includes('@')) {
+
+    //   }
+
+    // for (let i = 0; i < userEmails.length; i++) {
+    //   let userEmail = userEmails[i].email
+    //   if (credential === userEmail) break
+    //   if (i === userEmails.length - 1) {
+    //     const err = new Error('Login failed');
+    //     err.status = 401;
+    //     // const err = new Error('Login failed');
+    //     // err.status = 401;
+    //     // err.title = 'Login failed';
+    //     // err.errors = ['The provided credentials were invalid.'];
+    //     // return next(err);
+
+    //     // errorResult.errors.push({
+    //     //  "message": "Invalid credentials",
+    //     //  "statusCode": err.status
+    //     // })
+    //    return res.json({
+    //     "message": "Invalid credentials",
+    //     "statusCode": err.status
+    //    })
+    //   }
+    // }
       await setTokenCookie(res, userOutput);
 
 

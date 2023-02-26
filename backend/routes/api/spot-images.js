@@ -11,28 +11,39 @@ const review = require('../../db/models/review')
 
 
 
-router.delete('/:spotImageId', requireAuth, async (req, res) => {
-    // const spotImageToDelete = await Spot.findByPk(req.params.spotImageId)
+router.delete('/:spotImageId', restoreUser, requireAuth, async (req, res) => {
+    const spotImageToDelete = await SpotImage.findByPk(req.params.spotImageId)
+    // console.log(spotImageToDelete)
 
-    // if (!spotImageToDelete) {
-    //     res.status(404)
-    //     res.json({
-    //         "message": "Spot couldn't be found",
-    //         "statusCode": 404
-    //     })
-    // }
 
-    // if (spotImageToDelete.ownerId !== req.user.id) {
-    //     throw new Error('Invalid')
-    // }
+    // console.log(spotToConnectToUser)
+    // console.log(authorizedUser.dataValues.id)
+    console.log(spotImageToDelete)
+    if (!spotImageToDelete) {
+        res.status(404)
+        return  res.json({
+            "message": "Spot Image couldn't be found",
+            "statusCode": 404
+        })
+    }
+    const spotToConnectToUser = await Spot.findByPk(spotImageToDelete.dataValues.spotId)
 
-    // await spotToDelete.destroy()
+    const authorizedUser = await User.findByPk(spotToConnectToUser.dataValues.ownerId)
 
-    // res.status(200)
-    // res.json({
-    //   "message": "Successfully deleted",
-    //   "statusCode": 200
-    // })
+    if (authorizedUser.dataValues.id !== req.user.id) {
+        return res.status(403).json({
+            "message": "Unauthorized user",
+            "statusCode": 403
+        })
+    }
+
+    await spotImageToDelete.destroy()
+
+    res.status(200)
+    res.json({
+      "message": "Successfully deleted",
+      "statusCode": 200
+    })
 })
 
 

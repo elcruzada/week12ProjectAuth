@@ -127,4 +127,32 @@ router.put('/:bookingId', [restoreUser, requireAuth], async (req, res) => {
 })
 
 
+router.delete('/:bookingId', [restoreUser, requireAuth], async (req, res) => {
+    const bookingToDelete = await Booking.findByPk(req.params.bookingId)
+
+    if (!bookingToDelete) {
+        res.status(404)
+       return res.json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        })
+    }
+
+    if (bookingToDelete.userId !== req.user.id) {
+        // throw new Error('Invalid')
+       return res.status(403).json({
+            "message": "Unauthorized user",
+            "statusCode": 403
+        })
+    }
+
+    await bookingToDelete.destroy()
+
+    res.status(200)
+    res.json({
+      "message": "Successfully deleted",
+      "statusCode": 200
+    })
+})
+
 module.exports = router
