@@ -21,59 +21,147 @@ const validateEditBooking = [
 
 
 router.get('/current', [restoreUser, requireAuth], async (req, res) => {
+
     const currentUserBookings = await Booking.findAll({
         where: {
             userId: req.user.id
         },
-        // attributes: {
-        //     exclude: ['spotId']
-        // },
         include: [
-                    {
-                    model: Spot,
-                    attributes:
-                    {
-                        exclude: ['description']
-                    },
-                    }
-                ]
+            {
+            model: Spot,
+            attributes: {
+            exclude:
+                [
+                'description', 'createdAt', 'updatedAt'
+            ]
+        },
+            include: [
+                {
+                model: SpotImage,
+                attributes: ['url', 'preview']
+            }
+        ]
+        }]
     })
 
-    const currentUserBookingsObject = []
-    for (let i = 0; i < currentUserBookings.length; i++) {
-        const booking = currentUserBookings[i]
-        currentUserBookingsObject.push(booking.toJSON())
-    }
+    // const currentUserBookingsObject = []
+    // for (let i = 0; i < currentUserBookings.length; i++) {
+    //     const booking = currentUserBookings[i]
+    //     currentUserBookingsObject.push(booking.toJSON())
+    // }
 
-    // console.log(currentUserBookingsObject)
+    // // console.log(currentUserBookingsObject)
 
-    for (let i = 0; i < currentUserBookingsObject.length; i++) {
-        let bookingSpot = currentUserBookingsObject[i].Spot
+    // for (let j = 0; j < currentUserBookingsObject.length; j++) {
+    //     let bookingSpot = currentUserBookingsObject[j].Spot
+    //     // console.log(bookingSpot)
+    //     const spotPreview = await SpotImage.findOne({
+    //         where: {
+    //             spotId: bookingSpot.id
+    //         }
+    //     })
 
-        const spotPreview = await SpotImage.findAll({
-            where: {
-                spotId: bookingSpot.id
+    //     console.log(spotPreview)
+
+    //     // let previewImageURL = spotPreview.dataValues.url
+    //     // let previewImageTruthiness = spotPreview.dataValues.preview
+    //     // const spotPreviewObject = []
+    //     // // console.log(spotPreviewObject.push(spotPreview))
+    //     // for (let preview of spotPreview) {
+    //     //     spotPreviewObject.push(preview.toJSON())
+    //     // }
+    //     // console.log(spotPreviewObject)
+    //     // console.log(spotPreview[0].toJSON().url)
+    //     // console.log(spotPreview[0].toJSON().preview)
+    //     // for (let j = 0; j < spotPreview.length; j++)
+
+    //     // let previewImageURL = spotPreview[0].dataValues.url
+    //     // let previewImageTruthiness = spotPreview[0].dataValues.preview
+    //     // let previewImageURL = spotPreview[0].toJSON().url
+    //     // let previewImageTruthiness = spotPreview[0].toJSON().preview
+
+    //     // console.log(previewImageURL)
+
+    //     if (previewImageURL && previewImageTruthiness) {
+    //         bookingSpot.previewImage = previewImageURL
+    //     } else {
+    //         bookingSpot.previewImage = "No preview available."
+    //     }
+    // }
+
+    // //still need previewImage for Spot
+    // res.status(200).json({Bookings: currentUserBookingsObject})
+
+    // console.log(currentUserBookings)
+
+
+    const bookingsObj = []
+    const payload = {}
+
+for (let booking of currentUserBookings) {
+
+
+        const jsonConversion = booking.toJSON();
+            // console.log(jsonConversion)
+        let nestedSpotSpotImages = jsonConversion.Spot.SpotImages
+            // console.log(nestedSpotSpotImages)
+        if (nestedSpotSpotImages.length) {
+
+         for (const book of nestedSpotSpotImages) {
+            if (book.preview) jsonConversion.Spot.previewImage = book.url
+
             }
-        })
-
-        console.log(spotPreview[0].toJSON().url)
-        console.log(spotPreview[0].toJSON().preview)
-        // for (let j = 0; j < spotPreview.length; j++)
-
-        // let previewImageURL = spotPreview[0].dataValues.url
-        // let previewImageTruthiness = spotPreview[0].dataValues.preview
-        let previewImageURL = spotPreview[0].toJSON().url
-        let previewImageTruthiness = spotPreview[0].toJSON().preview
-
-        // console.log(previewImageURL)
-
-        if (previewImageURL && previewImageTruthiness) {
-            bookingSpot.previewImage = previewImageURL
         }
+
+        if (!jsonConversion.Spot.previewImage) jsonConversion.Spot.previewImage = "Preview image not available"
+        // console.log(jsonConversion.Spot.previewImage)
+
+
+
+        
+        let cSpot = jsonConversion.Spot   //put spotObj in payload
+        payload.Spot = cSpot
+
+        //try a payload this time
+        let cId = jsonConversion.id   //rest of these are the spotInfo
+        let cSpotId = jsonConversion.spotId
+        let cUserId = jsonConversion.userId
+        let cStartDate = jsonConversion.startDate
+        let cEndDate = jsonConversion.endDate
+        let cCreateAt = jsonConversion.createdAt
+        let cUpdatedAt = jsonConversion.updatedAt
+
+
+
+        payload.id = cId
+
+        payload.spotId = cSpotId
+
+        payload.userId = cUserId
+
+        payload.startDate = cStartDate
+
+        payload.endDate = cEndDate
+
+        payload.createdAt = cCreateAt
+
+        payload.updatedAt = cUpdatedAt
+
+
+        delete jsonConversion.Spot.SpotImages
+
     }
 
-    //still need previewImage for Spot
-    res.status(200).json(currentUserBookingsObject)
+    bookingsObj.push(payload)
+
+
+    return res.json(
+        {
+        Bookings: bookingsObj
+    }
+)
+
+
 })
 
 //STILL NEED TO DO "past bookings can't be modified"

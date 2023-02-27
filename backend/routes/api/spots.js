@@ -35,7 +35,7 @@ const spotsValidatorForQuery = [
     check('minLng')
       .optional()
       .isFloat({ min: -180, max: 180 })
-      .withMessage('Must enter a longtitude value between -180 and 180'),
+      .withMessage('Minimum longitude is invalid'),
     check('maxPrice')
       .optional()
       .isFloat({ min: 0 })
@@ -441,7 +441,7 @@ router.get('/current', restoreUser, async (req, res) => {
 
 //   }
 
-    res.json(spotsObjects)
+    res.json({Spots: spotsObjects})
 })
 
 
@@ -665,7 +665,10 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     }
 
     if (spotToDelete.ownerId !== req.user.id) {
-        throw new Error('Invalid')
+        return res.status(403).json({
+            "message": "Forbidden",
+            "statusCode": 403
+          })
     }
 
     await spotToDelete.destroy()
