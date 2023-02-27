@@ -10,30 +10,71 @@ const spot = require('../../db/models/spot');
 const { Op } = require('sequelize')
 // const Sequelize = require("sequelize")
 
-router.get('/', async (req, res) => {
+
+const spotsValidatorForQuery = [
+    check('page')
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage('Page must be greater than or equal to 1'),
+    check('size')
+      .optional()
+      .isInt({ min: 1 })
+      .withMessage('Size must be greater than or equal to 1'),
+    check("maxLat")
+      .optional()
+      .isFloat({ min: -90, max: 90 })
+      .withMessage('Maximum latitude is invalid'),
+    check('minLat')
+      .optional()
+      .isFloat({ min: -90, max: 90 })
+      .withMessage('Minimum latitude is invalid'),
+    check("maxLng")
+      .optional()
+      .isFloat({ min: -180, max: 180 })
+      .withMessage('Maximum longitude is invalid'),
+    check('minLng')
+      .optional()
+      .isFloat({ min: -180, max: 180 })
+      .withMessage('Must enter a longtitude value between -180 and 180'),
+    check('maxPrice')
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage('Maximum price must be greater than or equal to 0'),
+    check("minPrice")
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage('Minimum price must be greater than or equal to 0'),
+    handleValidationErrors
+  ];
+
+
+router.get('/', spotsValidatorForQuery, async (req, res) => {
     let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
-    page = parseInt(page)
-    size = parseInt(size)
 
-    if (!page) page = 1
-    if (!size) size = 20
-
+        let where = {}
+        let pagination = {}
+        let result = {}
 
 
+        page = parseInt(page)
+        size = parseInt(size)
+
+        if (!page) page = 1
+        if (page > 10) page = 1
+        if (!size) size = 20
+        if (size > 10) size = 20
 
 
 
+        if (page && size) {
+            pagination.limit = size
+            pagination.offset = (page - 1) * size
+        }
 
-    let pagination = {}
-
-    if (page && size) {
-    pagination.limit = size
-    pagination.offset = (page - 1) * size
-    }
-
-    let result = {}
-
+        if (maxLng && minLng) {
+            
+        }
 
 
     // const Spots = await Spot.findAll()
@@ -143,7 +184,7 @@ router.get('/', async (req, res) => {
     result.page = page
     result.size = size
 
-    res.status(200).json(result)
+   return res.status(200).json(result)
     // let total = 0
 
 
@@ -212,6 +253,7 @@ router.post('/', requireAuth, async (req, res) => {
 })
 
 router.post('/:spotId/images', [restoreUser, requireAuth], async (req, res) => {
+        const {url} = req.body
         const pk = req.params.spotId
         const getSpotPk = await Spot.findByPk(pk)
 
@@ -232,7 +274,7 @@ router.post('/:spotId/images', [restoreUser, requireAuth], async (req, res) => {
 
         let newSpotImage = await SpotImage.create({
             "spotId": pk,
-            "url": "image url",
+            "url": url,
             "preview": true
         })
 
@@ -293,11 +335,12 @@ router.get('/current', restoreUser, async (req, res) => {
                     spot.previewImage = image.url
                 }
 
-                if (!image.preview) {
-                    spot.previewImage = "No preview for this image"
-                }
+                // if (!image.preview) {
+                //     spot.previewImage = "No preview for this image"
+                // }
             }
         }
+        if (!spot.previewImage) spot.previewImage = "No preview for this image"
         delete spot.SpotImages
 
         //aggregate data
@@ -314,7 +357,7 @@ router.get('/current', restoreUser, async (req, res) => {
             ]
         })
         // console.log(reviewStars.toJSON())
-        let starAVG = reviewStars.toJSON().avgRating
+        let starAVG = Number(reviewStars.toJSON().avgRating).toFixed(1)
 
         if (starAVG) {
             spot.avgRating = starAVG
@@ -513,7 +556,7 @@ router.put('/:spotId', [requireAuth, restoreUser], async (req, res) => {
     if (!country) error.errors.country = "Country is required"
     if (!lat) error.errors.lat = "Latitude is not valid"
     if (!lng) error.errors.lng = "Longitude is not valid"
-    if (!name) error.errors.name = "Name must be less than 50 characters"
+    if (!name || name.length > 50) error.errors.name = "Name must be less than 50 characters"
     if (!description) error.errors.description = "Description is required"
     if (!price) error.errors.price = "Price per day is required"
 
@@ -535,7 +578,7 @@ router.put('/:spotId', [requireAuth, restoreUser], async (req, res) => {
     await spotDetails.save()
 
 
-    res.status(200).json(spotDetails)
+   return res.status(200).json(spotDetails)
 })
 
 router.delete('/:spotId', requireAuth, async (req, res) => {
@@ -556,7 +599,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     await spotToDelete.destroy()
 
     res.status(200)
-    res.json({
+   return res.json({
       "message": "Successfully deleted",
       "statusCode": 200
     })
@@ -802,7 +845,7 @@ router.post('/:spotId/bookings', [requireAuth, restoreUser], async (req, res) =>
 
 
 
-    res.json(createNewBookingBySpotId)
+    return res.json(createNewBookingBySpotId)
 })
 
 //come back to this route after create booking
@@ -832,7 +875,11 @@ router.get('/:spotId/bookings', [requireAuth, restoreUser], async (req, res) => 
 
     if (currentUserId !== getSpotCurrentUserId.dataValues.ownerId){
 
-        res.status(200).json({Bookings: getAllBookingsForUnauthorizedUser})
+       return res.status(200).json(
+            {
+                Bookings: getAllBookingsForUnauthorizedUser
+            }
+        )
     }
 
     // const currentSpotBookings = await Booking.findAll({
@@ -867,7 +914,11 @@ router.get('/:spotId/bookings', [requireAuth, restoreUser], async (req, res) => 
     // console.log(currentSpotBookings)
 
     if (currentUserId === getSpotCurrentUserId.dataValues.ownerId){
-        res.status(200).json({Bookings:getBookingsForUser})
+       return res.status(200).json(
+            {
+                Bookings:getBookingsForUser
+            }
+            )
     }
 })
 

@@ -29,10 +29,13 @@ const validateSignup = [
 
 router.post(
     '/',
-    // validateSignup,
+    validateSignup,
     async (req, res) => {
       // console.log(res)
       const { firstName, lastName, email, password, username } = req.body;
+
+
+
 
       let validateSignupError = {
         "message": "User already exists",
@@ -50,6 +53,21 @@ router.post(
           username
         }
       })
+
+      // if(existingEmail){
+      //   return res.status(403).json({message: "User already exists", statusCode:403 ,errors: ["User with that email already exists"]})
+      // }else if(userNameExists){
+      //   return res.status(403).json({message: "User already exists", statusCode:403 ,errors: ["User with that username already exists"]})
+      // }else{
+      //   let user = await User.signup({ email, password, username,firstName, lastName });
+
+      //   let token = await setTokenCookie(res, user);
+
+      //   user = user.toJSON();
+      //   user.token = token;
+
+      //   return res.json(user);
+      // }
 
       if (existingEmail && existingUsername) {
         validateSignupError.errors = {

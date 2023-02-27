@@ -209,14 +209,26 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
 
     // console.log(req.params.reviewId)
 
+    // const reviewIdNotFoundCheck = await Review.findByPk()
+
     const reviewToAddImage = await Review.findByPk(req.params.reviewId)
 
+    if (!reviewToAddImage) {
+      return  res.status(404).json({
+            "message": "Review couldn't be found",
+            "statusCode": 404
+          })
+    }
+    
     const reviewImageCheck = await ReviewImage.findAll({
         where: {
             reviewId: reviewToAddImage.id
         }
     })
 
+    // if (!reviewToAddImage) {
+
+    // }
     // console.log(reviewImageCheck.length)
 
     if (reviewImageCheck.length > 10) {
@@ -228,12 +240,6 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
     // console.log(reviewImageToAdd)
     //check if user owns the review
 
-    if (!reviewToAddImage) {
-      return  res.status(404).json({
-            "message": "Review couldn't be found",
-            "statusCode": 404
-          })
-    }
 
     const createdImage = await ReviewImage.create({
         reviewId: req.params.reviewId,
