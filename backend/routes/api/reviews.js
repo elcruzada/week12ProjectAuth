@@ -196,7 +196,7 @@ router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
     await reviewToDelete.destroy()
 
     res.status(200)
-    res.json({
+   return res.json({
       "message": "Successfully deleted",
       "statusCode": 200
     })
@@ -220,7 +220,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
     // console.log(reviewImageCheck.length)
 
     if (reviewImageCheck.length > 10) {
-        res.status(403).json({
+    return    res.status(403).json({
             "message": "Maximum number of images for this resource was reached",
             "statusCode": 403
           })
@@ -229,7 +229,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
     //check if user owns the review
 
     if (!reviewToAddImage) {
-        res.status(404).json({
+      return  res.status(404).json({
             "message": "Review couldn't be found",
             "statusCode": 404
           })
@@ -247,7 +247,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
 
 
 
-    res.status(200).json(jsonResponse)
+   return res.status(200).json(jsonResponse)
 })
 
 
@@ -282,7 +282,7 @@ router.put('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
 
     await reviewToEdit.save()
 
-    res.status(200).json(reviewToEdit)
+   return res.status(200).json(reviewToEdit)
 })
 
 router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
@@ -308,7 +308,7 @@ router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
     await reviewToDelete.destroy()
 
     res.status(200)
-    res.json({
+   return res.json({
       "message": "Successfully deleted",
       "statusCode": 200
     })

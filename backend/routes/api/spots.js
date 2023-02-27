@@ -99,8 +99,9 @@ router.get('/', async (req, res) => {
             // }
             ]
         })
+        // console.log(Number(reviewStars.toJSON().avgRating).toFixed(1))
         // console.log(reviewStars.toJSON())
-        let starAVG = reviewStars.toJSON().avgRating
+        let starAVG = Number(reviewStars.toJSON().avgRating).toFixed(1)
 
         if (starAVG) {
             spot.avgRating = starAVG
@@ -458,7 +459,7 @@ if (!spotDetails) {
         // spotAndId.dataValues.Owner = {}
         delete spotAndId.dataValues.Reviews
         spotAndId.dataValues.numReviews = numReviewValue
-        spotAndId.dataValues.avgStarRating = avgStarRatingValue
+        spotAndId.dataValues.avgStarRating = avgStarRatingValue.toFixed(1)
         spotAndId.dataValues.Owner = user.dataValues
 
 
