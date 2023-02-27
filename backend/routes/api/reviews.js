@@ -9,84 +9,130 @@ const { handleValidationErrors } = require('../../utils/validation');
 const spot = require('../../db/models/spot');
 const review = require('../../db/models/review')
 
+
+//THIS IS BREAKING YOU MUST FIX TODAY
 router.get('/current',[restoreUser, requireAuth], async (req, res) => {
 
     const currentUserReviews = await Review.findAll({
         where: {
             userId: req.user.id
-        }
-        // include: [
-        //     {
-        //         model:User,
-        //         attributes: {
-        //             exclude: ['username', 'hashedPassword', 'createdAt', 'updatedAt', 'email']
-        //         }
-        //     },
-        //     {
-        //         model: Spot,
-        //         attributes: {
-        //             exclude: ['createdAt', 'updatedAt', 'description']
-        //         }
-        //     },
-        //     {
-        //         model: ReviewImage,
-        //         attributes: ['id', 'url']
-        //         // where: {
-        //         //     reviewId: id
-        //         // }
-        //     }
-        // ]
+        },
+        include: [
+            {
+                model:User,
+                attributes: {
+                    exclude: ['username', 'hashedPassword', 'createdAt', 'updatedAt', 'email']
+                }
+            },
+            {
+                model: Spot,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'description']
+                },
+                include: [
+                    {
+                        model: SpotImage,
+                        attributes: ['url', 'preview']
+                    }
+                ]
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
     })
 
-    let payload = []
+    // console.log(currentUserReviews)
 
-    for (let review of currentUserReviews) {
-        let pojo = {}
-
-        const reviewSpot = await Spot.findOne({
-            where: {
-                id: review.spotId,
-            },
-            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
-        })
-
-        for (let key in review.dataValues) {
-            pojo[key] = review[key]
-        }
-
-        let spotImageVal = await SpotImage.findOne({
-            where: {
-                spotId: reviewSpot.id
-            }
-        })
-
-        const spotPayload = {}
-
-        for (let key in reviewSpot.dataValues) {
-            spotPayload[key] = reviewSpot[key]
-        }
-
-
-        if (spotImageVal.url) {    //need this conditional
-            spotPayload.previewImage = spotImageVal.url
-        } else {
-            spotPayload.previewImage = "Unavailable"
-        }
-
-        const reviewImagePayload = {}
-
-        const reviewImageQuery = await ReviewImage.findAll({
-            where: {
-                reviewId: review.id
-            },
-            attributes: ['id', 'url']
-        })
-
-        pojo.ReviewImages = reviewImageQuery
-
-        pojo.Spot = spotPayload
-        payload.push(pojo)
+    const reviewsConverted = []
+    for (let i = 0; i < currentUserReviews.length; i++) {
+        let review = currentUserReviews[i].toJSON()
+        reviewsConverted.push(review)
     }
+
+    // console.log(reviewsArray)
+
+    for (let j = 0; j < reviewsConverted.length; j++) {
+        let review = reviewsConverted[j]
+        let reviewC = reviewsConverted[j].Spot.SpotImages
+        // console.log(reviewC)
+        if (reviewC.length) {
+            if (reviewC[0].preview) {
+                console.log(review)
+                reviewsConverted[j].Spot.previewImage = reviewsConverted[j].Spot.SpotImages[0].url
+            }
+        }
+
+        let reviewCheck = review.ReviewImages
+        // console.log(reviewCheck)
+        let falsySpotCheck = review.Spot.previewImage
+
+        if (!reviewCheck) review.ReviewImage = "Review images unavailable"
+        if (!falsySpotCheck) review.Spot.previewImage = "Reviews unavailable"
+        delete review.Spot.SpotImages
+
+    }
+
+
+
+    //if I want to go back to the payload way, comment out everything
+    //but the where
+    // let payload = []
+
+    // for (let review of currentUserReviews) {
+    //     let pojo = {}
+
+    //     const reviewSpot = await Spot.findOne({
+    //         where: {
+    //             id: review.spotId,
+    //         },
+    //         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
+    //     })
+
+    //     for (let key in review.dataValues) {
+    //         pojo[key] = review[key]
+    //     }
+
+    //     let spotImageVal = await SpotImage.findOne({
+    //         where: {
+    //             spotId: reviewSpot.id
+    //         }
+    //     })
+
+    //     const spotPayload = {}
+
+    //     for (let key in reviewSpot.dataValues) {
+    //         spotPayload[key] = reviewSpot[key]
+    //     }
+
+    //     let spotImageArray = []
+    //     let jsonImageVal = spotImageVal.toJSON()
+    //     spotImageArray.push(jsonImageVal)
+    //     // console.log(spotImageArray)
+    //     // console.log(spotImageVal.toJSON().url)
+    //     // let spotImageJSON = spotImageVal.toJSON().url
+
+    //     if (spotImageArray[0].preview) {    //need this conditional
+    //         spotPayload.previewImage = spotImageArray[0].url
+    //     } else {
+    //         spotPayload.previewImage = "Image is unavailable"
+    //     }
+
+    //     const reviewImagePayload = {}
+
+    //     const reviewImageQuery = await ReviewImage.findAll({
+    //         where: {
+    //             reviewId: review.id
+    //         },
+    //         attributes: ['id', 'url']
+    //     })
+
+    //     pojo.ReviewImages = reviewImageQuery
+
+    //     pojo.Spot = spotPayload
+    //     payload.push(pojo)
+    // }
     // console.log(currentUserReviews)
     // for (let i = 0; i < currentUserReviews.length; i++) {
     //         let review = currentUserReviews[i]
@@ -123,8 +169,8 @@ router.get('/current',[restoreUser, requireAuth], async (req, res) => {
     // console.log(currentUserReviews.dataValues)
     // if (currentUserReviews.dataValues.ReviewImages) currentUserReviews.dataValues.ReviewImages = reviewImageArray
 
-    res.status(200).json({
-        Reviews: payload
+   return res.status(200).json({
+        Reviews: reviewsConverted
     })
 })
 
@@ -150,7 +196,7 @@ router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
     await reviewToDelete.destroy()
 
     res.status(200)
-    res.json({
+   return res.json({
       "message": "Successfully deleted",
       "statusCode": 200
     })
@@ -174,7 +220,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
     // console.log(reviewImageCheck.length)
 
     if (reviewImageCheck.length > 10) {
-        res.status(403).json({
+    return    res.status(403).json({
             "message": "Maximum number of images for this resource was reached",
             "statusCode": 403
           })
@@ -183,7 +229,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
     //check if user owns the review
 
     if (!reviewToAddImage) {
-        res.status(404).json({
+      return  res.status(404).json({
             "message": "Review couldn't be found",
             "statusCode": 404
           })
@@ -201,7 +247,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
 
 
 
-    res.status(200).json(jsonResponse)
+   return res.status(200).json(jsonResponse)
 })
 
 
@@ -236,7 +282,7 @@ router.put('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
 
     await reviewToEdit.save()
 
-    res.status(200).json(reviewToEdit)
+   return res.status(200).json(reviewToEdit)
 })
 
 router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
@@ -262,7 +308,7 @@ router.delete('/:reviewId', [restoreUser, requireAuth], async (req, res) => {
     await reviewToDelete.destroy()
 
     res.status(200)
-    res.json({
+   return res.json({
       "message": "Successfully deleted",
       "statusCode": 200
     })
