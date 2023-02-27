@@ -19,7 +19,7 @@ const validateLogin = [
 
 router.post(
     '/',
-    // validateLogin,
+    validateLogin,
     async (req, res, next) => {
       const { credential, password } = req.body;
       // let errorResult = { errors: [] }
@@ -82,7 +82,7 @@ router.post(
       }
 
       if (credential && password && !userOutput) {
-       res.status(401).json({
+      return res.status(401).json({
         "message": "Invalid credentials",
         "statusCode": 401
       })
