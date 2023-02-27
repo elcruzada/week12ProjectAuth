@@ -82,7 +82,7 @@ router.post(
       }
 
       if (credential && password && !userOutput) {
-       res.status(401).json({
+      return res.status(401).json({
         "message": "Invalid credentials",
         "statusCode": 401
       })

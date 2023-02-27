@@ -273,14 +273,30 @@ router.put('/:bookingId', restoreUser, requireAuth, validateEditBooking, async (
 
 router.delete('/:bookingId', [restoreUser, requireAuth], async (req, res) => {
     const bookingToDelete = await Booking.findByPk(req.params.bookingId)
-
     if (!bookingToDelete) {
         res.status(404)
        return res.json({
-            "message": "Spot couldn't be found",
+            "message": "Booking couldn't be found",
             "statusCode": 404
         })
     }
+    const bookingToDeleteId = bookingToDelete.toJSON().spotId
+    const bookingOwnerIdQuery = await Spot.findOne({
+        where: {
+            id: bookingToDeleteId
+        }
+    })
+    const spotOwnerIdCheck = bookingOwnerIdQuery.toJSON().ownerId
+
+    if (!req.params.bookingId) {
+            return res.status(404).json({
+            "message": "Booking couldn't be found",
+            "statusCode": 404
+          })
+    }
+
+    console.log(bookingToDelete)
+
 
     if (bookingToDelete.userId !== req.user.id) {
         // throw new Error('Invalid')
@@ -290,10 +306,34 @@ router.delete('/:bookingId', [restoreUser, requireAuth], async (req, res) => {
       })
     }
 
+    if (req.user.id !== spotOwnerIdCheck) {
+        return res.status(403).json({
+            "message": "Forbidden",
+            "statusCode": 403
+          })
+    }
+
+    const startedBookingCheck = bookingToDelete.toJSON().startDate
+    // console.log(new Date(startedBookingCheck))
+    // console.log(new Date())
+    if (new Date(startedBookingCheck) <= new Date()) {
+        return res.status(403).json({
+            "message": "Bookings that have been started can't be deleted",
+            "statusCode": 403
+          })
+    }
+
+    // if (new Date(startedBookingCheck) < new Date()) {
+    //     return res.status(403).json({
+    //         "message": "Bookings that have passed can't be deleted",
+    //         "statusCode": 403
+    //       })
+    // }
+
     await bookingToDelete.destroy()
 
     res.status(200)
-    res.json({
+   return res.json({
       "message": "Successfully deleted",
       "statusCode": 200
     })

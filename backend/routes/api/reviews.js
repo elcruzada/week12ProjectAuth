@@ -69,7 +69,7 @@ router.get('/current',[restoreUser, requireAuth], async (req, res) => {
         let falsySpotCheck = review.Spot.previewImage
 
         if (!reviewCheck) review.ReviewImage = "Review images unavailable"
-        if (!falsySpotCheck) review.Spot.previewImage = "Reviews unavailable"
+        if (!falsySpotCheck) review.Spot.previewImage = "Preview unavailable"
         delete review.Spot.SpotImages
 
     }
@@ -219,7 +219,7 @@ router.post('/:reviewId/images', [restoreUser, requireAuth], async (req, res) =>
             "statusCode": 404
           })
     }
-    
+
     const reviewImageCheck = await ReviewImage.findAll({
         where: {
             reviewId: reviewToAddImage.id

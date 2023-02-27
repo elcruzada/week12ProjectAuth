@@ -72,11 +72,76 @@ router.get('/', spotsValidatorForQuery, async (req, res) => {
             pagination.offset = (page - 1) * size
         }
 
-        if (maxLng && minLng) {
-            
+
+        //longitude
+        if (!minLng && maxLng) {
+            where.lng = {
+                [Op.lte]: minLng
+            }
+        }
+
+        if (minLng && !maxLng) {
+            where.lng = {
+                [Op.gte]: maxLng
+            }
+        }
+
+        if (minLng && maxLng) {
+            where.lng = {
+                [Op.and]: {
+                    [Op.gte]: minLng,
+                    [Op.lte]: maxLng
+                }
+            }
         }
 
 
+        //latitude
+        if (minLat && !maxLat) {
+            where.lat = {
+                [Op.gte]: minLat
+            }
+        }
+
+        if (!minLat && maxLat) {
+            where.lat = {
+                [Op.lte]: maxLat
+            }
+        }
+
+        if (minLat && maxLat) {
+            where.lat = {
+                [Op.and]: {
+                    [Op.gte]: minLat,
+                    [Op.lte]: maxLat
+                }
+            }
+        }
+
+
+        //price
+        if (minPrice && !maxPrice) {
+            where.price = {
+                [Op.gte]: minPrice
+            }
+        }
+
+
+        if (!minPrice && maxPrice) {
+            where.price = {
+                [Op.lte]: maxPrice
+            }
+        }
+
+        if (minPrice && maxPrice) {
+            where.price = {
+                [Op.and]: {
+                    [Op.gte]: minLng,
+                    [Op.lte]: maxLng
+                }
+            }
+        }
+        // console.log(where)
     // const Spots = await Spot.findAll()
 
     // const Rating = await Review.findAll({
@@ -84,6 +149,7 @@ router.get('/', spotsValidatorForQuery, async (req, res) => {
     // })
 
     const spotsWithReviewImage = await Spot.findAll({
+        where,
         include:[
             // {
             //     model: Review
@@ -142,10 +208,11 @@ router.get('/', spotsValidatorForQuery, async (req, res) => {
         })
         // console.log(Number(reviewStars.toJSON().avgRating).toFixed(1))
         // console.log(reviewStars.toJSON())
-        let starAVG = Number(reviewStars.toJSON().avgRating).toFixed(1)
+        let starAVG = reviewStars.toJSON().avgRating
+        let starAVGVal = Number(reviewStars.toJSON().avgRating).toFixed(1)
 
         if (starAVG) {
-            spot.avgRating = starAVG
+            spot.avgRating = starAVGVal
         } else {
             spot.avgRating = 'No stars yet'
         }
@@ -233,18 +300,22 @@ router.post('/', requireAuth, async (req, res) => {
       "errors": {}
     }
 
+    // for (let i = 0; i < name)
+    console.log(name.length)
+
     if (!address) error.errors.address = "Street address is required"
     if (!city) error.errors.city = "City is required"
     if (!state) error.errors.state = "State is required"
     if (!country) error.errors.country = "Country is required"
     if (!lat) error.errors.lat = "Latitude is not valid"
     if (!lng) error.errors.lng = "Longitude is not valid"
-    if (!name) error.errors.name = "Name must be less than 50 characters"
+    if (!name) error.errors.name = "Name is required"
+    if (name.length >= 50) error.errors.name = "Name must be less than 50 characters"
     if (!description) error.errors.description = "Description is required"
     if (!price) error.errors.price = "Price per day is required"
 
     if (!address || !city || !state || !country
-        || !lat || !lng || !name || !description || !price) {
+        || !lat || !lng || !name || name.length >= 50 || !description || !price) {
             res.status(400).json(error)
         }
 
@@ -533,7 +604,7 @@ router.put('/:spotId', [requireAuth, restoreUser], async (req, res) => {
             "statusCode": 404
         })
     }
-    console.log(spotDetails)
+    // console.log(spotDetails)
     // if (gameName) {
     //     gameToUpdate.set({
     //         gameName
@@ -556,12 +627,13 @@ router.put('/:spotId', [requireAuth, restoreUser], async (req, res) => {
     if (!country) error.errors.country = "Country is required"
     if (!lat) error.errors.lat = "Latitude is not valid"
     if (!lng) error.errors.lng = "Longitude is not valid"
-    if (!name || name.length > 50) error.errors.name = "Name must be less than 50 characters"
+    if (!name) error.errors.name = "No name provided"
+    if (name.length >= 50) error.errors.name = "Name must be less than 50 characters"
     if (!description) error.errors.description = "Description is required"
     if (!price) error.errors.price = "Price per day is required"
 
     if (!address || !city || !state || !country
-        || !lat || !lng || !name || !description || !price) {
+        || !lat || !lng || !name || name.length >= 50 || !description || !price) {
            return res.status(400).json(error)
         }
 
@@ -691,7 +763,7 @@ let {spotId} = req.params
 
 
 
-    res.status(201).json(createdReview)
+   return res.status(201).json(createdReview)
 })
 
 
@@ -785,13 +857,20 @@ router.post('/:spotId/bookings', [requireAuth, restoreUser], async (req, res) =>
         })
     }
 
-    const bookingConflictDates = await Booking.findAll({
-        where: {
-            spotId: currentSpotId
-        }
-    })
+    // const bookingConflictDates = await Booking.findAll({
+    //     where: {
+    //         spotId: currentSpotId
+    //     }
+    // })
 
     // console.log(bookingConflictDates)
+
+    const bookingErrorObj = {
+        "message": "Sorry, this spot is already booked for the specified dates",
+            "statusCode": 403,
+            "errors": {}
+    }
+
 
     const bookingsConflictDates = await Booking.findAll({
         where: {
@@ -799,25 +878,45 @@ router.post('/:spotId/bookings', [requireAuth, restoreUser], async (req, res) =>
           startDate: {
             [Op.lte]: endDate
             },
+        }
+      });
+
+      const bookingsConflictDates2 = await Booking.findAll({
+        where: {
+          spotId: currentSpotId,
           endDate: {
             [Op.gte]: startDate
             }
-        }
+          }
+
       });
 
     //   console.log(bookingsConflictDates)
     if (bookingsConflictDates.length){
-        res.status(403).json(
-            {
-            "message": "Sorry, this spot is already booked for the specified dates",
-            "statusCode": 403,
-            "errors": {
-              "startDate": "Start date conflicts with an existing booking",
-              "endDate": "End date conflicts with an existing booking"
-            }
-          }
-        )
-    }
+
+            bookingErrorObj.errors.startDate = "Start date conflicts with an existing booking"
+        }
+
+        if (bookingsConflictDates2.length){
+
+            bookingErrorObj.errors.endDate = "End date conflicts with an existing booking"
+            // res.status(403).json(bookingErrorObj)
+        }
+     if (bookingsConflictDates.length || bookingsConflictDates2.length)   res.status(403).json(bookingErrorObj)
+
+
+    // if (bookingsConflictDates.length){
+    //     res.status(403).json(
+    //         {
+    //         "message": "Sorry, this spot is already booked for the specified dates",
+    //         "statusCode": 403,
+    //         "errors": {
+    //           "startDate": "Start date conflicts with an existing booking",
+    //           "endDate": "End date conflicts with an existing booking"
+    //         }
+    //       }
+    //     )
+    // }
     // const bookingConflictDatesArray = []
     // for (let i = 0; i < bookingConflictDates[0].length; i++) {
     //         let booking = bookingConflictDates[0][i].dataValues
