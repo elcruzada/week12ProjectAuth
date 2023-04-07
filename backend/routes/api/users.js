@@ -125,6 +125,7 @@ router.post(
 
 
       return res.status(200).json({
+        user : {
         // user: user
         "id": user.id,
         firstName,
@@ -132,7 +133,7 @@ router.post(
         email,
         username,
         "token": sessionToken
-      });
+      }});
     }
   );
 
