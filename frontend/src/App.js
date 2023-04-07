@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
+import SignupFormPage from "./components/SignupFormPage/SignupFormPage";
 import * as sessionActions from "./store/session";
+import Navigation from "./components/Navigation/Navigation";
 
 function App() {
   const dispatch = useDispatch();
@@ -15,9 +17,13 @@ function App() {
     isLoaded && (
       <>
         <h1>Mybnb rules</h1>
-    <Switch>
+        <Navigation isLoaded={isLoaded} />
+        <Switch>
           <Route path='/login'>
             <LoginFormPage />
+          </Route>
+          <Route path="/signup">
+            <SignupFormPage />
           </Route>
         </Switch>
       </>
