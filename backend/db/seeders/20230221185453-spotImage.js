@@ -12,17 +12,17 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         spotId: 1,
-        url: 'images1.url',
+        url: 'https://www.rollingstone.com/wp-content/uploads/2021/06/aespa-group-image-no-watermark.jpg?w=1581&h=1054&crop=1',
         preview: true
       },
       {
         spotId: 2,
-        url: 'images2.url',
+        url: 'https://media.easemytrip.com/media/Blog/International/636951810748079878/636951810748079878tEhaoI.jpg',
         preview: true
       },
       {
         spotId: 3,
-        url: 'images3.url',
+        url: 'https://i0.wp.com/unusualplaces.org/wp-content/uploads/2020/11/214-bubble-palace.jpg?ssl=1',
         preview: true
       }
     ], {});
