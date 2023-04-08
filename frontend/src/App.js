@@ -5,6 +5,7 @@ import LoginFormModal from "./components/LoginFormModal/LoginFormModal";
 import SignupFormModal from "./components/SignupFormModal/SignupFormModal";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation/Navigation";
+import SpotsHomePage from "./components/SpotsPages/SpotsHomePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ function App() {
         <h1>Mybnb rules</h1>
         <Navigation isLoaded={isLoaded} />
         <Switch>
+          <Route exact path='/'>
+            <SpotsHomePage />
+          </Route>
           <Route exact path='/login'>
             <LoginFormModal />
           </Route>
