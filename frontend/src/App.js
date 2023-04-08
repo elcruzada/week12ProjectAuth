@@ -19,10 +19,10 @@ function App() {
         <h1>Mybnb rules</h1>
         <Navigation isLoaded={isLoaded} />
         <Switch>
-          <Route path='/login'>
+          <Route exact path='/login'>
             <LoginFormModal />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <SignupFormModal />
           </Route>
         </Switch>
