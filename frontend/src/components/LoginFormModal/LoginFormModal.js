@@ -11,7 +11,7 @@ const LoginFormModal = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal
+  const { closeModal } = useModal()
 
   //Comment back in this guard clause after testing
   // if (sessionUser) return <Redirect to="/" />;
@@ -20,11 +20,13 @@ const LoginFormModal = () => {
     e.preventDefault();
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal)
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
+    .then(closeModal)
+    .catch(async (res) => {
+      const data = await res.json();
+      // console.log(data)
+      if (data && data.message) {
+          setErrors(data.message);
+          // console.log(data.message)
         }
       });
   };
@@ -51,7 +53,7 @@ const LoginFormModal = () => {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+        {Object.values(errors).length > 0 && <p>{errors}</p>}
         <button type="submit">Log In</button>
       </form>
     </>
