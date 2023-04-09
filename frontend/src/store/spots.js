@@ -24,8 +24,8 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     }
 }
 
-export const getSpotsDetailsThunk = () => async (dispatch) => {
-    const res = await csrfFetch('/api/spots/:spotId')
+export const getSpotsDetailsThunk = (spotId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`)
 
     if (res.ok) {
         const spotsDetailsData = await res.json()
@@ -54,7 +54,7 @@ const spotsReducer = (state = initialState, action) => {
             return newSpotsState
         case GET_SPOTSDETAILS:
             newSpotsState = { ...state, allSpots: {} }
-            normalizerFunction((action.spotsDetails.Spots), (newSpotsState.spotsDetails))
+            newSpotsState.allSpots = action.spotsDetails
             return newSpotsState
         default:
             return state

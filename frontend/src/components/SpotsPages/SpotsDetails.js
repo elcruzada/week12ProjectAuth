@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
-import './SpotsDetails.css'
 import { useEffect } from "react"
 import { getSpotsDetailsThunk } from "../../store/spots"
+import './SpotsDetails.css'
 
 const SpotsDetails = () => {
     const { spotId } = useParams()
@@ -10,17 +10,22 @@ const SpotsDetails = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getSpotsDetailsThunk())
+        dispatch(getSpotsDetailsThunk(spotId))
     }, [dispatch])
 
-    const spotsDetailsObjectFromReducer = useSelector(state => state.spots)
-    const spotsDetailsDataFromSelector = Object.values(spotsDetailsObjectFromReducer.allSpots)
-    // console.log(spotsDetailsDataFromSelector)
+    const spotsDetails = useSelector(state => state.spots.allSpots)
+    // const spotsDetailsDataFromSelector = Object.values(spotsDetailsObjectFromReducer.allSpots)
+    // const filteredSpot = spotsDetailsDataFromSelector.filter(spot => spot.id === Number(spotId))[0]
 
-    if (!spotsDetailsDataFromSelector) return null
+    if (!spotsDetails) return null
 
     return (
-        <div>Spots are cool bro.</div>
+        <div>
+            <h1>{spotsDetails.name}</h1>
+            <p>
+            {`${spotsDetails.city}, ${spotsDetails.state}, ${spotsDetails.country}`}
+            </p>
+        </div>
     )
 }
 

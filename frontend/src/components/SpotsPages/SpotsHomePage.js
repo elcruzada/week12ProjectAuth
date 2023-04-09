@@ -24,7 +24,7 @@ const SpotsHomePage = () => {
     return (
         <div className="container">
          {spotsDataFromSelector.map(spot => (
-            <Tooltip spot={spot}>
+            <Tooltip spot={spot} key={spot.id}>
                 <HomePageCards spot={spot} key={spot.id}/>
             </Tooltip>
          ))}
