@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import './Tooltip.css'
 
 const Tooltip = ({spot, children}) => {
-    
     const [visibleTooltip, setVisibleTooltip] = useState(false)
 
     const onMouseLeaveHandler = () => {

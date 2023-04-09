@@ -1,10 +1,16 @@
 import { csrfFetch } from './csrf'
 
 const GET_ALLSPOTS = "spots/getAllSpots"
+const GET_SPOTSDETAILS = "spots/spotsDetails"
 
 export const getAllSpotsAction = (allSpots) => ({
     type: GET_ALLSPOTS,
     allSpots
+})
+
+export const getSpotsDetailsAction = (spotsDetails) => ({
+    type: GET_SPOTSDETAILS,
+    spotsDetails
 })
 
 export const getAllSpotsThunk = () => async (dispatch) => {
@@ -18,20 +24,29 @@ export const getAllSpotsThunk = () => async (dispatch) => {
     }
 }
 
-// const normalizationFunction = () => {
-
-// }
-
-const initialState = { allSpots: {}}
+const initialState = {
+    allSpots: {}
+}
 
 const spotsReducer = (state = initialState, action) => {
     let newSpotsState;
+    const normalizerFunction = (actionData, nestedObjInState) => {
+        actionData.forEach(spot => {
+            nestedObjInState[spot.id] = spot
+        })
+    }
     switch(action.type) {
         case GET_ALLSPOTS:
             newSpotsState = { ...state, allSpots: {} }
-            action.allSpots.Spots.forEach(spot => {
-                newSpotsState.allSpots[spot.id] = spot
-            })
+            // action.allSpots.Spots.forEach(spot => {
+            //     newSpotsState.allSpots[spot.id] = spot
+            // })
+            normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
+            return newSpotsState
+        case GET_SPOTSDETAILS:
+            newSpotsState = { ...state, allSpots: {} }
+            normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
+
             return newSpotsState
         default:
             return state
