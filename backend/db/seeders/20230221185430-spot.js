@@ -45,7 +45,7 @@ module.exports = {
         lat: 40.27107528136394,
         lng: -111.02102875668326,
         name: 'BoopBoopBaLooop',
-        description: 'A weally weally cool place',
+        description: 'Kpop group loved by TAs',
         price: 80.00
       },
       {
@@ -68,7 +68,7 @@ module.exports = {
         lat: 43.98711575011169,
         lng: -88.57833823015774,
         name: 'BoopBaLooop',
-        description: 'Waterfalls and unicorns',
+        description: 'Fairies and nebulas',
         price: 80.00
       },
       {
@@ -80,7 +80,7 @@ module.exports = {
         lat: 43.98711575011169,
         lng: -88.57833823015774,
         name: 'No associations',
-        description: 'Waterfalls and unicorns',
+        description: 'Lalalalal Sup',
         price: 80.00
       }
     ], {});

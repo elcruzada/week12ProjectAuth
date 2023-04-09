@@ -1,0 +1,18 @@
+.card-container {
+    border: 5px coral;
+}
+
+img {
+    position: relative;
+    border-radius: 25px;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.description {
+    font-size: 14px;
+}
+
+.address{
+    font-size: 14px;
+}

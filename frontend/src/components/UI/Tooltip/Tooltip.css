@@ -1,0 +1,14 @@
+/* .tooltip-wrapper {
+    position: relative;
+} */
+
+.tooltip-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+      /* position: relative; */
+      background-color: coral;
+      color: #fff;
+      padding: 8px;
+      font-size: 14px;
+}

@@ -3,8 +3,10 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import LoginFormModal from "./components/LoginFormModal/LoginFormModal";
 import SignupFormModal from "./components/SignupFormModal/SignupFormModal";
-import * as sessionActions from "./store/session";
+import SpotsHomePage from "./components/SpotsPages/SpotsHomePage";
+import SpotsDetails from "./components/SpotsPages/SpotsDetails";
 import Navigation from "./components/Navigation/Navigation";
+import * as sessionActions from "./store/session";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +21,12 @@ function App() {
         <h1>Mybnb rules</h1>
         <Navigation isLoaded={isLoaded} />
         <Switch>
+          <Route exact path='/'>
+            <SpotsHomePage />
+          </Route>
+          <Route exact path='/spots/:spotId'>
+            <SpotsDetails />
+          </Route>
           <Route exact path='/login'>
             <LoginFormModal />
           </Route>
