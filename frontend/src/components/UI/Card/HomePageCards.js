@@ -6,7 +6,7 @@ const HomePageCards = ({spot}) => {
   const history = useHistory()
 
   const imageClickHandler = () => {
-    history.push('/')
+    history.push(`/spots/${spot.id}`)
   }
 
     return (
