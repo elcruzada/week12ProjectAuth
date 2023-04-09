@@ -1,12 +1,20 @@
+import { useHistory } from 'react-router-dom'
 import './HomePageCards.css'
 
+
 const HomePageCards = ({spot}) => {
-    // console.log(spots)
+  const history = useHistory()
+
+  const imageClickHandler = () => {
+    history.push('/')
+  }
+
     return (
-        <div>
-          <img src={spot.previewImage} alt="location" />
+        <div className='card-container'>
+          <img src={spot.previewImage} alt="location" onClick={imageClickHandler}/>
+          {Number(spot.avgRating) ? <p>{spot.avgRating}</p> : <p>New</p>}
           <p className='description'>{spot.description}</p>
-          <p className='address'>{`${spot.city},${spot.state}`}</p>
+          <p className='address'>{`${spot.city}, ${spot.state}`}</p>
           <p className='price'>{`$${spot.price}night`}</p>
         </div>
     )

@@ -1,18 +1,17 @@
+.card-container {
+    border: 5px coral;
+}
+
 img {
     position: relative;
-    /* width: 100%;
-    height: 0;
-    padding-bottom: 60%; */
+    border-radius: 25px;
+    gap: 8px;
 }
 
 .description {
-    font-size: 16px;
-    /* margin-bottom: 10px; */
-    /* line-height: 1.5; */
+    font-size: 14px;
 }
 
 .address{
-    font-size: 16px;
-    /* margin-bottom: 10px; */
-    /* line-height: 1.5; */
+    font-size: 14px;
 }

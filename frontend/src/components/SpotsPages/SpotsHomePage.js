@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllSpotsThunk } from '../../store/spots'
 import HomePageCards from '../UI/Card/HomePageCards'
+import Tooltip from '../UI/Card/Tooltip'
 import './SpotsHomePage.css'
 
 
@@ -23,8 +24,10 @@ const SpotsHomePage = () => {
     return (
         <div className="container">
          {spotsDataFromSelector.map(spot => (
-        <HomePageCards spot={spot} />
-        ))}
+            <Tooltip spot={spot} >
+                <HomePageCards spot={spot} key={spot.id}/>
+            </Tooltip>
+         ))}
         </div>
     )
 
