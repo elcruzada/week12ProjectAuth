@@ -6,24 +6,30 @@ import './SpotsDetails.css'
 
 const SpotsDetails = () => {
     const { spotId } = useParams()
-    // console.log(spotId)
     const dispatch = useDispatch()
+    const spotsDetails = useSelector(state => state.spots.allSpots)
+    console.log(spotsDetails)
 
     useEffect(() => {
-        dispatch(getSpotsDetailsThunk(spotId))
-    }, [dispatch])
+       dispatch(getSpotsDetailsThunk(spotId))
+    }, [dispatch, spotId])
 
-    const spotsDetails = useSelector(state => state.spots.allSpots)
-    // const spotsDetailsDataFromSelector = Object.values(spotsDetailsObjectFromReducer.allSpots)
-    // const filteredSpot = spotsDetailsDataFromSelector.filter(spot => spot.id === Number(spotId))[0]
-
+    // console.log(Object.values(spotsDetails).length)
+    const owner = spotsDetails.Owner
+    const ownerCopy = {...owner}
     if (!spotsDetails) return null
 
     return (
         <div>
-            <h1>{spotsDetails.name}</h1>
+             <h1>{spotsDetails.name}</h1>
             <p>
             {`${spotsDetails.city}, ${spotsDetails.state}, ${spotsDetails.country}`}
+            </p>
+            <p>
+                {`Hosted by: ${ownerCopy.firstName}, ${ownerCopy.lastName}`}
+            </p>
+            <p>
+                {spotsDetails.description}
             </p>
         </div>
     )

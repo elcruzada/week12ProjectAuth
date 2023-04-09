@@ -8,14 +8,14 @@ import './SpotsHomePage.css'
 
 const SpotsHomePage = () => {
     const dispatch = useDispatch()
+    const spotsObjectFromReducer = useSelector(state => state.spots)
+    const spotsDataFromSelector = Object.values(spotsObjectFromReducer.allSpots)
 
     useEffect(() => {
         dispatch(getAllSpotsThunk())
     }, [dispatch])
 
-    const spotsObjectFromReducer = useSelector(state => state.spots)
     // console.log(spotsObjectFromReducer)
-    const spotsDataFromSelector = Object.values(spotsObjectFromReducer.allSpots)
     // console.log(spotsDataFromSelector)
 
 

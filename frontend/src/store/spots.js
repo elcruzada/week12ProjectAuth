@@ -53,7 +53,7 @@ const spotsReducer = (state = initialState, action) => {
             normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
             return newSpotsState
         case GET_SPOTSDETAILS:
-            newSpotsState = { ...state, allSpots: {} }
+            newSpotsState = { ...state, allSpots: {}}
             newSpotsState.allSpots = action.spotsDetails
             return newSpotsState
         default:
