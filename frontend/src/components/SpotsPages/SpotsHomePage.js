@@ -11,6 +11,7 @@ const SpotsHomePage = () => {
     const spotsObjectFromReducer = useSelector(state => state.spots)
     const spotsDataFromSelector = Object.values(spotsObjectFromReducer.allSpots)
 
+
     useEffect(() => {
         dispatch(getAllSpotsThunk())
     }, [dispatch])

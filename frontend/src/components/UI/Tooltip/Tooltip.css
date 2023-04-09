@@ -1,14 +1,34 @@
 /* .tooltip-wrapper {
     position: relative;
-} */
+}
 
 .tooltip-content {
     display: flex;
     align-items: center;
     justify-content: center;
-      /* position: relative; */
+      /* position: relative;
       background-color: coral;
       color: #fff;
       padding: 8px;
       font-size: 14px;
 }
+*/
+
+.tooltip {
+    position: relative;
+  }
+
+  .tooltip:hover .tooltip-content {
+    display: block;
+  }
+
+  .tooltip .tooltip-content {
+    display: flex;
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    background-color: coral;
+    color: #fff;
+    padding: 8px;
+    font-size: 14px;
+  }
