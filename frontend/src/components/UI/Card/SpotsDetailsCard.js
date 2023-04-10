@@ -3,8 +3,8 @@ import React from 'react'
 import './SpotsDetailsCard.css'
 
 const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
-    console.log('spotsDetails', spotsDetails)
-    console.log('ownerCopy', ownerCopy)
+    // console.log('spotsDetails', spotsDetails)
+    // console.log('ownerCopy', ownerCopy)
 
     return (
         <>

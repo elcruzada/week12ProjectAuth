@@ -5,6 +5,7 @@ import LoginFormModal from "./components/LoginFormModal/LoginFormModal";
 import SignupFormModal from "./components/SignupFormModal/SignupFormModal";
 import SpotsHomePage from "./components/SpotsPages/SpotsHomePage";
 import SpotsDetails from "./components/SpotsPages/SpotsDetails";
+import CreateSpot from "./components/SpotsPages/CreateSpot";
 import Navigation from "./components/Navigation/Navigation";
 import * as sessionActions from "./store/session";
 
@@ -23,6 +24,9 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <SpotsHomePage />
+          </Route>
+          <Route exact path='/spots'>
+            <CreateSpot />
           </Route>
           <Route exact path='/spots/:spotId'>
             <SpotsDetails />

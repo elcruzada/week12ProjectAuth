@@ -18,7 +18,7 @@ router.delete('/:spotImageId', restoreUser, requireAuth, async (req, res) => {
 
     // console.log(spotToConnectToUser)
     // console.log(authorizedUser.dataValues.id)
-    console.log(spotImageToDelete)
+    // console.log(spotImageToDelete)
     if (!spotImageToDelete) {
         res.status(404)
         return  res.json({
