@@ -12,7 +12,7 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         spotId: 1,
-        url: 'https://imagedelivery.net/9sCnq8t6WEGNay0RAQNdvQ/UUID-cl9dc0joc1555q5ovbhrfxkye/public',
+        url: 'https://t4.ftcdn.net/jpg/05/34/81/67/360_F_534816786_cnUVHvZpdt8gxmXjwqdOtWJ0sKZ1zEpK.jpg',
         preview: true
       },
       {
@@ -52,7 +52,7 @@ module.exports = {
       },
       {
         spotId: 2,
-        url: 'https://cdn.filestackcontent.com/crop=d:[0,295,2997,1498]/pjpg=q:90/compress/GQuyvLSm6Uz4DTE2iJWA',
+        url: 'https://assets.teenvogue.com/photos/60a2db73ba459e11292cd762/16:9/w_2560%2Cc_limit/Screen%2520Shot%25202021-05-17%2520at%25205.08.27%2520PM.png',
         preview: false
       },
       {
@@ -67,7 +67,7 @@ module.exports = {
       },
       {
         spotId: 3,
-        url: 'https://preview.redd.it/the-celestial-library-by-ai-2022-v0-g9rw8p1mpce91.png?width=640&crop=smart&auto=webp&s=2285b4f66b956258eaedb6af9ab94506b4f71727',
+        url: 'https://storage.googleapis.com/dream-machines-output/94f2e894-4a8a-4e2c-8e89-b8e8af0f6d76/0_0.png',
         preview: false
       },
       {
@@ -87,7 +87,7 @@ module.exports = {
       },
       {
         spotId: 4,
-        url: 'https://www.gannett-cdn.com/authoring/2018/10/14/NPRJ/ghows-PJ-7836dc90-9d38-711e-e053-0100007ffba9-fe90d01a.jpeg?width=660&height=441&fit=crop&format=pjpg&auto=webp',
+        url: 'https://w.wallha.com/ws/8/5sfFCgQz.png',
         preview: true
       },
       {
