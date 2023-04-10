@@ -8,7 +8,7 @@ const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
              <div>
              {spotsDetails.SpotImages && spotsDetails.SpotImages.map(spotImage => {
                 return (
-                <img src={spotImage.url} alt='location' />
+                <img src={spotImage.url} alt='location' key={spotImage.id}/>
                 )
             })}
              </div>
