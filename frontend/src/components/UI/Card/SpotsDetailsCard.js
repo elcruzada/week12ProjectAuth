@@ -1,11 +1,13 @@
+import React from 'react'
+
 import './SpotsDetailsCard.css'
 
 const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
     console.log('spotsDetails', spotsDetails)
     console.log('ownerCopy', ownerCopy)
 
-
     return (
+        <>
         <div>
              <h1>{spotsDetails.name}</h1>
              <div>
@@ -24,7 +26,10 @@ const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
             <p>
                 {spotsDetails.description}
             </p>
+            <p>{`$${spotsDetails.price}night`}</p>
         </div>
+        <button onClick={() => alert('Feature coming soon')}>Reserve</button>
+        </>
     )
 }
 
