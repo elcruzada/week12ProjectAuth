@@ -1,6 +1,9 @@
 import './SpotsDetailsCard.css'
 
 const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
+    console.log('spotsDetails', spotsDetails)
+    console.log('ownerCopy', ownerCopy)
+
 
     return (
         <div>
@@ -8,7 +11,7 @@ const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
              <div>
              {spotsDetails.SpotImages && spotsDetails.SpotImages.map(spotImage => {
                 return (
-                <img src={spotImage.url} alt='location' key={spotImage.id}/>
+                <img src={spotImage.url} alt='location' key={spotImage.url}/>
                 )
             })}
              </div>
