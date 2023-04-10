@@ -13,7 +13,7 @@ const Tooltip = ({spot, children}) => {
     }
 
     return (
-        <div className="tooltip-wrapper"
+        <div className="tooltip"
             onMouseLeave={onMouseLeaveHandler}
             onMouseEnter={onMouseEnterHandler}
         >

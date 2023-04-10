@@ -11,25 +11,46 @@ module.exports = {
     options.tableName = 'Users';
     return queryInterface.bulkInsert(options, [
       {
-        firstName: 'DemolitionMan',
-        lastName: 'ManShark',
-        email: 'demo@user.io',
-        username: 'Demo-lition',
+        firstName: 'Bat',
+        lastName: 'Boy',
+        email: 'batboy@user.io',
+        username: 'BatDeepDup',
         hashedPassword: bcrypt.hashSync('password')
       },
       {
-        firstName: 'FakerUzer',
-        lastName: 'TotallyFake',
-        email: 'user1@user.io',
-        username: 'FakeUser1',
-        hashedPassword: bcrypt.hashSync('password2')
+        firstName: 'Ningning',
+        lastName: 'Winter',
+        email: 'giselle@sm.io',
+        username: 'DreamsComeTrue',
+        hashedPassword: bcrypt.hashSync('password')
       },
       {
-        firstName: 'FakeItTill',
-        lastName: 'YouMakeIt',
-        email: 'user2@user.io',
-        username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
+        firstName: 'Effie',
+        lastName: 'Kwuzata',
+        email: 'effie@boop.io',
+        username: 'Ef',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Yeet',
+        lastName: 'Yeeterson',
+        email: 'yeet@yeetme.io',
+        username: 'theYeet',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Suit',
+        lastName: 'McSuiterson',
+        email: 'metasuit@king.io',
+        username: 'SuperSeriousBusinessDude',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Lisa',
+        lastName: 'Manobal',
+        email: 'lalisa@blackpink.io',
+        username: 'Bestpink',
+        hashedPassword: bcrypt.hashSync('password')
       }
     ], {});
   },
@@ -38,7 +59,8 @@ module.exports = {
     options.tableName = 'Users';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
+      username: { [Op.in]: ['BatDeepDup', 'DreamsComeTrue',
+      'Ef', 'theYeet', 'SuperSeriousBusinessDude', 'Bestpink'] }
     }, {});
   }
 };
