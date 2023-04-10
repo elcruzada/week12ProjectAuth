@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from "react"
 import { getSpotsDetailsThunk } from "../../store/spots"
+import SpotsDetailsCard from "../UI/Card/SpotsDetailsCard"
 import './SpotsDetails.css'
 
 const SpotsDetails = () => {
@@ -17,33 +18,16 @@ const SpotsDetails = () => {
     // console.log(Object.values(spotsDetails).length)
     const owner = spotsDetails.Owner
     const ownerCopy = {...owner}
-    const spotsDetailsCopy = {...spotsDetails}
-    console.log(spotsDetailsCopy)
+    // const spotsDetailsCopy = {...spotsDetails}
+    // console.log(spotsDetailsCopy)
     if (!spotsDetails) return null
 
     console.log(ownerCopy)
     // console.log(ownerCopy.SpotImages)
-
+    //prop for spotsDetails
+    //prop for ownerCopy
     return (
-        <div>
-             <h1>{spotsDetails.name}</h1>
-             <div>
-             {spotsDetailsCopy.SpotImages && spotsDetailsCopy.SpotImages.map(spotImage => {
-                return (
-                <img src={spotImage.url} alt='location' />
-                )
-            })}
-             </div>
-            <p>
-            {`${spotsDetails.city}, ${spotsDetails.state}, ${spotsDetails.country}`}
-            </p>
-            <p>
-                {`Hosted by: ${ownerCopy.firstName}, ${ownerCopy.lastName}`}
-            </p>
-            <p>
-                {spotsDetails.description}
-            </p>
-        </div>
+        <SpotsDetailsCard spotsDetails={spotsDetails} ownerCopy={ownerCopy}/>
     )
 }
 
