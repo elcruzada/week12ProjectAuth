@@ -5,23 +5,35 @@ import { getSpotsDetailsThunk } from "../../store/spots"
 import './SpotsDetails.css'
 
 const SpotsDetails = () => {
-    const { spotId } = useParams()
     const dispatch = useDispatch()
+    const { spotId } = useParams()
     const spotsDetails = useSelector(state => state.spots.allSpots)
-    console.log(spotsDetails)
+    // const spotsDetailsWithId = useSelector(state => console.log(state))
 
     useEffect(() => {
-       dispatch(getSpotsDetailsThunk(spotId))
+        dispatch(getSpotsDetailsThunk(spotId))
     }, [dispatch, spotId])
 
     // console.log(Object.values(spotsDetails).length)
     const owner = spotsDetails.Owner
     const ownerCopy = {...owner}
+    const spotsDetailsCopy = {...spotsDetails}
+    console.log(spotsDetailsCopy)
     if (!spotsDetails) return null
+
+    console.log(ownerCopy)
+    // console.log(ownerCopy.SpotImages)
 
     return (
         <div>
              <h1>{spotsDetails.name}</h1>
+             <div>
+             {spotsDetailsCopy.SpotImages && spotsDetailsCopy.SpotImages.map(spotImage => {
+                return (
+                <img src={spotImage.url} alt='location' />
+                )
+            })}
+             </div>
             <p>
             {`${spotsDetails.city}, ${spotsDetails.state}, ${spotsDetails.country}`}
             </p>
