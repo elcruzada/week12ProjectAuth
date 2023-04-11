@@ -15,24 +15,24 @@ const SpotsDetailsCard = ({singleSpot}) => {
     return (
         <>
         <div>
-             <h1>{singleSpot.name}</h1>
+             <h1>{singleSpotCopy.name}</h1>
              <div>
-             {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
+             {singleSpotCopy.SpotImages && singleSpotCopy.SpotImages.map(spotImage => {
                 return (
                 <img src={spotImage.url} alt='location' key={spotImage.url}/>
                 )
             })}
              </div>
             <p>
-            {`${singleSpot.city}, ${singleSpot.state}, ${singleSpot.country}`}
+            {`${singleSpotCopy.city}, ${singleSpotCopy.state}, ${singleSpotCopy.country}`}
             </p>
             <p>
                 {`Hosted by: ${singleSpotCopy.User.firstName}, ${singleSpotCopy.User.lastName}`}
             </p>
             <p>
-                {singleSpot.description}
+                {singleSpotCopy.description}
             </p>
-            <p>{`$${singleSpot.price}night`}</p>
+            <p>{`$${singleSpotCopy.price}night`}</p>
         </div>
         <button onClick={() => alert('Feature coming soon')}>Reserve</button>
 
