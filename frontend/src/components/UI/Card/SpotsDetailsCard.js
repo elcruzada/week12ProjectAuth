@@ -10,6 +10,8 @@ const SpotsDetailsCard = ({singleSpot}) => {
     // console.log(singleSpot)
     // const {singleSpot} = singleSpot
     const singleSpotCopy = {...singleSpot}
+    const singleSpotUser = singleSpotCopy.User
+    const newUserCopy = {...singleSpotUser}
     console.log(singleSpot)
 
     return (
@@ -27,7 +29,7 @@ const SpotsDetailsCard = ({singleSpot}) => {
             {`${singleSpotCopy.city}, ${singleSpotCopy.state}, ${singleSpotCopy.country}`}
             </p>
             <p>
-                {`Hosted by: ${singleSpotCopy.User.firstName}, ${singleSpotCopy.User.lastName}`}
+                {`Hosted by: ${newUserCopy.firstName}, ${newUserCopy.lastName}`}
             </p>
             <p>
                 {singleSpotCopy.description}
