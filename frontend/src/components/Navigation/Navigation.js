@@ -6,6 +6,7 @@ import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import './Navigation.css';
+// import CreateSpot from '../SpotsPages/CreateSpot';
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
@@ -33,14 +34,21 @@ function Navigation({ isLoaded }) {
     }
 
     return (
+    <nav>
       <ul>
         <li>
           <NavLink exact to="/">
             Home
           </NavLink>
         </li>
+        <li>
+          <NavLink exact to='/spots'>
+            Create a New Spot
+          </NavLink>
+        </li>
         {isLoaded && sessionLinks}
       </ul>
+    </nav>
     );
   }
 

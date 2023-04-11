@@ -22,7 +22,7 @@ const SpotsDetails = () => {
     // console.log(spotsDetailsCopy)
     if (!spotsDetails) return null
 
-    console.log(spotsDetails)
+    // console.log(spotsDetails)
     // console.log(ownerCopy)
     //prop for spotsDetails
     //prop for ownerCopy
