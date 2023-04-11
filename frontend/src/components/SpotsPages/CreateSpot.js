@@ -1,13 +1,9 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import { createNewSpotAction } from '../../store/spots'
-import CreateSpotCards from '../UI/Card/CreateSpotCards'
 import './CreateSpot.css'
 
 const CreateSpot = () => {
-    const dispatch = useDispatch()
     const [hasSubmitted, setSubmitted] = useState(false)
+    const [error, setError] = useState({})
     const [createSpotInputs, setCreateSpotInputs] = useState({
         country: '',
         streetAddress: '',
@@ -23,107 +19,169 @@ const CreateSpot = () => {
         image4: ''
     })
 
-    const {
-        country, streetAddress, city,
-        state, description, title, price, previewImage,
-        image1, image2, image3, image4 } = createSpotInputs
-
     const submitHandler = (e) => {
         e.preventDefault()
 
-        const formInputs = {
-        country, streetAddress, city,
-        state, description, title, price, previewImage,
-        image1, image2, image3, image4
-        }
+        console.log(createSpotInputs)
+        // dispatch(createNewSpotAction(createSpotInputs))
+        // setCreateSpotInputs({
+        //     country: '',
+        //     streetAddress: '',
+        //     city: '',
+        //     state: '',
+        //     description: '',
+        //     title: '',
+        //     price: '',
+        //     previewImage: '',
+        //     image1: '',
+        //     image2: '',
+        //     image3: '',
+        //     image4: ''
+        // })
+    }
 
-        setCreateSpotInputs(formInputs)
+    const changeHandler = (e) => {
+        setCreateSpotInputs({
+            ...createSpotInputs,
+            [e.target.id]: e.target.value
+        })
     }
 
     return (
         <>
-        <div className='spot-container'>
-        <h1>Create a New Spot</h1>
-        <form onSubmit={submitHandler}>
-            <div className='form-row'>
-                <label htmlFor='name'>Name (required): </label>
-                <input
-                    id='name'
-                    type='text'
-                    // onChange={(e) => setName(e.target.value)}
-                    // value={name}
-                />
-                {/* {validationErrors.Name && (<div className='error-msg'>* {validationErrors.Name}</div>)} */}
-            </div>
-            <div className='form-row'>
-                <label htmlFor='email'>Email (required):</label>
-                <input
-                    id='email'
-                    type='text'
-                    // onChange={(e) => setEmail(e.target.value)}
-                    // value={email}
-                />
-                {/* {validationErrors.Email && (<div className='error-msg'> * {validationErrors.Email}</div>)} */}
-            </div>
-            <div className='form-row'>
-                <label htmlFor='phone'>Phone:</label>
-                <input
-                    id='phone'
-                    type='text'
-                    // onChange={(e) => setPhone(e.target.value)}
-                    // value={phone}
-                />
-                <br />
-                <select
-                    name='phoneType'
-                    // onChange={e => setPhoneType(e.target.value)}
-                    // value={phoneType}
-                >
-                    <option value='' disabled>Select a phone type...</option>
-                    {/* {props.phoneTypes.map(phoneType =>
-                        <option key={phoneType}>{phoneType}</option>
-                    )} */}
-                </select>
-                {/* {validationErrors.Phone && (<div className='error-msg'>* {validationErrors.Phone}</div>)}
-                {validationErrors.PhoneType && (<div className='error-msg'>* {validationErrors.PhoneType}</div>)} */}
-            </div>
-            <div className='form-row'>
-                <label htmlFor='bio'>Short Bio (280 chars):</label>
-                <textarea
-                    id='bio'
-                    name='bio'
-                    // onChange={(e) => setBio(e.target.value)}
-                    // value={bio}
-                />
-                {/* {validationErrors.Bio && (<div className='error-msg'>* {validationErrors.Bio}</div>)} */}
+            <h1>Create a New Spot</h1>
+            <h2>Where's your place located?</h2>
+            <p>Guests will only get your exact address once they booked a reservation.</p>
+            <form onSubmit={submitHandler}>
+                <div className='form-row'>
+                    <label htmlFor='country'>Country</label>
+                    <input
+                        id='country'
+                        type='text'
+                        value={createSpotInputs.country}
+                        onChange={changeHandler}
+                        placeholder='Country'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='streetAddress'>Street Address</label>
+                    <input
+                        id='streetAddress'
+                        type='text'
+                        value={createSpotInputs.streetAddress}
+                        onChange={changeHandler}
+                        placeholder='Address'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='city'>City</label>
+                    <input
+                        id='city'
+                        type='text'
+                        value={createSpotInputs.city}
+                        onChange={changeHandler}
+                        placeholder='City'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='state'>State</label>
+                    <input
+                        id='state'
+                        type='text'
+                        value={createSpotInputs.state}
+                        onChange={changeHandler}
+                        placeholder='STATE'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='description'>Describe your place to guests</label>
+                    <textarea
+                        id='description'
+                        name='description'
+                        value={createSpotInputs.description}
+                        onChange={changeHandler}
+                        placeholder='Please write at least 30 characters'
+                    />
+                    <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood</p>
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='title'>Create a title for your spot</label>
+                    <input
+                        id='title'
+                        type='text'
+                        value={createSpotInputs.title}
+                        onChange={changeHandler}
+                        placeholder='Name of your spot'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='price'>Set a base price for your spot</label>
+                    <input
+                        id='price'
+                        type='text'
+                        value={createSpotInputs.price}
+                        onChange={changeHandler}
+                        placeholder='Price per night(USD)'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='previewImage'>Liven up your spot with photos</label>
+                    <input
+                        id='previewImage'
+                        type='text'
+                        value={createSpotInputs.previewImage}
+                        onChange={changeHandler}
+                        placeholder='Preview Image URL'
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='image1'></label>
+                    <input
+                        id='image1'
+                        type='text'
+                        value={createSpotInputs.image1}
+                        onChange={changeHandler}
+                        placeholder='Image URL'
 
-            </div>
-            <div className='form-row'>
-                <input type="radio" value="Instructor"
-                    name="staff" id='staff-instructor'
-                    // checked={staff === "Instructor" ? "checked" : ""}
-                    // onChange={(e) => setStaff(e.target.value)}
-                /> Instructor
-                <input type="radio" value="Student"
-                    name="staff" id='staff-Student'
-                    // checked={staff === "Student" ? "checked" : ""}
-                    // onChange={(e) => setStaff(e.target.value)}
-                /> Student
-                <br />
-                <input type="checkbox" value="yes" id='checked'
-                    onChange={({ target: { value, checked } }) => {
-                        // setChecked((checked ? value : ""))
-                    }
-                    }
-                    // checked={checked === '' ? '' : "checked"}
-                /> Sign up for our email list?
-            </div>
-            <button>Submit</button>
-        </form>
-    </div>
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='image2'></label>
+                    <input
+                        id='image2'
+                        type='text'
+                        value={createSpotInputs.image2}
+                        onChange={changeHandler}
+                        placeholder='Image URL'
 
-       <CreateSpotCards />
-       </>
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='image3'></label>
+                    <input
+                        id='image3'
+                        type='text'
+                        value={createSpotInputs.image3}
+                        onChange={changeHandler}
+                        placeholder='Image URL'
+
+                    />
+                </div>
+                <div className='form-row'>
+                    <label htmlFor='image4'></label>
+                    <input
+                        id='image4'
+                        type='text'
+                        value={createSpotInputs.image4}
+                        onChange={changeHandler}
+                        placeholder='Image URL'
+                    />
+                </div>
+                <button type='submit'>Submit</button>
+
+            </form >
+        </>
+
     );
 
 }
