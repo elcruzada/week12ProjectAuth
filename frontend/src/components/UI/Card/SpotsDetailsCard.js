@@ -2,33 +2,40 @@ import React from 'react'
 
 import './SpotsDetailsCard.css'
 
-const SpotsDetailsCard = ({spotsDetails, ownerCopy}) => {
+const SpotsDetailsCard = ({singleSpot}) => {
     // console.log('spotsDetails', spotsDetails)
     // console.log('ownerCopy', ownerCopy)
+    // console.log('single', singleSpot)
+    // console.log('owner', owner)
+    // console.log(singleSpot)
+    // const {singleSpot} = singleSpot
+    const singleSpotCopy = {...singleSpot}
+    console.log(singleSpot)
 
     return (
         <>
         <div>
-             <h1>{spotsDetails.name}</h1>
+             <h1>{singleSpot.name}</h1>
              <div>
-             {spotsDetails.SpotImages && spotsDetails.SpotImages.map(spotImage => {
+             {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
                 return (
                 <img src={spotImage.url} alt='location' key={spotImage.url}/>
                 )
             })}
              </div>
             <p>
-            {`${spotsDetails.city}, ${spotsDetails.state}, ${spotsDetails.country}`}
+            {`${singleSpot.city}, ${singleSpot.state}, ${singleSpot.country}`}
             </p>
             <p>
-                {`Hosted by: ${ownerCopy.firstName}, ${ownerCopy.lastName}`}
+                {`Hosted by: ${singleSpotCopy.User.firstName}, ${singleSpotCopy.User.lastName}`}
             </p>
             <p>
-                {spotsDetails.description}
+                {singleSpot.description}
             </p>
-            <p>{`$${spotsDetails.price}night`}</p>
+            <p>{`$${singleSpot.price}night`}</p>
         </div>
         <button onClick={() => alert('Feature coming soon')}>Reserve</button>
+
         </>
     )
 }

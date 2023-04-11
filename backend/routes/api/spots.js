@@ -446,149 +446,120 @@ router.get('/current', restoreUser, async (req, res) => {
 
 
 
-router.get('/:spotId', async (req, res) => {
-    const spotIdVar = req.params.spotId
-    const spotDetails = await Spot.findByPk(
-        spotIdVar, {
-        include: {
-            model: SpotImage
-        }
-})
+// router.get('/:spotId', async (req, res) => {
+//     const spotIdVar = req.params.spotId
+//     const spotDetails = await Spot.findByPk(
+//         spotIdVar, {
+//         include: {
+//             model: SpotImage
+//         }
+// })
 
-if (!spotDetails) {
-    res.status(404).json({
-        "message": "Spot couldn't be found",
-        "statusCode": 404
-    })
-}
-
-// console.log(spotDetails.SpotImages.length)
-
-// const spotArray = []
-// spotArray.push(spotDetails)
-// console.log(spotArray[0].SpotImages)
-
-// if (spotDetails.SpotImages.length) {
-//     const spotsObjects = []
-//     for (let i = 0; i < spotDetails.length; i++) {
-//         let spot = spotDetails[i]
-//         spotsObjects.push(spot)
-//     }
-//     console.log(spotsObjects)
+// if (!spotDetails) {
+//     res.status(404).json({
+//         "message": "Spot couldn't be found",
+//         "statusCode": 404
+//     })
 // }
 
-            // spotsObjects.push(spotDetails.toJSON())
+//         const spotAndId = await Spot.findOne({
+//             where: {
+//                 id: spotIdVar
+//             },
+//             include: [
+//                 {
+//                     model: Review,
+//                     attributes: ['stars']
+//                 },
+//                 {
+//                 model: SpotImage,
+//                 attributes: {
+//                     exclude: ['createdAt', 'updatedAt', 'spotId']
+//                 }
+//                 }
+//             ]
+//         })
 
-    // // console.log(spotsObjects)
+//         const spotReviews = spotAndId.dataValues.Reviews
+//         // console.log(spotReviews)
+//         let numReviewValue = spotReviews.length
+//         let avgStarRatingValue = 0
 
-    // for (let j = 0; j < spotsObjects.length; j++) {
-    //     const spot = spotsObjects[j]
-        // console.log(spot.SpotImages)
-        // if (spotDetails.SpotImages.length > 0) {
-        //     for (let k = 0; k < spotDetails.SpotImages.length; k++) {
-        //         const image = spotDetails.SpotImages[k]
-        //         // console.log(image.preview)
-        //         // console.log(spot)
-        //         if (image.preview === true) {
-        //             spotDetails.previewImage = image.url
-        //         }
+//         for (let i = 0; i < spotReviews.length; i++) {
+//             let reviewStarsValue = spotReviews[i].dataValues.stars
+//             // console.log(reviewStarsValue)
+//             avgStarRatingValue += reviewStarsValue
+//         }
 
-        //         if (!image.preview) {
-        //             spotDetails.previewImage = "No preview for this image"
-        //         }
-        //     }
-        // }
+//         avgStarRatingValue = avgStarRatingValue / spotReviews.length
+//         // console.log(numReviewValue)
 
-        // spotDetails.numReviews = spotDetails.SpotImages.length
+//         // console.log(avgStarRatingValue)
+//         const user = await User.findOne({
+//             where: {
+//                 id: req.params.spotId
+//             },
+//             attributes: {
+//             exclude: ['username']
+//             }
+//         })
 
-        // let reviewStars = await Review.findOne({
-        //     where: {
-        //         spotId: spotDetails.id
-        //     },
-        //     attributes: [
-        //     // {
-        //         // include: [
-        //             [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
-        //         // ]
-        //     // }
-        //     ]
-        // })
-        // // console.log(reviewStars.toJSON())
-        // let starAVG = reviewStars.toJSON().avgRating
-
-        // if (starAVG) {
-        //     spotDetails.avgStarRating = starAVG
-        // } else {
-        //     spotDetails.avgStarRating = 'No stars yet'
-        // }
-        // delete spotArray[0].SpotImages
-
-        //aggregate data
-
-        const spotAndId = await Spot.findOne({
-            where: {
-                id: spotIdVar
-            },
-            include: [
-                {
-                    model: Review,
-                    attributes: ['stars']
-                },
-                {
-                model: SpotImage,
-                attributes: {
-                    exclude: ['createdAt', 'updatedAt', 'spotId']
-                }
-                }
-            ]
-        })
-
-        const spotReviews = spotAndId.dataValues.Reviews
-        // console.log(spotReviews)
-        let numReviewValue = spotReviews.length
-        let avgStarRatingValue = 0
-
-        for (let i = 0; i < spotReviews.length; i++) {
-            let reviewStarsValue = spotReviews[i].dataValues.stars
-            // console.log(reviewStarsValue)
-            avgStarRatingValue += reviewStarsValue
-        }
-
-        avgStarRatingValue = avgStarRatingValue / spotReviews.length
-        // console.log(numReviewValue)
-
-        // console.log(avgStarRatingValue)
-        const user = await User.findOne({
-            where: {
-                id: req.params.spotId
-            },
-            attributes: {
-            exclude: ['username']
-            }
-        })
-
-        // console.log(user)
-        // console.log(spotAndId.Reviews)
-        // console.log(spotAndId)
-        // spotAndId.dataValues.Owner = {}
-        delete spotAndId.dataValues.Reviews
-        spotAndId.dataValues.numReviews = numReviewValue
-        spotAndId.dataValues.avgStarRating = avgStarRatingValue.toFixed(1)
-        spotAndId.dataValues.Owner = user.dataValues
+//         // console.log(user)
+//         // console.log(spotAndId.Reviews)
+//         // console.log(spotAndId)
+//         // spotAndId.dataValues.Owner = {}
+//         delete spotAndId.dataValues.Reviews
+//         spotAndId.dataValues.numReviews = numReviewValue
+//         spotAndId.dataValues.avgStarRating = avgStarRatingValue.toFixed(1)
+//         spotAndId.dataValues.Owner = user.dataValues
 
 
-        await spotAndId.save()
+//         await spotAndId.save()
 
-    // console.log(spotDetails)
+//     // console.log(spotDetails)
 
-    // const ownerDetails = await spotDetails.getUser()
+//     // const ownerDetails = await spotDetails.getUser()
 
-    //     console.log(ownerDetails)
+//     //     console.log(ownerDetails)
 
-    // res.json(spotArray[0])
-    // res.json(ownerDetails)
-    res.status(200).json(spotAndId)
-})
+//     // res.json(spotArray[0])
+//     // res.json(ownerDetails)
+//     res.status(200).json(spotAndId)
+router.get('/:spotId', async (req, res) => {
+    const spotIdVar = req.params.spotId;
+
+    try {
+      const spot = await Spot.findOne({
+        where: { id: spotIdVar },
+        include: [
+          { model: Review, attributes: ['stars'] },
+          { model: SpotImage, attributes: { exclude: ['createdAt', 'updatedAt', 'spotId'] } },
+          { model: User, attributes: { exclude: ['username'] } }
+        ]
+      });
+
+      if (!spot) {
+        return res.status(404).json({
+          message: "Spot couldn't be found",
+          statusCode: 404
+        });
+      }
+
+      const numReviews = spot.Reviews.length;
+      const avgStarRating = (numReviews > 0) ? spot.Reviews.reduce((total, review) => total + review.stars, 0) / numReviews : 0;
+      spot.setDataValue('numReviews', numReviews);
+      spot.setDataValue('avgStarRating', avgStarRating.toFixed(1));
+
+      res.status(200).json(spot);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: 'Server error occurred',
+        statusCode: 500
+      });
+    }
+  });
+// })
 
 router.put('/:spotId', [requireAuth, restoreUser], async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body
