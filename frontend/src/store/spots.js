@@ -52,7 +52,7 @@ export const getSpotsDetailsThunk = (spotId) => async (dispatch) => {
 }
 
 export const createSpotsThunk = (userInput) => async (dispatch) => {
-    const { address, city, state, country, name, description, price } = userInput
+    const { address, city, state, country, name, description, price, lat, lng, previewImage } = userInput
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
         headers: {
@@ -65,7 +65,10 @@ export const createSpotsThunk = (userInput) => async (dispatch) => {
             country,
             name,
             description,
-            price
+            price,
+            lat,
+            lng,
+            previewImage
         })
     })
 
@@ -125,8 +128,9 @@ const spotsReducer = (state = initialState, action) => {
             newSpotsState = { ...state, singleSpot: action.spotsDetails };
             return newSpotsState;
         case CREATE_NEWSPOT:
-            newSpotsState = { ...state, allSpots: { ...state.allSpots } }
-            newSpotsState.allSpots[action.userInput.id] = action.userInput
+            newSpotsState = { ...state, singleSpot: { ...state.singleSpot } }
+            // newSpotsState.allSpots[action.userInput.id] = action.userInput
+            newSpotsState.singleSpot = action.userInput
             return newSpotsState
         case EDIT_SPOT:
             newSpotsState = { ...state, allSpots: { ...state.allSpots } };

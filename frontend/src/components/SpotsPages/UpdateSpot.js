@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createSpotsThunk } from '../../store/spots'
 import './CreateSpot.css'
 import { useHistory } from 'react-router-dom'
 
-const CreateSpot = () => {
+const UpdateSpot = () => {
     const history = useHistory()
     const dispatch = useDispatch()
-    const [hasSubmitted, setSubmitted] = useState(false)
+    const spotFormValues = useSelector (state => state.spots.singleSpot) || {}
+    // console.log(spotFormValues)
+
+    // console.log(foundSpot)
+
     const [errors, setErrors] = useState({})
     const [createSpotInputs, setCreateSpotInputs] = useState({
         country: '',
@@ -17,14 +21,24 @@ const CreateSpot = () => {
         description: '',
         title: '',
         price: '',
-        previewImage: '',
-        // image1: '',
-        // image2: '',
-        // image3: '',
-        // image4: ''
+        previewImage: ''
     })
 
-
+    useEffect(() => {
+        if (spotFormValues) {
+            setCreateSpotInputs({
+                country: spotFormValues.country || '',
+                streetAddress: spotFormValues.address || '',
+                city: spotFormValues.city || '',
+                state: spotFormValues.state || '',
+                description: spotFormValues.description || '',
+                title: spotFormValues.name || '',
+                price: spotFormValues.price || '',
+                previewImage: spotFormValues.previewImage || ''
+            });
+        }
+        console.log(createSpotInputs)
+    }, []);
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -38,18 +52,6 @@ const CreateSpot = () => {
         if (!createSpotInputs.title) errorObj.title = "Name is required"
         if (!createSpotInputs.price) errorObj.price = "Price is required"
         if (!createSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
-        // if (!createSpotInputs.image1.endsWith('.png')
-        //     && !createSpotInputs.image1.endsWith('.jpg')
-        //     && !createSpotInputs.image1.endsWith('.jpeg')) errorObj.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (!createSpotInputs.image2.endsWith('.png')
-        //     && !createSpotInputs.image2.endsWith('.jpg')
-        //     && !createSpotInputs.image2.endsWith('.jpeg')) errorObj.image2 = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (!createSpotInputs.image3.endsWith('.png')
-        //     && !createSpotInputs.image3.endsWith('.jpg')
-        //     && !createSpotInputs.image3.endsWith('.jpeg')) errorObj.image3 = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (!createSpotInputs.image4.endsWith('.png')
-        //     && !createSpotInputs.image4.endsWith('.jpg')
-        //     && !createSpotInputs.image4.endsWith('.jpeg')) errorObj.image4 = 'Image URL must end in .png, .jpg, or .jpeg'
 
         setErrors(errorObj)
 
@@ -57,7 +59,8 @@ const CreateSpot = () => {
         // console.log(errorObj)
         // dispatch(createNewSpotAction(createSpotInputs))
 
-    if (Object.keys(errorObj).length === 0) {
+        if (Object.keys(errorObj).length === 0) {
+        const foundSpot = spotFormValues.SpotImages.find(spot => spot.preview === true) || {}
 
         const spotObj = {
             country: createSpotInputs.country,
@@ -67,13 +70,9 @@ const CreateSpot = () => {
             description: createSpotInputs.description,
             name: createSpotInputs.title,
             price: createSpotInputs.price,
-            previewImage: createSpotInputs.previewImage,
+            previewImage: createSpotInputs[foundSpot.url],
             lat: 90,
             lng: -90
-            // image1: createSpotInputs.image1,
-            // image2: createSpotInputs.image2,
-            // image3: createSpotInputs.image3,
-            // image4: createSpotInputs.image4
         }
 
         const dispatchedCreatedSpot = await dispatch(createSpotsThunk(spotObj))
@@ -113,7 +112,7 @@ const CreateSpot = () => {
     // },[errors])
     return (
         <>
-            <h1>Create a New Spot</h1>
+            <h1>Update Your Spot</h1>
             <h2>Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
             <form onSubmit={submitHandler}>
@@ -258,7 +257,6 @@ const CreateSpot = () => {
         </>
 
     );
-
 }
 
-export default CreateSpot
+export default UpdateSpot

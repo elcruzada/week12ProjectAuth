@@ -1,12 +1,17 @@
 import { useHistory } from "react-router-dom"
 import { useModal } from "../../../context/Modal"
 import './ManageSpotsCard.css'
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { deleteSingleSpotThunk } from "../../../store/spots"
+import { getSpotsDetailsThunk } from "../../../store/spots"
 
 const ManageSpotsCard = ({userSpots}) => {
+
+    // console.log(userSpots)
     const history = useHistory()
     const dispatch = useDispatch()
+
+    // console.log(selectedSpot)
     const { closeModal, showModal } = useModal()
 
     const clickCreateSpotHandler = () => {
@@ -33,6 +38,11 @@ const ManageSpotsCard = ({userSpots}) => {
         );
     }
 
+    const updateSpotRedirectHandler = (spotId) => {
+        dispatch(getSpotsDetailsThunk(spotId))
+        history.push(`/spots/${spotId}/edit`)
+    }
+
     const confirmDelete = (spotId) => {
         dispatch(deleteSingleSpotThunk(spotId))
         closeModal();
@@ -53,13 +63,15 @@ const ManageSpotsCard = ({userSpots}) => {
                     <p>{`${spot.city}, ${spot.state}`}</p>
                     <p>{`$${spot.price}night`}</p>
                     <p>{spot.avgRating}</p>
-                    <button>Update</button>
+                    <button onClick={() => updateSpotRedirectHandler(spot.id)}>Update</button>
                     <button onClick={() => deleteSpotHandler(spot.id)}>Delete</button>
                 </div>
             )
         })
         :
-            <button onClick={clickCreateSpotHandler}>Create a New Spot</button>
+            <button onClick={clickCreateSpotHandler}
+            className='conditionalButton'
+            >Create a New Spot</button>
         }
         </div>
     )

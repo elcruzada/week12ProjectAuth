@@ -13,7 +13,7 @@ const SpotsDetailsCard = ({singleSpot}) => {
     const singleSpotCopy = {...singleSpot}
     const singleSpotUser = singleSpotCopy.User
     const newUserCopy = {...singleSpotUser}
-    console.log(singleSpot)
+    // console.log(singleSpot)
 
     return (
         <>
