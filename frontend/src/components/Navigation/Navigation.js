@@ -42,7 +42,7 @@ function Navigation({ isLoaded }) {
           </NavLink>
         </li>
         <li>
-          <NavLink exact to='/spots'>
+          <NavLink exact to='/spots/new'>
             Create a New Spot
           </NavLink>
         </li>

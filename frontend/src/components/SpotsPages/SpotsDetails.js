@@ -21,8 +21,6 @@ const SpotsDetails = () => {
     return (
         // <></>
         <SpotsDetailsCard singleSpot={singleSpot} />
-
-
     )
 }
 

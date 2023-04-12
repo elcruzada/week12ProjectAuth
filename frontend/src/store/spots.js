@@ -3,6 +3,8 @@ import { csrfFetch } from './csrf'
 const GET_ALLSPOTS = "spots/getAllSpots"
 const GET_SPOTSDETAILS = "spots/spotsDetails"
 const CREATE_NEWSPOT = "spots/CREATE_NEWSPOT"
+const EDIT_SPOT = "spots/EDIT_SPOT"
+const DELETE_SPOT = "spots/DELETE_SPOT"
 
 export const getAllSpotsAction = (allSpots) => ({
     type: GET_ALLSPOTS,
@@ -17,6 +19,16 @@ export const getSpotsDetailsAction = (spotsDetails) => ({
 export const createNewSpotAction = (userInput) => ({
     type: CREATE_NEWSPOT,
     userInput
+})
+
+export const editSingleSpotAction = (userInput) => ({
+    type: EDIT_SPOT,
+    userInput
+})
+
+export const deleteSingleSpotAction = (spotId) => ({
+    type: DELETE_SPOT,
+    spotId
 })
 
 export const getAllSpotsThunk = () => async (dispatch) => {
@@ -40,7 +52,29 @@ export const getSpotsDetailsThunk = (spotId) => async (dispatch) => {
 }
 
 export const createSpotsThunk = (userInput) => async (dispatch) => {
+    const { address, city, state, country, name, description, price } = userInput
     const res = await csrfFetch('/api/spots', {
+        method: 'POST',
+        body: JSON.stringify({
+            address,
+            city,
+            state,
+            country,
+            name,
+            description,
+            price
+        })
+    })
+
+    if (res.ok) {
+        const spotData = await res.json()
+        dispatch(createNewSpotAction(spotData))
+        return spotData
+    }
+}
+
+export const editSingleSpotThunk = (spotId, userInput) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -49,9 +83,18 @@ export const createSpotsThunk = (userInput) => async (dispatch) => {
     })
 
     if (res.ok) {
-        const spotData = await res.json()
-        dispatch(createNewSpotAction(spotData))
-        return spotData
+        const editsData = await res.json()
+        dispatch(editSingleSpotAction(editsData))
+    }
+}
+
+export const deleteSingleSpotThunk = (spotId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: "DELETE"
+    })
+
+    if (res.ok) {
+        dispatch(deleteSingleSpotAction(spotId))
     }
 }
 
@@ -70,20 +113,22 @@ const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_ALLSPOTS:
             newSpotsState = { ...state, allSpots: {} }
-            // action.allSpots.Spots.forEach(spot => {
-            //     newSpotsState.allSpots[spot.id] = spot
-            // })
             normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
             return newSpotsState
         case GET_SPOTSDETAILS:
-            // newSpotsState = { ...state, allSpots: {}}
-            // newSpotsState.allSpots = action.spotsDetails
-            // return newSpotsState
             newSpotsState = { ...state, singleSpot: action.spotsDetails };
             return newSpotsState;
         case CREATE_NEWSPOT:
             newSpotsState = { ...state, allSpots: { ...state.allSpots } }
             newSpotsState.allSpots[action.userInput.id] = action.userInput
+            return newSpotsState
+        case EDIT_SPOT:
+            newSpotsState = { ...state, allSpots: { ...state.allSpots } };
+            newSpotsState.allSpots[action.userInput.id] = action.userInput;
+            return newSpotsState;
+        case DELETE_SPOT:
+            newSpotsState = { ...state, allSpots: {...state.allSpots} }
+            delete newSpotsState.allSpots[action.spotId]
             return newSpotsState
         default:
             return state
