@@ -55,6 +55,9 @@ export const createSpotsThunk = (userInput) => async (dispatch) => {
     const { address, city, state, country, name, description, price } = userInput
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
             address,
             city,
@@ -90,7 +93,10 @@ export const editSingleSpotThunk = (spotId, userInput) => async (dispatch) => {
 
 export const deleteSingleSpotThunk = (spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
 
     if (res.ok) {
