@@ -89,7 +89,7 @@ export const editSingleSpotThunk = (spotId, userInput) => async (dispatch) => {
 }
 
 export const deleteSingleSpotThunk = (spotId) => async (dispatch) => {
-    const res = await fetch(`/api/reports/${spotId}`, {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: "DELETE"
     })
 
