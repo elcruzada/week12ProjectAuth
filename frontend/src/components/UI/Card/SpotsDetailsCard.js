@@ -9,6 +9,7 @@ const SpotsDetailsCard = ({singleSpot}) => {
     // console.log('owner', owner)
     // console.log(singleSpot)
     // const {singleSpot} = singleSpot
+    //jsonstringify
     const singleSpotCopy = {...singleSpot}
     const singleSpotUser = singleSpotCopy.User
     const newUserCopy = {...singleSpotUser}

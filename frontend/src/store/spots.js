@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf'
 const GET_ALLSPOTS = "spots/getAllSpots"
 const GET_SPOTSDETAILS = "spots/spotsDetails"
 const CREATE_NEWSPOT = "spots/CREATE_NEWSPOT"
+const EDIT_SPOT = "spots/EDIT_SPOT"
 
 export const getAllSpotsAction = (allSpots) => ({
     type: GET_ALLSPOTS,
@@ -16,6 +17,11 @@ export const getSpotsDetailsAction = (spotsDetails) => ({
 
 export const createNewSpotAction = (userInput) => ({
     type: CREATE_NEWSPOT,
+    userInput
+})
+
+export const editSingleSpotAction = (userInput) => ({
+    type: EDIT_SPOT,
     userInput
 })
 
@@ -55,6 +61,21 @@ export const createSpotsThunk = (userInput) => async (dispatch) => {
     }
 }
 
+export const editSingleSpotThunk = (spotId, userInput) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userInput)
+    })
+
+    if (res.ok) {
+        const editsData = await res.json()
+        dispatch(editSingleSpotAction(editsData))
+    }
+}
+
 const initialState = {
     allSpots: {},
     singleSpot: {}
@@ -70,21 +91,19 @@ const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_ALLSPOTS:
             newSpotsState = { ...state, allSpots: {} }
-            // action.allSpots.Spots.forEach(spot => {
-            //     newSpotsState.allSpots[spot.id] = spot
-            // })
             normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
             return newSpotsState
         case GET_SPOTSDETAILS:
-            // newSpotsState = { ...state, allSpots: {}}
-            // newSpotsState.allSpots = action.spotsDetails
-            // return newSpotsState
             newSpotsState = { ...state, singleSpot: action.spotsDetails };
             return newSpotsState;
         case CREATE_NEWSPOT:
             newSpotsState = { ...state, allSpots: { ...state.allSpots } }
             newSpotsState.allSpots[action.userInput.id] = action.userInput
             return newSpotsState
+        case EDIT_SPOT:
+            newSpotsState = { ...state, allSpots: { ...state.allSpots } };
+            newSpotsState.allSpots[action.userInput.id] = action.userInput;
+            return newSpotsState;
         default:
             return state
     }

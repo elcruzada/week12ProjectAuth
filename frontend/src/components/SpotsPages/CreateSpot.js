@@ -73,9 +73,9 @@ const CreateSpot = () => {
         })
     }
 
-    useEffect(() => {
-        console.log(errors)
-    },[errors])
+    // useEffect(() => {
+    //     console.log(errors)
+    // },[errors])
     return (
         <>
             <h1>Create a New Spot</h1>
