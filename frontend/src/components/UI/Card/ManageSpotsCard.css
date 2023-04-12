@@ -1,0 +1,11 @@
+.delete {
+  background-color: crimson;
+  font-weight: bold;
+  color: white;
+}
+
+.cancel {
+  background-color: darkgray;
+  font-weight: bold;
+  color: black
+}

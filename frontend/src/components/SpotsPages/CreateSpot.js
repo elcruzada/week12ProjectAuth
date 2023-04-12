@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createSpotsThunk } from '../../store/spots'
 import './CreateSpot.css'
+import { useHistory } from 'react-router-dom'
 
 const CreateSpot = () => {
+    const history = useHistory()
+    const dispatch = useDispatch()
     const [hasSubmitted, setSubmitted] = useState(false)
     const [errors, setErrors] = useState({})
     const [createSpotInputs, setCreateSpotInputs] = useState({
@@ -20,7 +25,7 @@ const CreateSpot = () => {
     })
 
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
 
         const errorObj = {}
@@ -50,20 +55,46 @@ const CreateSpot = () => {
         console.log(createSpotInputs)
         console.log(errorObj)
         // dispatch(createNewSpotAction(createSpotInputs))
-        setCreateSpotInputs({
-            country: '',
-            streetAddress: '',
-            city: '',
-            state: '',
-            description: '',
-            title: '',
-            price: '',
-            previewImage: '',
-            image1: '',
-            image2: '',
-            image3: '',
-            image4: ''
-        })
+
+    if (Object.keys(errorObj).length === 0) {
+
+        const spotObj = {
+            country: createSpotInputs.country,
+            streetAddress: createSpotInputs.streetAddress,
+            city: createSpotInputs.city,
+            state: createSpotInputs.state,
+            description: createSpotInputs.description,
+            name: createSpotInputs.title,
+            price: createSpotInputs.price,
+            previewImage: createSpotInputs.previewImage,
+            image1: createSpotInputs.image1,
+            image2: createSpotInputs.image2,
+            image3: createSpotInputs.image3,
+            image4: createSpotInputs.image4
+        }
+        
+        const dispatchedCreatedSpot = await dispatch(createSpotsThunk(spotObj))
+        if (dispatchedCreatedSpot) {
+            history.push(`/spots/${dispatchedCreatedSpot.id}`)
+        }
+    }
+
+
+
+        // setCreateSpotInputs({
+        //     country: '',
+        //     streetAddress: '',
+        //     city: '',
+        //     state: '',
+        //     description: '',
+        //     title: '',
+        //     price: '',
+        //     previewImage: '',
+        //     image1: '',
+        //     image2: '',
+        //     image3: '',
+        //     image4: ''
+        // })
     }
 
     const changeHandler = (e) => {

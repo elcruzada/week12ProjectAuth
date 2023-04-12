@@ -1,7 +1,10 @@
 import { useHistory } from "react-router-dom"
+import { useModal } from "../../../context/Modal"
+import './ManageSpotsCard.css'
 
 const ManageSpotsCard = ({userSpots}) => {
     const history = useHistory()
+    const { closeModal, showModal } = useModal()
 
     const clickCreateSpotHandler = () => {
         history.push('/spots/new')
@@ -9,6 +12,27 @@ const ManageSpotsCard = ({userSpots}) => {
 
     const clickSpotDetailPageHandler = (spotId) => {
         history.push(`/spots/${spotId}`)
+    }
+
+    const deleteSpotHandler = () => {
+        showModal(
+          <div>
+            <h1>Confirm Delete</h1>
+            <p>Are you sure you want to remove this spot?</p>
+            <button
+            className='delete'
+            onClick={confirmDelete}
+            >Yes (Delete Spot)</button>
+            <button
+            className='cancel'
+            onClick={closeModal}>No (Keep Spot)</button>
+          </div>
+        );
+    }
+
+    const confirmDelete = () => {
+        // delete the spot and close the modal
+        closeModal();
     }
 
     return (
@@ -27,7 +51,7 @@ const ManageSpotsCard = ({userSpots}) => {
                     <p>{`$${spot.price}night`}</p>
                     <p>{spot.avgRating}</p>
                     <button>Update</button>
-                    <button>Delete</button>
+                    <button onClick={deleteSpotHandler}>Delete</button>
                 </div>
             )
         })
@@ -38,4 +62,4 @@ const ManageSpotsCard = ({userSpots}) => {
     )
 }
 
-export default ManageSpotsCard
+export default ManageSpotsCard;

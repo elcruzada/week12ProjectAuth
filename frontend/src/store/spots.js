@@ -4,6 +4,7 @@ const GET_ALLSPOTS = "spots/getAllSpots"
 const GET_SPOTSDETAILS = "spots/spotsDetails"
 const CREATE_NEWSPOT = "spots/CREATE_NEWSPOT"
 const EDIT_SPOT = "spots/EDIT_SPOT"
+const DELETE_SPOT = "spots/DELETE_SPOT"
 
 export const getAllSpotsAction = (allSpots) => ({
     type: GET_ALLSPOTS,
@@ -23,6 +24,11 @@ export const createNewSpotAction = (userInput) => ({
 export const editSingleSpotAction = (userInput) => ({
     type: EDIT_SPOT,
     userInput
+})
+
+export const deleteSingleSpotAction = (spotId) => ({
+    type: DELETE_SPOT,
+    spotId
 })
 
 export const getAllSpotsThunk = () => async (dispatch) => {
@@ -46,12 +52,18 @@ export const getSpotsDetailsThunk = (spotId) => async (dispatch) => {
 }
 
 export const createSpotsThunk = (userInput) => async (dispatch) => {
+    const { address, city, state, country, name, description, price } = userInput
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userInput)
+        body: JSON.stringify({
+            address,
+            city,
+            state,
+            country,
+            name,
+            description,
+            price
+        })
     })
 
     if (res.ok) {
@@ -73,6 +85,16 @@ export const editSingleSpotThunk = (spotId, userInput) => async (dispatch) => {
     if (res.ok) {
         const editsData = await res.json()
         dispatch(editSingleSpotAction(editsData))
+    }
+}
+
+export const deleteSingleSpotThunk = (spotId) => async (dispatch) => {
+    const res = await fetch(`/api/reports/${spotId}`, {
+        method: "DELETE"
+    })
+
+    if (res.ok) {
+        dispatch(deleteSingleSpotAction(spotId))
     }
 }
 
@@ -104,6 +126,10 @@ const spotsReducer = (state = initialState, action) => {
             newSpotsState = { ...state, allSpots: { ...state.allSpots } };
             newSpotsState.allSpots[action.userInput.id] = action.userInput;
             return newSpotsState;
+        case DELETE_SPOT:
+            newSpotsState = { ...state, allSpots: {...state.allSpots} }
+            delete newSpotsState.allSpots[action.spotId]
+            return newSpotsState
         default:
             return state
     }

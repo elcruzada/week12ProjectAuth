@@ -19,12 +19,18 @@ export const ModalProvider = (props) => {
     }
   };
 
+  const showModal = (input, onClose) => {
+    setModalContent(input);
+    setOnModalClose(onClose);
+  };
+
   const contextValue = {
     modalRef, // reference to modal div
     modalContent, // React component to render inside modal
     setModalContent, // function to set the React component to render inside modal
     setOnModalClose, // function to set the callback function to be called when modal is closing
-    closeModal
+    closeModal,
+    showModal
   };
 
   return (
