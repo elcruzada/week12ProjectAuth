@@ -27,11 +27,11 @@ function App() {
           <Route exact path='/'>
             <SpotsHomePage />
           </Route>
-          <Route exact path='/spots/current'>
-            <ManageSpots />
-          </Route>
           <Route exact path='/spots/new'>
             <CreateSpot />
+          </Route>
+          <Route exact path='/spots/current'>
+            <ManageSpots />
           </Route>
           <Route exact path='/spots/:spotId'>
             <SpotsDetails />

@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createSpotsThunk } from '../../store/spots'
+import { useHistory, useParams } from 'react-router-dom'
+import { getSpotsDetailsThunk, editSingleSpotThunk, sessionSpotThunk } from '../../store/spots'
+
 import './CreateSpot.css'
-import { useHistory } from 'react-router-dom'
+//create useEffect where only dependency is dispatch, dispatch whatever thunk is for get currentUser spots
 
 const UpdateSpot = () => {
     const history = useHistory()
     const dispatch = useDispatch()
-    const spotFormValues = useSelector (state => state.spots.singleSpot) || {}
-    // console.log(spotFormValues)
-
-    // console.log(foundSpot)
-
+    const { spotId } = useParams()
+    // const spotIdCopy = { ...spotId}
+    // const paramsSpot = useSelector(state => state.spots.allSpots[spotId])
+    // console.log(paramsSpot)
+    const paramsSpot = useSelector(state => state.spots.singleSpot)
+    // const selectorState = useSelector(state => console.log(state))
     const [errors, setErrors] = useState({})
-    const [createSpotInputs, setCreateSpotInputs] = useState({
+    const [updateSpotInputs, setUpdateSpotInputs] = useState({
         country: '',
         streetAddress: '',
         city: '',
@@ -24,64 +27,68 @@ const UpdateSpot = () => {
         previewImage: ''
     })
 
+
+
     useEffect(() => {
-        if (spotFormValues) {
-            setCreateSpotInputs({
-                country: spotFormValues.country || '',
-                streetAddress: spotFormValues.address || '',
-                city: spotFormValues.city || '',
-                state: spotFormValues.state || '',
-                description: spotFormValues.description || '',
-                title: spotFormValues.name || '',
-                price: spotFormValues.price || '',
-                previewImage: spotFormValues.previewImage || ''
-            });
+        if (paramsSpot) {
+            setUpdateSpotInputs({
+                country: paramsSpot.country,
+                streetAddress: paramsSpot.address,
+                city: paramsSpot.city,
+                state: paramsSpot.state,
+                description: paramsSpot.description,
+                title: paramsSpot.name,
+                price: paramsSpot.price,
+            })
         }
-        console.log(createSpotInputs)
-    }, []);
+    },[paramsSpot])
+
+    useEffect(() => {
+        dispatch(getSpotsDetailsThunk(spotId))
+    },[dispatch, spotId])
+
+    // console.log(spotId)
+
+
+    // console.log(secondStateFetch)
+    // const stateCopy = {...secondStateFetch}
+
 
     const submitHandler = async (e) => {
         e.preventDefault()
 
         const errorObj = {}
-        if (!createSpotInputs.country) errorObj.country = "Country is required"
-        if (!createSpotInputs.streetAddress) errorObj.streetAddress = "Address is required"
-        if (!createSpotInputs.city) errorObj.city = "City is required"
-        if (!createSpotInputs.state) errorObj.state = "State is required"
-        if (createSpotInputs.description.length < 30) errorObj.description = "Description needs a minimum of 30 characters"
-        if (!createSpotInputs.title) errorObj.title = "Name is required"
-        if (!createSpotInputs.price) errorObj.price = "Price is required"
-        if (!createSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
+        if (!updateSpotInputs.country) errorObj.country = "Country is required"
+        if (!updateSpotInputs.streetAddress) errorObj.streetAddress = "Address is required"
+        if (!updateSpotInputs.city) errorObj.city = "City is required"
+        if (!updateSpotInputs.state) errorObj.state = "State is required"
+        if (updateSpotInputs.description.length < 30) errorObj.description = "Description needs a minimum of 30 characters"
+        if (!updateSpotInputs.title) errorObj.title = "Name is required"
+        if (!updateSpotInputs.price) errorObj.price = "Price is required"
+        // if (!updateSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
 
         setErrors(errorObj)
 
-        // console.log(createSpotInputs)
-        // console.log(errorObj)
-        // dispatch(createNewSpotAction(createSpotInputs))
 
         if (Object.keys(errorObj).length === 0) {
-        const foundSpot = spotFormValues.SpotImages.find(spot => spot.preview === true) || {}
+            const updatedSpotObj = {
+                country: updateSpotInputs.country,
+                address: updateSpotInputs.streetAddress,
+                city: updateSpotInputs.city,
+                state: updateSpotInputs.state,
+                description: updateSpotInputs.description,
+                name: updateSpotInputs.title,
+                price: updateSpotInputs.price,
+                lat: 38,
+                lng: -77
+            }
 
-        const spotObj = {
-            country: createSpotInputs.country,
-            address: createSpotInputs.streetAddress,
-            city: createSpotInputs.city,
-            state: createSpotInputs.state,
-            description: createSpotInputs.description,
-            name: createSpotInputs.title,
-            price: createSpotInputs.price,
-            previewImage: createSpotInputs[foundSpot.url],
-            lat: 90,
-            lng: -90
-        }
-
-        const dispatchedCreatedSpot = await dispatch(createSpotsThunk(spotObj))
-        if (dispatchedCreatedSpot) {
-            history.push(`/spots/${dispatchedCreatedSpot.id}`)
-            return
+            const dispatchedUpdatedSpot = await dispatch(editSingleSpotThunk(updatedSpotObj, spotId))
+            if (dispatchedUpdatedSpot) {
+                history.push(`/spots/${spotId}`)
+            }
         }
     }
-
 
 
         // setCreateSpotInputs({
@@ -98,11 +105,11 @@ const UpdateSpot = () => {
         //     image3: '',
         //     image4: ''
         // })
-    }
+    // }
 
     const changeHandler = (e) => {
-        setCreateSpotInputs({
-            ...createSpotInputs,
+        setUpdateSpotInputs({
+            ...updateSpotInputs,
             [e.target.id]: e.target.value
         })
     }
@@ -121,7 +128,7 @@ const UpdateSpot = () => {
                     <input
                         id='country'
                         type='text'
-                        value={createSpotInputs.country}
+                        value={updateSpotInputs.country}
                         onChange={changeHandler}
                         placeholder='Country'
                     />
@@ -132,7 +139,7 @@ const UpdateSpot = () => {
                     <input
                         id='streetAddress'
                         type='text'
-                        value={createSpotInputs.streetAddress}
+                        value={updateSpotInputs.streetAddress}
                         onChange={changeHandler}
                         placeholder='Address'
                     />
@@ -143,7 +150,7 @@ const UpdateSpot = () => {
                     <input
                         id='city'
                         type='text'
-                        value={createSpotInputs.city}
+                        value={updateSpotInputs.city}
                         onChange={changeHandler}
                         placeholder='City'
                     />
@@ -154,7 +161,7 @@ const UpdateSpot = () => {
                     <input
                         id='state'
                         type='text'
-                        value={createSpotInputs.state}
+                        value={updateSpotInputs.state}
                         onChange={changeHandler}
                         placeholder='STATE'
                     />
@@ -165,7 +172,7 @@ const UpdateSpot = () => {
                     <textarea
                         id='description'
                         name='description'
-                        value={createSpotInputs.description}
+                        value={updateSpotInputs.description}
                         onChange={changeHandler}
                         placeholder='Please write at least 30 characters'
                     />
@@ -178,7 +185,7 @@ const UpdateSpot = () => {
                     <input
                         id='title'
                         type='text'
-                        value={createSpotInputs.title}
+                        value={updateSpotInputs.title}
                         onChange={changeHandler}
                         placeholder='Name of your spot'
                     />
@@ -190,7 +197,7 @@ const UpdateSpot = () => {
                     <input
                         id='price'
                         type='text'
-                        value={createSpotInputs.price}
+                        value={updateSpotInputs.price}
                         onChange={changeHandler}
                         placeholder='Price per night(USD)'
                     />
@@ -202,7 +209,7 @@ const UpdateSpot = () => {
                     <input
                         id='previewImage'
                         type='text'
-                        value={createSpotInputs.previewImage}
+                        value={updateSpotInputs.previewImage}
                         onChange={changeHandler}
                         placeholder='Preview Image URL'
                     />
@@ -252,7 +259,7 @@ const UpdateSpot = () => {
                     />
                     {errors.image4 && <p className='error'>{`${errors.image4}`}</p>}
                 </div> */}
-                <button type='submit'>Create Spot</button>
+                <button type='submit'>Update your Spot</button>
             </form >
         </>
 

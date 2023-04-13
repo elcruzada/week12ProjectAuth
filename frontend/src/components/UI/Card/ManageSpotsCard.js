@@ -58,6 +58,7 @@ const ManageSpotsCard = ({userSpots}) => {
             return (
                 <div key={spot.id}>
                     <img src={spot.previewImage}
+                    alt='location'
                     onClick={() => clickSpotDetailPageHandler(spot.id)}
                     />
                     <p>{`${spot.city}, ${spot.state}`}</p>

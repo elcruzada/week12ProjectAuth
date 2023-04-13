@@ -5,6 +5,7 @@ import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+
 import './Navigation.css';
 // import CreateSpot from '../SpotsPages/CreateSpot';
 

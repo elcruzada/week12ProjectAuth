@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createSpotsThunk } from '../../store/spots'
 import './CreateSpot.css'
 import { useHistory } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 const CreateSpot = () => {
     const history = useHistory()
     const dispatch = useDispatch()
+    const sessionUser = useSelector(state => state.session.user)
     const [hasSubmitted, setSubmitted] = useState(false)
     const [errors, setErrors] = useState({})
     const [createSpotInputs, setCreateSpotInputs] = useState({
@@ -57,9 +58,16 @@ const CreateSpot = () => {
         // console.log(errorObj)
         // dispatch(createNewSpotAction(createSpotInputs))
 
-    if (Object.keys(errorObj).length === 0) {
+
+        const previewImageURL = {
+            url: createSpotInputs.previewImage,
+            preview: true
+        }
+
+        if (Object.keys(errorObj).length === 0) {
 
         const spotObj = {
+            ownerId: sessionUser.id,
             country: createSpotInputs.country,
             address: createSpotInputs.streetAddress,
             city: createSpotInputs.city,
@@ -67,7 +75,7 @@ const CreateSpot = () => {
             description: createSpotInputs.description,
             name: createSpotInputs.title,
             price: createSpotInputs.price,
-            previewImage: createSpotInputs.previewImage,
+            spotImages: previewImageURL,
             lat: 90,
             lng: -90
             // image1: createSpotInputs.image1,
