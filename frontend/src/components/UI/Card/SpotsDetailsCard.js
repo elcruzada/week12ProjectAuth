@@ -2,7 +2,7 @@ import React from 'react'
 
 import './SpotsDetailsCard.css'
 
-const SpotsDetailsCard = ({singleSpot, allSpotReviews}) => {
+const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     // console.log('spotsDetails', spotsDetails)
     // console.log('ownerCopy', ownerCopy)
     // console.log('single', singleSpot)
@@ -50,6 +50,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews}) => {
             {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length > 1 && <h2>{`${singleSpotCopy.Reviews.length} Reviews`}</h2>}
             </div>
             <div className='review-list-container'>
+            {Object.values(allSpotReviews).length === 0 &&
+                sessionUser &&
+                <p>Be the first to Review!</p>}
             <ul>
             {Object.values(allSpotReviews).length > 0 &&
             Object.values(allSpotReviews).map(review => {

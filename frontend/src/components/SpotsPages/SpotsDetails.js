@@ -14,6 +14,7 @@ const SpotsDetails = () => {
 
     const singleSpot = useSelector(state => state.spots.singleSpot)
     const allSpotReviews = useSelector(state => state.reviews.spot)
+    const sessionUser = useSelector((state) => state.session.user)
     // console.log(allSpotReviews)
     // const singleSpot = useSelector(state => console.log(state))
 
@@ -29,7 +30,11 @@ const SpotsDetails = () => {
 
     return (
         <>
-        <SpotsDetailsCard singleSpot={singleSpot} allSpotReviews={allSpotReviews}/>
+        <SpotsDetailsCard
+        singleSpot={singleSpot}
+        allSpotReviews={allSpotReviews}
+        sessionUser={sessionUser}
+        />
         </>
     )
 }
