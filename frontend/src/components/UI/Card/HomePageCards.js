@@ -11,6 +11,7 @@ const HomePageCards = ({spot}) => {
 
     return (
         <div className='card-container'>
+          <i className="fa-solid fa-star"></i>
           <img src={spot.previewImage} alt="location" onClick={imageClickHandler}/>
           {Number(spot.avgRating) ? <p>{spot.avgRating}</p> : <p>New</p>}
           <p className='description'>{spot.description}</p>

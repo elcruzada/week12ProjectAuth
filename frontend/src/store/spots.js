@@ -131,7 +131,7 @@ export const createSpotsThunk = (userInput) => async (dispatch) => {
 // }
 export const editSingleSpotThunk = (spotEdits, spotId) => async (dispatch) => {
     const {country, address, city, state, description,
-        name, price, spotImages, lat, lng } = spotEdits
+        name, price, lat, lng } = spotEdits
 
     const res =  await csrfFetch(`/api/spots/${spotId}`, {
       method: 'PUT',
@@ -139,25 +139,25 @@ export const editSingleSpotThunk = (spotEdits, spotId) => async (dispatch) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({country, address, city,
-        state, description, name, price, spotImages, lat, lng })
+        state, description, name, price, lat, lng })
     });
 
     if (res.ok) {
       const updatedSpot = await res.json();
-      console.log('updated', updatedSpot)
+    //   console.log('updated', updatedSpot)
 
-      const val = await csrfFetch(`/api/spots/${updatedSpot.id}/images`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedSpot)
-      });
+    //   const val = await csrfFetch(`/api/spots/${updatedSpot.id}/images`, {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(updatedSpot)
+    //   });
 
-      const valJson = await val.json();
-      console.log('val', valJson)
+    //   const valJson = await val.json();
+    //   console.log('val', valJson)
 
-      dispatch(editSingleSpotAction(valJson));
+      dispatch(editSingleSpotAction(updatedSpot));
       return updatedSpot;
     }
   };
@@ -249,16 +249,20 @@ const initialState = {
     singleSpot: {}
 }
 
+
+
+
 const spotsReducer = (state = initialState, action) => {
-    let newSpotsState;
     const normalizerFunction = (actionData, nestedObjInState) => {
         actionData.forEach(spot => {
             nestedObjInState[spot.id] = spot
         })
     }
+    let newSpotsState;
     switch(action.type) {
         case GET_ALLSPOTS:
             newSpotsState = { ...state, allSpots: {} }
+            // console.log(action.allSpots)
             normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
             return newSpotsState
         case GET_SPOTSDETAILS:
@@ -273,8 +277,8 @@ const spotsReducer = (state = initialState, action) => {
             newSpotsState.singleSpot = action.userInput
             return newSpotsState
         case EDIT_SPOT:
-            newSpotsState = { ...state, allSpots: { ...state.allSpots } };
-            newSpotsState.allSpots[action.userInput.id] = action.userInput;
+            newSpotsState = { ...state, singleSpot: { ...state.singleSpot } };
+            newSpotsState.singleSpot[action.userInput.id] = action.userInput;
             return newSpotsState;
         case DELETE_SPOT:
             newSpotsState = { ...state, allSpots: {...state.allSpots} }

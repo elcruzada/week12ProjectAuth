@@ -28,7 +28,6 @@ const UpdateSpot = () => {
     })
 
 
-
     useEffect(() => {
         if (paramsSpot) {
             setUpdateSpotInputs({
@@ -203,7 +202,7 @@ const UpdateSpot = () => {
                     />
                 </div>
                 {errors.price && <p className='error'>{`${errors.price}`}</p>}
-                <div className='form-row'>
+                {/* <div className='form-row'>
                     <label htmlFor='previewImage'>Liven up your spot with photos</label>
                     <p>Submit a link to at least one photo to publish your spot.</p>
                     <input
@@ -214,7 +213,7 @@ const UpdateSpot = () => {
                         placeholder='Preview Image URL'
                     />
                     {errors.previewImage && <p className='error'>{`${errors.previewImage}`}</p>}
-                </div>
+                </div> */}
                 {/* <div className='form-row'>
                     <label htmlFor='image1'></label>
                     <input

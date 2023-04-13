@@ -1,40 +1,42 @@
 import { csrfFetch } from './csrf'
 
-const GET_ALLREVIEWS = "spots/getAllSpots"
+const GET_ALLREVIEWS = "reviews/GET_ALLREVIEWS"
 
 export const getAllReviewsAction = (allReviews) => ({
     type: GET_ALLREVIEWS,
     allReviews
 })
 
-export const getAllReviewsThunk = () => async (dispatch) => {
-    const res = await csrfFetch('/api/spots/reviews')
+export const getAllReviewsThunk = (spotId) => async (dispatch) => {
+    const res = await fetch(`/api/spots/${spotId}/reviews`)
     // console.log(res)
 
     if (res.ok) {
-        const spotsData = await res.json()
-        dispatch(getAllSpotsAction(spotsData))
-        // return spotsData
+        const reviewsData = await res.json()
+        dispatch(getAllReviewsAction(reviewsData))
+        return reviewsData
     }
 }
 
 
 const initialState = {
-    allReviews: {},
-    singleReview: {}
+    spot: {}
 }
+
 const reviewsReducer = (state = initialState, action) => {
-    let newSpotsState;
+    let newReviewsState;
     const normalizerFunction = (actionData, nestedObjInState) => {
-        actionData.forEach(spot => {
-            nestedObjInState[spot.id] = spot
+        actionData.forEach(review => {
+            nestedObjInState[review.id] = review
         })
     }
     switch(action.type) {
-        case GET_ALLSPOTS:
-            newSpotsState = { ...state, allSpots: {} }
-            normalizerFunction((action.allSpots.Spots), (newSpotsState.allSpots))
-            return newSpotsState
+        case GET_ALLREVIEWS:
+            newReviewsState = { ...state, spot: {} }
+            // console.log(newReviewsState)
+
+            normalizerFunction((action.allReviews.Reviews), (newReviewsState.spot))
+            return newReviewsState
         default:
             return state
     }
