@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useModal } from "../../../context/Modal"
 import './SpotsDetailsCard.css'
+import { deleteReviewThunk } from '../../../store/reviews'
+import { useDispatch } from 'react-redux'
 // import reviewsReducer from '../../../store/reviews'
 
 const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
+    const dispatch = useDispatch()
     const { closeModal, showModal } = useModal()
     // console.log('spotsDetails', spotsDetails)
     // console.log('ownerCopy', ownerCopy)
@@ -56,11 +59,12 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
           );
     }
 
-    const confirmDelete = () => {
+    const confirmDelete = (reviewId) => {
+        dispatch(deleteReviewThunk(reviewId))
         closeModal()
     }
 
-    const deleteReviewHandler = () => {
+    const deleteReviewHandler = (reviewId) => {
 
         showModal(
             <div>
@@ -68,7 +72,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             <p>Are you sure you want to delete this review?</p>
             <button
             className='delete'
-            onClick={() => confirmDelete()}
+            onClick={() => confirmDelete(reviewId)}
             >Yes (Delete Review)</button>
             <button
             className='cancel'
@@ -138,7 +142,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                     <p>{review.review}</p>
                     <p>{review.createdAt}</p>
                     <button
-                        onClick={() => deleteReviewHandler()}
+                        onClick={() => deleteReviewHandler(review.id)}
                     >Delete</button>
                 </li>
                 </div>
