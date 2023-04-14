@@ -38,7 +38,7 @@ export const sessionUserSpotsAction = (spots) => ({
 })
 
 export const getAllSpotsThunk = () => async (dispatch) => {
-    const res = await csrfFetch('/api/spots')
+    const res = await fetch('/api/spots')
     // console.log(res)
 
     if (res.ok) {
@@ -49,7 +49,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
 }
 
 export const getSpotsDetailsThunk = (spotId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/spots/${spotId}`)
+    const res = await fetch(`/api/spots/${spotId}`)
 
     if (res.ok) {
         const spotsDetailsData = await res.json()
