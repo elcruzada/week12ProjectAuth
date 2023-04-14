@@ -1,0 +1,14 @@
+button.post-review-container {
+        background-color: #BE6DB7;
+        border: none;
+        color: #FDD36A;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 15px;
+        font-weight: bold;
+}

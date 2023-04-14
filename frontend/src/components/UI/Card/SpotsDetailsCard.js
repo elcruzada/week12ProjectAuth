@@ -3,6 +3,8 @@ import { useModal } from "../../../context/Modal"
 import './SpotsDetailsCard.css'
 import { deleteReviewThunk } from '../../../store/reviews'
 import { useDispatch } from 'react-redux'
+import PostReviewModal from '../../Reviews/PostReview'
+import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
 // import reviewsReducer from '../../../store/reviews'
 
 const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
@@ -20,7 +22,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     const newUserCopy = {...singleSpotUser}
     const allSpotReviewsCopy = {...allSpotReviews}
     const sessionUserCopy = {...sessionUser}
-    // console.log(allSpotReviewsCopy)
+    console.log('allSpotReviewCopy', allSpotReviewsCopy)
     console.log('singleSpotCopy', singleSpotCopy)
     console.log('sessionUser', sessionUserCopy)
     // console.log(Object.values(allSpotReviews).every(review => review.userId !== sessionUser.id))
@@ -36,7 +38,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     // useEffect(() => {
         //     console.log(textArea)
         // },[textArea])
-        const [textArea, setTextArea] = useState('')
+    const [textArea, setTextArea] = useState('')
 
     const postReviewHandler = () => {
 
@@ -116,22 +118,31 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             Object.values(sessionUserCopy).length > 0 &&
             sessionUserCopy.id !== singleSpotCopy.ownerId &&
             singleSpotCopy.Reviews &&
-            singleSpotCopy.Reviews.length > 0 &&
-            Object.values(allSpotReviewsCopy).length > 0 &&
-            Object.values(allSpotReviewsCopy).every(review => review.userId !== sessionUser.id) &&
-            <div className='post-revew-button-container'>
-                <button
-                className='post-review-button'
-                onClick={() => postReviewHandler()}
-                >Post Your Review</button>
+            <div className='post-review-container'>
+
+                <OpenModalMenuItem
+                    itemText={
+                    <button className='post-review-container'
+                    >Post your review</button>
+                }
+                    modalComponent={<PostReviewModal />}
+                />
             </div>
+            // Object.values(allSpotReviewsCopy).length > 0 &&
+            // Object.values(allSpotReviewsCopy).every(review => review.userId !== sessionUser.id) &&
+            // <div className='post-revew-button-container'>
+            //     <button
+            //     className='post-review-button'
+            //     onClick={() => postReviewHandler()}
+            //     >Post Your Review</button>
+            // </div>
             }
 
             <div className='review-list-container'>
             {Object.values(allSpotReviewsCopy).length === 0 &&
                 Object.values(sessionUserCopy).length > 0  &&
                 sessionUserCopy.id !== singleSpotCopy.ownerId  &&
-                <button>Be the first to Review!</button>}
+                <h3>Be the first to review!</h3>}
             <ul>
             {Object.values(allSpotReviewsCopy).length > 0 &&
                 Object.values(allSpotReviewsCopy).map(review => {
