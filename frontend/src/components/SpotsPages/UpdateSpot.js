@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createSpotsThunk } from '../../store/spots'
-import './CreateSpot.css'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
+import { getSpotsDetailsThunk, editSingleSpotThunk, sessionSpotThunk } from '../../store/spots'
 
-const CreateSpot = () => {
+import './CreateSpot.css'
+//create useEffect where only dependency is dispatch, dispatch whatever thunk is for get currentUser spots
+
+const UpdateSpot = () => {
     const history = useHistory()
     const dispatch = useDispatch()
-    const sessionUser = useSelector(state => state.session.user)
-    const [hasSubmitted, setSubmitted] = useState(false)
+    const { spotId } = useParams()
+    // const spotIdCopy = { ...spotId}
+    // const paramsSpot = useSelector(state => state.spots.allSpots[spotId])
+    // console.log(paramsSpot)
+    const paramsSpot = useSelector(state => state.spots.singleSpot)
+    // const selectorState = useSelector(state => console.log(state))
     const [errors, setErrors] = useState({})
-    const [createSpotInputs, setCreateSpotInputs] = useState({
+    const [updateSpotInputs, setUpdateSpotInputs] = useState({
         country: '',
         streetAddress: '',
         city: '',
@@ -18,79 +24,70 @@ const CreateSpot = () => {
         description: '',
         title: '',
         price: '',
-        previewImage: '',
-        // image1: '',
-        // image2: '',
-        // image3: '',
-        // image4: ''
+        previewImage: ''
     })
 
+
+    useEffect(() => {
+        if (paramsSpot) {
+            setUpdateSpotInputs({
+                country: paramsSpot.country,
+                streetAddress: paramsSpot.address,
+                city: paramsSpot.city,
+                state: paramsSpot.state,
+                description: paramsSpot.description,
+                title: paramsSpot.name,
+                price: paramsSpot.price,
+            })
+        }
+    },[paramsSpot])
+
+    useEffect(() => {
+        dispatch(getSpotsDetailsThunk(spotId))
+    },[dispatch, spotId])
+
+    // console.log(spotId)
+
+
+    // console.log(secondStateFetch)
+    // const stateCopy = {...secondStateFetch}
 
 
     const submitHandler = async (e) => {
         e.preventDefault()
 
         const errorObj = {}
-        if (!createSpotInputs.country) errorObj.country = "Country is required"
-        if (!createSpotInputs.streetAddress) errorObj.streetAddress = "Address is required"
-        if (!createSpotInputs.city) errorObj.city = "City is required"
-        if (!createSpotInputs.state) errorObj.state = "State is required"
-        if (createSpotInputs.description.length < 30) errorObj.description = "Description needs a minimum of 30 characters"
-        if (!createSpotInputs.title) errorObj.title = "Name is required"
-        if (!createSpotInputs.price) errorObj.price = "Price is required"
-        if (!createSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
-        // if (!createSpotInputs.image1.endsWith('.png')
-        //     && !createSpotInputs.image1.endsWith('.jpg')
-        //     && !createSpotInputs.image1.endsWith('.jpeg')) errorObj.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (!createSpotInputs.image2.endsWith('.png')
-        //     && !createSpotInputs.image2.endsWith('.jpg')
-        //     && !createSpotInputs.image2.endsWith('.jpeg')) errorObj.image2 = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (!createSpotInputs.image3.endsWith('.png')
-        //     && !createSpotInputs.image3.endsWith('.jpg')
-        //     && !createSpotInputs.image3.endsWith('.jpeg')) errorObj.image3 = 'Image URL must end in .png, .jpg, or .jpeg'
-        // if (!createSpotInputs.image4.endsWith('.png')
-        //     && !createSpotInputs.image4.endsWith('.jpg')
-        //     && !createSpotInputs.image4.endsWith('.jpeg')) errorObj.image4 = 'Image URL must end in .png, .jpg, or .jpeg'
+        if (!updateSpotInputs.country) errorObj.country = "Country is required"
+        if (!updateSpotInputs.streetAddress) errorObj.streetAddress = "Address is required"
+        if (!updateSpotInputs.city) errorObj.city = "City is required"
+        if (!updateSpotInputs.state) errorObj.state = "State is required"
+        if (updateSpotInputs.description.length < 30) errorObj.description = "Description needs a minimum of 30 characters"
+        if (!updateSpotInputs.title) errorObj.title = "Name is required"
+        if (!updateSpotInputs.price) errorObj.price = "Price is required"
+        // if (!updateSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
 
         setErrors(errorObj)
 
-        // console.log(createSpotInputs)
-        // console.log(errorObj)
-        // dispatch(createNewSpotAction(createSpotInputs))
-
-
-        const previewImageURL = {
-            url: createSpotInputs.previewImage,
-            preview: true
-        }
 
         if (Object.keys(errorObj).length === 0) {
+            const updatedSpotObj = {
+                country: updateSpotInputs.country,
+                address: updateSpotInputs.streetAddress,
+                city: updateSpotInputs.city,
+                state: updateSpotInputs.state,
+                description: updateSpotInputs.description,
+                name: updateSpotInputs.title,
+                price: updateSpotInputs.price,
+                lat: 38,
+                lng: -77
+            }
 
-        const spotObj = {
-            ownerId: sessionUser.id,
-            country: createSpotInputs.country,
-            address: createSpotInputs.streetAddress,
-            city: createSpotInputs.city,
-            state: createSpotInputs.state,
-            description: createSpotInputs.description,
-            name: createSpotInputs.title,
-            price: createSpotInputs.price,
-            spotImages: previewImageURL,
-            lat: 90,
-            lng: -90
-            // image1: createSpotInputs.image1,
-            // image2: createSpotInputs.image2,
-            // image3: createSpotInputs.image3,
-            // image4: createSpotInputs.image4
-        }
-
-        const dispatchedCreatedSpot = await dispatch(createSpotsThunk(spotObj))
-        if (dispatchedCreatedSpot) {
-            history.push(`/spots/${dispatchedCreatedSpot.id}`)
-            return
+            const dispatchedUpdatedSpot = await dispatch(editSingleSpotThunk(updatedSpotObj, spotId))
+            if (dispatchedUpdatedSpot) {
+                history.push(`/spots/${spotId}`)
+            }
         }
     }
-
 
 
         // setCreateSpotInputs({
@@ -107,11 +104,11 @@ const CreateSpot = () => {
         //     image3: '',
         //     image4: ''
         // })
-    }
+    // }
 
     const changeHandler = (e) => {
-        setCreateSpotInputs({
-            ...createSpotInputs,
+        setUpdateSpotInputs({
+            ...updateSpotInputs,
             [e.target.id]: e.target.value
         })
     }
@@ -121,7 +118,7 @@ const CreateSpot = () => {
     // },[errors])
     return (
         <>
-            <h1>Create a New Spot</h1>
+            <h1>Update Your Spot</h1>
             <h2>Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
             <form onSubmit={submitHandler}>
@@ -130,7 +127,7 @@ const CreateSpot = () => {
                     <input
                         id='country'
                         type='text'
-                        value={createSpotInputs.country}
+                        value={updateSpotInputs.country}
                         onChange={changeHandler}
                         placeholder='Country'
                     />
@@ -141,7 +138,7 @@ const CreateSpot = () => {
                     <input
                         id='streetAddress'
                         type='text'
-                        value={createSpotInputs.streetAddress}
+                        value={updateSpotInputs.streetAddress}
                         onChange={changeHandler}
                         placeholder='Address'
                     />
@@ -152,7 +149,7 @@ const CreateSpot = () => {
                     <input
                         id='city'
                         type='text'
-                        value={createSpotInputs.city}
+                        value={updateSpotInputs.city}
                         onChange={changeHandler}
                         placeholder='City'
                     />
@@ -163,7 +160,7 @@ const CreateSpot = () => {
                     <input
                         id='state'
                         type='text'
-                        value={createSpotInputs.state}
+                        value={updateSpotInputs.state}
                         onChange={changeHandler}
                         placeholder='STATE'
                     />
@@ -174,7 +171,7 @@ const CreateSpot = () => {
                     <textarea
                         id='description'
                         name='description'
-                        value={createSpotInputs.description}
+                        value={updateSpotInputs.description}
                         onChange={changeHandler}
                         placeholder='Please write at least 30 characters'
                     />
@@ -187,7 +184,7 @@ const CreateSpot = () => {
                     <input
                         id='title'
                         type='text'
-                        value={createSpotInputs.title}
+                        value={updateSpotInputs.title}
                         onChange={changeHandler}
                         placeholder='Name of your spot'
                     />
@@ -199,24 +196,24 @@ const CreateSpot = () => {
                     <input
                         id='price'
                         type='text'
-                        value={createSpotInputs.price}
+                        value={updateSpotInputs.price}
                         onChange={changeHandler}
                         placeholder='Price per night(USD)'
                     />
                 </div>
                 {errors.price && <p className='error'>{`${errors.price}`}</p>}
-                <div className='form-row'>
+                {/* <div className='form-row'>
                     <label htmlFor='previewImage'>Liven up your spot with photos</label>
                     <p>Submit a link to at least one photo to publish your spot.</p>
                     <input
                         id='previewImage'
                         type='text'
-                        value={createSpotInputs.previewImage}
+                        value={updateSpotInputs.previewImage}
                         onChange={changeHandler}
                         placeholder='Preview Image URL'
                     />
                     {errors.previewImage && <p className='error'>{`${errors.previewImage}`}</p>}
-                </div>
+                </div> */}
                 {/* <div className='form-row'>
                     <label htmlFor='image1'></label>
                     <input
@@ -261,12 +258,11 @@ const CreateSpot = () => {
                     />
                     {errors.image4 && <p className='error'>{`${errors.image4}`}</p>}
                 </div> */}
-                <button type='submit'>Create Spot</button>
+                <button type='submit'>Update your Spot</button>
             </form >
         </>
 
     );
-
 }
 
-export default CreateSpot
+export default UpdateSpot

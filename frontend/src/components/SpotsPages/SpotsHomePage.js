@@ -10,7 +10,7 @@ const SpotsHomePage = () => {
     const dispatch = useDispatch()
     const spotsObjectFromReducer = useSelector(state => state.spots)
     const spotsDataFromSelector = Object.values(spotsObjectFromReducer.allSpots)
-
+    console.log(spotsObjectFromReducer)
 
     useEffect(() => {
         dispatch(getAllSpotsThunk())
@@ -18,7 +18,7 @@ const SpotsHomePage = () => {
 
     // console.log(spotsObjectFromReducer)
     // console.log(spotsDataFromSelector)
-
+    
 
     if (!spotsObjectFromReducer) return null
 
