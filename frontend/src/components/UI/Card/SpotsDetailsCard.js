@@ -5,14 +5,35 @@ import { deleteReviewThunk } from '../../../store/reviews'
 import { useDispatch } from 'react-redux'
 import PostReviewModal from '../../Reviews/PostReview'
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
+import { useHistory } from 'react-router-dom'
+
 // import reviewsReducer from '../../../store/reviews'
 
 const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
+    const history = useHistory()
     const dispatch = useDispatch()
     const { closeModal, showModal } = useModal()
+    const [reviewsUpdated, setReviewsUpdated] = useState(false)
+    const reviewsUpdatedHandler = () => {
+        setReviewsUpdated(true)
+    }
+    const [reviewsUpdated2, setReviewsUpdated2] = useState(false)
+
+    useEffect(() => {
+        setReviewsUpdated2(true)
+
+    }, [reviewsUpdated2, singleSpot.Reviews])
+
+    const rerender = Object.values(allSpotReviews)
+    console.log(rerender)
+
+    useEffect(() => {
+        console.log(rerender.length)
+    },[rerender.length])
     // console.log('spotsDetails', spotsDetails)
-    // console.log('ownerCopy', ownerCopy)
-    // console.log('single', singleSpot)
+    console.log('allSpotReviews', allSpotReviews)
+    console.log('singleSpot', singleSpot)
+    console.log('sessionUser', sessionUser)
     // console.log('owner', owner)
     // console.log(singleSpot)
     // const {singleSpot} = singleSpot
@@ -22,9 +43,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     const newUserCopy = {...singleSpotUser}
     const allSpotReviewsCopy = {...allSpotReviews}
     const sessionUserCopy = {...sessionUser}
-    console.log('allSpotReviewCopy', allSpotReviewsCopy)
-    console.log('singleSpotCopy', singleSpotCopy)
-    console.log('sessionUser', sessionUserCopy)
+    // console.log('allSpotReviewCopy', allSpotReviewsCopy)
+    // console.log('singleSpotCopy', singleSpotCopy)
+    // console.log('sessionUser', sessionUserCopy)
     // console.log(Object.values(allSpotReviews).every(review => review.userId !== sessionUser.id))
     // const singleSpotCopy.Reviews.length
     //do 20 - 23 later on
@@ -33,37 +54,19 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     const clickHandler = () => {
 
         closeModal()
+
     }
 
     // useEffect(() => {
         //     console.log(textArea)
         // },[textArea])
-    const [textArea, setTextArea] = useState('')
 
-    const postReviewHandler = () => {
-
-        showModal(
-            <div>
-              <h1>How was your stay?</h1>
-              <textarea
-                id='postReviewModal'
-                type='text'
-                placeholder='Leave your review here...'
-                onChange={(e) => setTextArea(e.target.value)}
-              />
-              <p>Stars</p>
-
-              <button
-              disabled={textArea.length < 10 ? true : false}
-              onClick={clickHandler}
-              >Submit Your Review</button>
-            </div>
-          );
-    }
-
-    const confirmDelete = (reviewId) => {
-        dispatch(deleteReviewThunk(reviewId))
-        closeModal()
+    const confirmDelete = async (reviewId) => {
+        await dispatch(deleteReviewThunk(reviewId)).then(() => {
+            closeModal()
+        })
+        history.push(`/spots`);
+        history.push(`/spots/${singleSpot.id}`)
     }
 
     const deleteReviewHandler = (reviewId) => {
@@ -81,43 +84,49 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             onClick={closeModal}>No (Keep Review)</button>
           </div>
           );
+
+
+
     }
 
     return (
 
         <div>
-             <h1>{singleSpotCopy.name}</h1>
+             <h1>{singleSpot.name}</h1>
              <div>
-             {singleSpotCopy.SpotImages && singleSpotCopy.SpotImages.map(spotImage => {
+             {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
                 return (
                 <img src={spotImage.url} alt='location' key={spotImage.url}/>
                 )
             })}
              </div>
             <p>
-            {`${singleSpotCopy.city}, ${singleSpotCopy.state}, ${singleSpotCopy.country}`}
+            {`${singleSpot.city}, ${singleSpot.state}, ${singleSpot.country}`}
             </p>
             <div>
-            {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
-            {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length === 1 && <p>1 Review</p>}
-            {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length > 1 && <p>{`${singleSpotCopy.Reviews.length} Reviews`}</p>}
+            {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
+            {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <p>1 Review</p>}
+            {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <p>{`${singleSpot.Reviews.length} Reviews`}</p>}
             </div>
+            {singleSpotUser?.firstName &&
+             singleSpotUser?.lastName &&
             <p>
-                {`Hosted by: ${newUserCopy.firstName}, ${newUserCopy.lastName}`}
+                {`Hosted by: ${singleSpotUser.firstName}, ${singleSpotUser.lastName}`}
             </p>
+            }
             <p>
-                {singleSpotCopy.description}
+                {singleSpot.description}
             </p>
-            <p>{`$${singleSpotCopy.price}night`}</p>
+            <p>{`$${singleSpot.price}night`}</p>
             <div>
-            {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
-            {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length === 1 && <h2>1 Review</h2>}
-            {singleSpotCopy.Reviews && singleSpotCopy.Reviews.length > 1 && <h2>{`${singleSpotCopy.Reviews.length} Reviews`}</h2>}
+            {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
+            {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <h2>1 Review</h2>}
+            {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h2>{`${singleSpot.Reviews.length} Reviews`}</h2>}
             </div>
             {
-            Object.values(sessionUserCopy).length > 0 &&
-            sessionUserCopy.id !== singleSpotCopy.ownerId &&
-            singleSpotCopy.Reviews &&
+            Object.values(sessionUser).length > 0 &&
+            sessionUser.id !== singleSpot.ownerId &&
+            singleSpot.Reviews &&
             <div className='post-review-container'>
 
                 <OpenModalMenuItem
@@ -125,7 +134,11 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                     <button className='post-review-container'
                     >Post your review</button>
                 }
-                    modalComponent={<PostReviewModal />}
+                    modalComponent={<PostReviewModal
+                        singleSpot={singleSpot}
+                        reviewsUpdatedHandler={reviewsUpdatedHandler}
+                        allSpotReviews={allSpotReviews}
+                        />}
                 />
             </div>
             // Object.values(allSpotReviewsCopy).length > 0 &&
@@ -139,19 +152,21 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             }
 
             <div className='review-list-container'>
-            {Object.values(allSpotReviewsCopy).length === 0 &&
-                Object.values(sessionUserCopy).length > 0  &&
-                sessionUserCopy.id !== singleSpotCopy.ownerId  &&
+            {Object.values(allSpotReviews).length === 0 &&
+                Object.values(sessionUser).length > 0  &&
+                sessionUser.id !== singleSpot.ownerId  &&
                 <h3>Be the first to review!</h3>}
             <ul>
-            {Object.values(allSpotReviewsCopy).length > 0 &&
-                Object.values(allSpotReviewsCopy).map(review => {
+            {Object.values(allSpotReviews).length > 0 &&
+                Object.values(allSpotReviews).map(review => {
+
                return (
+                review.User &&
                 <div key={review.id}>
                 <li>
-                    <h3>{review.User.firstName}</h3>
-                    <p>{review.review}</p>
-                    <p>{review.createdAt}</p>
+                    {review.User.firstName && <h3>{review.User.firstName}</h3>}
+                    {review.review && <p>{review.review}</p>}
+                    {review.createdAt && <p>{review.createdAt}</p>}
                     <button
                         onClick={() => deleteReviewHandler(review.id)}
                     >Delete</button>

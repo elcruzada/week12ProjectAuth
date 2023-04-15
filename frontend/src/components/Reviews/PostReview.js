@@ -1,35 +1,61 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useModal } from '../../context/Modal'
 import { postReviewThunk } from '../../store/reviews'
 
 
 //need star rating
-const PostReviewModal = () => {
+const PostReviewModal = ({singleSpot, reviewsUpdatedHandler, allSpotReviews}) => {
     const dispatch = useDispatch()
     const history = useHistory()
+    // const [reviewSubmitted, setReviewSubmitted] = useState(false)
+    // const [trigger, setTrigger] = useState(false)
+    const a = useSelector(state => state.session.user)
+    const [submitted, setHasSubmitted] = useState(false)
+    // const reviewLength = Object.values(reviews).length
     const [reviewContent, setReviewContent] = useState('')
-    const [starRating, setStarRating] = useState(0)
+    const [starRating, setStarRating] = useState(1)
     const [errors, setErrors] = useState({})
+    const [rerender, setRerender] = useState(0)
     const { closeModal } = useModal()
+    console.log('ssiiignle', singleSpot)
+    // const [singleSpotCopy, setSingleSpotCopy] = useState(singleSpot)
+
+
+  // useEffect(() => {
+  //   console.log('reviews', reviewLength)
+  // },[reviewLength])
+
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        return dispatch(postReviewThunk({
+       await dispatch(postReviewThunk({
             review: reviewContent,
             stars: starRating,
-            // spotId
-        })).then(closeModal)
-           .catch(async (res) => {
+            spotId: singleSpot.id
+        })).then(() => {
+            closeModal();
+            reviewsUpdatedHandler();
+          }).catch(async (res) => {
             const data = await res.json();
-          if (data && data.errors) {
-                setErrors(data.errors);
+            if (data && data.errors) {
+              setErrors(data.errors);
             }
-        })
+          });
+
+          history.push(`/spots`);
+          history.push(`/spots/${singleSpot.id}`);
+        //   setTrigger(!trigger)
+        // setRerender(rerender + 1)
+
     }
 
-
+    useEffect(() => {
+        // setSingleSpotCopy(singleSpot);
+        console.log(allSpotReviews)
+        // postReviewThunk()
+    }, [setHasSubmitted, allSpotReviews])
     return (
         <div>
         <form

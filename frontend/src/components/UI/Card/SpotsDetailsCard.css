@@ -12,3 +12,11 @@ button.post-review-container {
         border-radius: 15px;
         font-weight: bold;
 }
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    list-style-type: none;
+}
