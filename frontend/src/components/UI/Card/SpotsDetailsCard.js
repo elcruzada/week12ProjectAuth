@@ -40,9 +40,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     //jsonstringify
     const singleSpotCopy = {...singleSpot}
     const singleSpotUser = singleSpotCopy.User
-    const newUserCopy = {...singleSpotUser}
-    const allSpotReviewsCopy = {...allSpotReviews}
-    const sessionUserCopy = {...sessionUser}
+    // const newUserCopy = {...singleSpotUser}
+    // const allSpotReviewsCopy = {...allSpotReviews}
+    // const sessionUserCopy = {...sessionUser}
     // console.log('allSpotReviewCopy', allSpotReviewsCopy)
     // console.log('singleSpotCopy', singleSpotCopy)
     // console.log('sessionUser', sessionUserCopy)
@@ -124,9 +124,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <h2>1 Review</h2>}
             {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h2>{`${singleSpot.Reviews.length} Reviews`}</h2>}
             </div>
-            {
-            Object.values(sessionUser).length > 0 &&
-            sessionUser.id !== singleSpot.ownerId &&
+            {   sessionUser &&
+                Object.values(sessionUser).length > 0 &&
+                sessionUser?.id !== singleSpot.ownerId &&
             singleSpot.Reviews &&
             <div className='post-review-container'>
 
@@ -154,8 +154,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
 
             <div className='review-list-container'>
             {Object.values(allSpotReviews).length === 0 &&
+                sessionUser &&
                 Object.values(sessionUser).length > 0  &&
-                sessionUser.id !== singleSpot.ownerId  &&
+                sessionUser?.id !== singleSpot.ownerId  &&
                 <h3>Be the first to review!</h3>}
             <ul>
             {Object.values(allSpotReviews).length > 0 &&
