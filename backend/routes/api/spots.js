@@ -534,7 +534,7 @@ router.get('/:spotId', async (req, res) => {
         include: [
           { model: Review, attributes: ['stars'] },
           { model: SpotImage, attributes: { exclude: ['createdAt', 'updatedAt', 'spotId'] } },
-          { model: User, attributes: { exclude: ['username'] } }
+          { model: User, attributes: { exclude: ['username', 'hashedPassword', 'email', 'createdAt', 'updatedAt'], as: 'Owner' } }
         ]
       });
 
@@ -550,6 +550,98 @@ router.get('/:spotId', async (req, res) => {
       spot.setDataValue('numReviews', numReviews);
       spot.setDataValue('avgStarRating', avgStarRating.toFixed(1));
 
+      const spotObject = spot.toJSON();
+      spotObject.Owner = spotObject.User;
+      delete spotObject.User;
+
+      res.status(200).json(spotObject);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: 'Server error occurred',
+        statusCode: 500
+      });
+    }
+  });
+// router.get('/:spotId', async (req, res) => {
+//     const spotIdVar = req.params.spotId;
+
+//     try {
+//       const spot = await Spot.findOne({
+//         where: { id: spotIdVar },
+//         include: [
+//           { model: Review, attributes: ['stars'] },
+//           { model: SpotImage, attributes: { exclude: ['createdAt', 'updatedAt', 'spotId'] } },
+//           { model: User, attributes: { exclude: ['username'] } }
+//         ]
+//       });
+
+//       if (!spot) {
+//         return res.status(404).json({
+//           message: "Spot couldn't be found",
+//           statusCode: 404
+//         });
+//       }
+
+//       const numReviews = spot.Reviews.length;
+//       const avgStarRating = (numReviews > 0) ? spot.Reviews.reduce((total, review) => total + review.stars, 0) / numReviews : 0;
+//       spot.setDataValue('numReviews', numReviews);
+//       spot.setDataValue('avgStarRating', avgStarRating.toFixed(1));
+
+//       res.status(200).json(spot);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({
+//         message: 'Server error occurred',
+//         statusCode: 500
+//       });
+//     }
+//   });
+router.get('/:spotId', async (req, res) => {
+    const spotIdVar = req.params.spotId;
+
+    try {
+      const spot = await Spot.findOne({
+        where: { id: spotIdVar },
+        include: [
+          {
+            model: Review,
+            attributes: ['stars'],
+          },
+          {
+            model: SpotImage,
+            attributes: {
+              exclude: ['createdAt', 'updatedAt', 'spotId']
+            }
+          },
+          {
+            model: User,
+            attributes: {
+              exclude: ['username'],
+              include: [
+                {
+                  model: Owner,
+                  attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+              ]
+            }
+          }
+        ]
+      });
+
+      if (!spot) {
+        return res.status(404).json({
+          message: "Spot couldn't be found",
+          statusCode: 404
+        });
+      }
+
+      const numReviews = spot.Reviews.length;
+      const avgStarRating = (numReviews > 0) ? spot.Reviews.reduce((total, review) => total + review.stars, 0) / numReviews : 0;
+      spot.setDataValue('numReviews', numReviews);
+      spot.setDataValue('avgStarRating', avgStarRating.toFixed(1));
+      spot.User = spot.User.Owner;
+
       res.status(200).json(spot);
     } catch (error) {
       console.error(error);
@@ -559,7 +651,8 @@ router.get('/:spotId', async (req, res) => {
       });
     }
   });
-// })
+
+
 
 router.put('/:spotId', [requireAuth, restoreUser], async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body

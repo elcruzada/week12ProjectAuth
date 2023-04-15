@@ -15,8 +15,9 @@ const SpotsDetails = () => {
     const singleSpot = useSelector(state => state.spots.singleSpot)
     const allSpotReviews = useSelector(state => state.reviews.spot)
     const sessionUser = useSelector((state) => state.session.user)
-    // console.log(allSpotReviews)
+    console.log(singleSpot)
     // const singleSpot = useSelector(state => console.log(state))
+
 
     useEffect(() => {
         dispatch(getSpotsDetailsThunk(spotId))
