@@ -43,7 +43,7 @@ const SignupFormModal = () => {
   };
 
   return (
-    <>
+    <div className='modal'>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -51,6 +51,7 @@ const SignupFormModal = () => {
           <input
             type="text"
             value={email}
+            placeholder='Email'
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -61,6 +62,7 @@ const SignupFormModal = () => {
           <input
             type="text"
             value={username}
+            placeholder='Username'
             onChange={(e) => setUsername(e.target.value)}
             required
           />
@@ -71,6 +73,7 @@ const SignupFormModal = () => {
           <input
             type="text"
             value={firstName}
+            placeholder='First Name'
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
@@ -81,6 +84,7 @@ const SignupFormModal = () => {
           <input
             type="text"
             value={lastName}
+            placeholder = 'Last Name'
             onChange={(e) => setLastName(e.target.value)}
             required
           />
@@ -91,6 +95,7 @@ const SignupFormModal = () => {
           <input
             type="password"
             value={password}
+            placeholder = 'Password'
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -101,6 +106,7 @@ const SignupFormModal = () => {
           <input
             type="password"
             value={confirmPassword}
+            placeholder='Confirm Password'
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
@@ -110,7 +116,7 @@ const SignupFormModal = () => {
         )}
         <button type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

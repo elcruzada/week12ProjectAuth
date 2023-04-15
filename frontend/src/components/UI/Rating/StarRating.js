@@ -11,18 +11,18 @@ const StarRating = ({ rating, disabled, onChange }) => {
     // rating prop instead of unmounted and remounted with an updated rating, then
     // this useEffect is necessary.
 
-    const pawsIcon = (number) => {
-      const props = {};
+    const starIcon = (number) => {
+      const functions = {};
       if (!disabled) {
-        props.onMouseEnter = () => setActiveRating(number);
-        props.onMouseLeave = () => setActiveRating(rating);
-        props.onClick = () => onChange(number);
+        functions.onMouseEnter = () => setActiveRating(number);
+        functions.onMouseLeave = () => setActiveRating(rating);
+        functions.onClick = () => onChange(number);
       }
       return (
         <div
           key={number}
           className={activeRating >= number ? "filled" : "empty"}
-          {...props}
+          {...functions}
         >
           <i className="fa fa-star"></i>
         </div>
@@ -31,7 +31,7 @@ const StarRating = ({ rating, disabled, onChange }) => {
 
     return (
       <div className="rating-input">
-        {[1, 2, 3, 4, 5].map((number) => pawsIcon(number))}
+        {[1, 2, 3, 4, 5].map((number) => starIcon(number))}
       </div>
     );
   };
