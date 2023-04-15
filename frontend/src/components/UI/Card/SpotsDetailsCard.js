@@ -118,6 +118,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                 {singleSpot.description}
             </p>
             <p>{`$${singleSpot.price}night`}</p>
+            <h2>{singleSpot.avgStarRating}</h2>
             <div>
             {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
             {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <h2>1 Review</h2>}

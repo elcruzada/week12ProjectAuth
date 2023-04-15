@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useModal } from '../../context/Modal'
 import { postReviewThunk } from '../../store/reviews'
+import StarRating from '../UI/Rating/StarRating'
 
 
 //need star rating
@@ -11,15 +12,16 @@ const PostReviewModal = ({singleSpot, reviewsUpdatedHandler, allSpotReviews}) =>
     const history = useHistory()
     // const [reviewSubmitted, setReviewSubmitted] = useState(false)
     // const [trigger, setTrigger] = useState(false)
-    const a = useSelector(state => state.session.user)
-    const [submitted, setHasSubmitted] = useState(false)
+    // const a = useSelector(state => state.session.user)
+    // const [submitted, setHasSubmitted] = useState(false)
     // const reviewLength = Object.values(reviews).length
     const [reviewContent, setReviewContent] = useState('')
-    const [starRating, setStarRating] = useState(1)
+    const [starRating, setStarRating] = useState(0)
     const [errors, setErrors] = useState({})
-    const [rerender, setRerender] = useState(0)
+    // const [rerender, setRerender] = useState(0)
     const { closeModal } = useModal()
     console.log('ssiiignle', singleSpot)
+    // const [showEditForm, setShowEditForm] = useState(false);
     // const [singleSpotCopy, setSingleSpotCopy] = useState(singleSpot)
 
 
@@ -51,11 +53,11 @@ const PostReviewModal = ({singleSpot, reviewsUpdatedHandler, allSpotReviews}) =>
 
     }
 
-    useEffect(() => {
-        // setSingleSpotCopy(singleSpot);
-        console.log(allSpotReviews)
-        // postReviewThunk()
-    }, [setHasSubmitted, allSpotReviews])
+    // useEffect(() => {
+    //     // setSingleSpotCopy(singleSpot);
+    //     console.log(allSpotReviews)
+    //     // postReviewThunk()
+    // }, [setHasSubmitted, allSpotReviews])
     return (
         <div>
         <form
@@ -71,8 +73,8 @@ const PostReviewModal = ({singleSpot, reviewsUpdatedHandler, allSpotReviews}) =>
           value={reviewContent}
           onChange={(e) => setReviewContent(e.target.value)}
         />
+        <StarRating rating={starRating}  disabled={false} onChange={setStarRating}/>
         <p>Stars</p>
-
         <button
         disabled={reviewContent.length < 10 ? true : false}
         >Submit Your Review</button>
