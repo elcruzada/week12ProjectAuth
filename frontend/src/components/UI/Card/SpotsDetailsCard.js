@@ -50,6 +50,10 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     // const singleSpotCopy.Reviews.length
     //do 20 - 23 later on
     // console.log(Object.values(sessionUserCopy).length > 0)
+    // console.log(allSpotReviews)
+    const convertedAllSpotReviews = Object.values(allSpotReviews)
+    // console.log(convertedAllSpotReviews)
+    const sortedReviews = convertedAllSpotReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
     const clickHandler = () => {
 
@@ -104,8 +108,12 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             {`${singleSpot.city}, ${singleSpot.state}, ${singleSpot.country}`}
             </p>
             <div>
-            {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
+            <i className="fa fa-star"></i>
+            <h2>{singleSpot.avgStarRating}</h2>
+            {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
+            {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
             {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <p>1 Review</p>}
+            {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h2>New</h2>}
             {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <p>{`${singleSpot.Reviews.length} Reviews`}</p>}
             </div>
             {singleSpotUser?.firstName &&
@@ -118,10 +126,14 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                 {singleSpot.description}
             </p>
             <p>{`$${singleSpot.price}night`}</p>
-            <h2>{singleSpot.avgStarRating}</h2>
             <div>
-            {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>}
+            {/* {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>} */}
+            <i className="fa fa-star"></i>
+            <h2>{singleSpot.avgStarRating}</h2>
+
+             {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
             {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <h2>1 Review</h2>}
+             {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h2>New</h2>}
             {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h2>{`${singleSpot.Reviews.length} Reviews`}</h2>}
             </div>
             {   sessionUser &&
@@ -160,15 +172,19 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                 <h3>Be the first to review!</h3>}
             <ul>
             {Object.values(allSpotReviews).length > 0 &&
-                Object.values(allSpotReviews).map(review => {
-
+                sortedReviews.map(review => {
+                    const date = new Date(review.createdAt);
+                    const formattedDate = date.toLocaleString("en-US", {
+                      month: "long",
+                      year: "numeric",
+                    });
                return (
                 review.User &&
                 <div key={review.id}>
                 <li>
                     {review.User.firstName && <h3>{review.User.firstName}</h3>}
                     {review.review && <p>{review.review}</p>}
-                    {review.createdAt && <p>{review.createdAt}</p>}
+                    {review.createdAt && <p>{formattedDate}</p>}
                     <button
                         onClick={() => deleteReviewHandler(review.id)}
                     >Delete</button>
