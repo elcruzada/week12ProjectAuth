@@ -51,6 +51,13 @@ module.exports = {
         email: 'lalisa@blackpink.io',
         username: 'Bestpink',
         hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Demo',
+        lastName: 'User',
+        email: 'demoUser@demo.io',
+        username: 'DemoUser',
+        hashedPassword: bcrypt.hashSync('password')
       }
     ], {});
   },
