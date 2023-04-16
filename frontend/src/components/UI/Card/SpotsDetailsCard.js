@@ -19,17 +19,19 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     }
     const [reviewsUpdated2, setReviewsUpdated2] = useState(false)
 
-    useEffect(() => {
-        setReviewsUpdated2(true)
 
-    }, [reviewsUpdated2, singleSpot.Reviews])
+    // useEffect(() => {
+    //     setReviewsUpdated2(true)
 
-    const rerender = Object.values(allSpotReviews)
-    console.log(rerender)
+    // }, [reviewsUpdated2, singleSpot.Reviews])
 
-    useEffect(() => {
-        console.log(rerender.length)
-    },[rerender.length])
+    // const rerender = Object.values(allSpotReviews)
+    // console.log(rerender)
+
+    // useEffect(() => {
+    //     console.log(rerender.length)
+    // },[rerender.length])
+    // if (Object.values(allSpotReviews).length === 0) return null
     // console.log('spotsDetails', spotsDetails)
     console.log('allSpotReviews', allSpotReviews)
     console.log('singleSpot', singleSpot)
@@ -53,8 +55,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     // console.log(allSpotReviews)
     const convertedAllSpotReviews = Object.values(allSpotReviews)
     // console.log(convertedAllSpotReviews)
+    if (!convertedAllSpotReviews) return null
     const sortedReviews = convertedAllSpotReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    const foundReview = convertedAllSpotReviews.find(review => review?.userId === sessionUser?.id)
+    const foundReview = convertedAllSpotReviews.find(review => review.userId === sessionUser.id)
     // console.log(foundReview)
     const clickHandler = () => {
 
@@ -142,7 +145,8 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             {
                 sessionUser &&
                 Object.values(sessionUser).length > 0 &&
-                sessionUser?.id !== singleSpot.ownerId &&
+                sessionUser.id !== singleSpot.ownerId &&
+
                 !foundReview &&
                 // Object.keys(foundReview).length === 1 &&
             singleSpot.Reviews &&
@@ -173,6 +177,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             <div className='review-list-container'>
             {Object.values(allSpotReviews).length === 0 &&
                 sessionUser &&
+                convertedAllSpotReviews &&
                 Object.values(sessionUser).length > 0  &&
                 sessionUser?.id !== singleSpot.ownerId  &&
                 <h3>Be the first to review!</h3>}
@@ -185,8 +190,11 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                       year: "numeric",
                     });
                return (
-                review?.User &&
-                review?.id &&
+                review &&
+                review.User &&
+                review.id &&
+                sessionUser &&
+                sessionUser.id &&
                 <div key={review.id}>
                 <li>
                     {review.User.firstName && <h3>{review.User.firstName}</h3>}
@@ -197,7 +205,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                     <button
                         onClick={() => deleteReviewHandler(review.id)}
                     >Delete</button>
-                    // {console.log('reviewreview)}
+
                     }
                 </li>
                 </div>
