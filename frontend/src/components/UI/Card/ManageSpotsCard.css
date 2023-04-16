@@ -1,4 +1,4 @@
-.delete {
+/* .delete {
   background-color: crimson;
   font-weight: bold;
   color: white;
@@ -8,9 +8,9 @@
   background-color: darkgray;
   font-weight: bold;
   color: black
-}
+} */
 
-.modal-container {
+/* .modal-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -42,7 +42,7 @@
   text-align: center;
   width: 400px;
   height: 200px;
-} */
+}
 
 .modal-content h1 {
   font-size: 24px;
@@ -82,4 +82,4 @@
 
 .modal-content button:last-child {
   margin-right: 0;
-}
+} */
