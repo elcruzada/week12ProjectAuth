@@ -54,7 +54,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     const convertedAllSpotReviews = Object.values(allSpotReviews)
     // console.log(convertedAllSpotReviews)
     const sortedReviews = convertedAllSpotReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    // const foundReview = convertedAllSpotReviews.find(review => review.userId === sessionUser.id)
+    const foundReview = convertedAllSpotReviews.find(review => review?.userId === sessionUser?.id)
     // console.log(foundReview)
     const clickHandler = () => {
 
@@ -77,20 +77,23 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     const deleteReviewHandler = (reviewId) => {
 
         showModal(
-            <div>
-            <h1>Confirm Delete</h1>
-            <p>Are you sure you want to delete this review?</p>
-            <button
-            className='delete'
-            onClick={() => confirmDelete(reviewId)}
-            >Yes (Delete Review)</button>
-            <button
-            className='cancel'
-            onClick={closeModal}>No (Keep Review)</button>
-          </div>
+            <div className="modal-container">
+              <div className="modal-content">
+                <h1>Confirm Delete</h1>
+                <p>Are you sure you want to delete this review?</p>
+                <button
+                  className="delete"
+                  onClick={() => confirmDelete(reviewId)}
+                >
+                  Yes (Delete Review)
+                </button>
+                <br />
+                <button className="cancel" onClick={closeModal}>
+                  No (Keep Review)
+                </button>
+              </div>
+            </div>
           );
-
-
 
     }
 
@@ -106,7 +109,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             })}
              </div>
             <p>
-            {`${singleSpot.city}, ${singleSpot.state}, ${singleSpot.country}`}
+            {`${singleSpot?.city}, ${singleSpot?.state}, ${singleSpot?.country}`}
             </p>
             <div>
             <i className="fa fa-star"></i>
@@ -140,7 +143,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                 sessionUser &&
                 Object.values(sessionUser).length > 0 &&
                 sessionUser?.id !== singleSpot.ownerId &&
-                // foundReview &&
+                !foundReview &&
                 // Object.keys(foundReview).length === 1 &&
             singleSpot.Reviews &&
             <div className='post-review-container'>
@@ -182,15 +185,20 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                       year: "numeric",
                     });
                return (
-                review.User &&
+                review?.User &&
+                review?.id &&
                 <div key={review.id}>
                 <li>
                     {review.User.firstName && <h3>{review.User.firstName}</h3>}
                     {review.review && <p>{review.review}</p>}
                     {review.createdAt && <p>{formattedDate}</p>}
+                    {sessionUser.id === review.userId &&
+
                     <button
                         onClick={() => deleteReviewHandler(review.id)}
                     >Delete</button>
+                    // {console.log('reviewreview)}
+                    }
                 </li>
                 </div>
                )

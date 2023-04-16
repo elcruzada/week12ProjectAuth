@@ -1,17 +1,18 @@
 button.post-review-container {
-        background-color: #BE6DB7;
-        border: none;
-        color: #FDD36A;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 15px;
-        font-weight: bold;
-}
+    background-color: #BE6DB7;
+    border: none;
+    color: #FDD36A;
+    padding: 12px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-weight: bold;
+  }
+
 
 ul {
     list-style-type: none;
@@ -20,3 +21,66 @@ ul {
 li {
     list-style-type: none;
 }
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 400px;
+    height: 200px;
+  }
+
+  .modal-content h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .modal-content p {
+    margin-bottom: 20px;
+  }
+
+  .modal-content button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-bottom: 2px solid black;
+    width: 100%;
+  }
+
+  .modal-content button.delete {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .modal-content button.cancel {
+    background-color: #ccc;
+    color: black;
+  }
+
+  .modal-content button {
+    margin-top: 10px;
+    border-bottom: 2px solid black;
+  }
+
+  .modal-content button:last-child {
+    margin-right: 0;
+  }

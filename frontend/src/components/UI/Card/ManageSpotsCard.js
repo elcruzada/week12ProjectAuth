@@ -24,7 +24,9 @@ const ManageSpotsCard = ({userSpots}) => {
 
     const deleteSpotHandler = (spotId) => {
         showModal(
-          <div>
+          <div className='modal-container'>
+            <div className='modal-content'>
+
             <h1>Confirm Delete</h1>
             <p>Are you sure you want to remove this spot?</p>
             <button
@@ -34,6 +36,7 @@ const ManageSpotsCard = ({userSpots}) => {
             <button
             className='cancel'
             onClick={closeModal}>No (Keep Spot)</button>
+            </div>
           </div>
         );
     }

@@ -120,7 +120,7 @@ const CreateSpot = () => {
     //     console.log(errors)
     // },[errors])
     return (
-        <>
+        <div className='form-container'>
             <h1>Create a New Spot</h1>
             <h2>Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
@@ -263,7 +263,7 @@ const CreateSpot = () => {
                 </div> */}
                 <button type='submit'>Create Spot</button>
             </form >
-        </>
+        </div>
 
     );
 

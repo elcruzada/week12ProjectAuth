@@ -1,17 +1,159 @@
-h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-form {
+/*
+  .modal {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 2rem;
-}
+    justify-content: center;
+    width: 400px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+  }
 
-label {
+  .modal h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  .modal form {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .modal label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .modal input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+
+  .modal p.error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .modal button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #008489;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .modal button:hover {
+    background-color: #007a7a;
+  }
+
+  .modal button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .modal button + button {
+    margin-top: 10px;
+    background-color: #ddd;
+    color: black;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+  }
+
+  button[type="button"] {
+    margin-top: 10px;
+    width: 100%;
+    text-decoration: underline;
+  } */
+  .modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+
+  .modal h1 {
+    margin-top: 0;
+  }
+
+  .modal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .modal label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .modal input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  .modal button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0077ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #333;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    }
+
+  .modal button:hover {
+    background-color: #0066cc;
+  }
+
+  .modal .error {
+    color: red;
+    margin-top: 10px;
+  }
+
+  .login-form-demo {
+    text-decoration: underline;
+    border-bottom: 1px solid #0077ff;
+    }
+
+
+
+.submit {
+    text-decoration: underline;
+border-bottom: 1px solid #0077ff;
 }
