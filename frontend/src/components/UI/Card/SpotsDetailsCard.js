@@ -57,7 +57,11 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     // console.log(convertedAllSpotReviews)
     if (!convertedAllSpotReviews) return null
     const sortedReviews = convertedAllSpotReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    const foundReview = convertedAllSpotReviews.find(review => review.userId === sessionUser.id)
+    const foundReview = convertedAllSpotReviews.forEach(review => {
+        if (review && review.userId && sessionUser && sessionUser.id && review.userId === sessionUser.id) {
+           return review
+        }
+    })
     // console.log(foundReview)
     const clickHandler = () => {
 
@@ -192,9 +196,9 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
                return (
                 review &&
                 review.User &&
-                review.id &&
+                review?.id &&
                 sessionUser &&
-                sessionUser.id &&
+                sessionUser?.id &&
                 <div key={review.id}>
                 <li>
                     {review.User.firstName && <h3>{review.User.firstName}</h3>}
