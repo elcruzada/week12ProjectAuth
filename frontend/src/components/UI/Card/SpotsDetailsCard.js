@@ -39,7 +39,7 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     // const {singleSpot} = singleSpot
     //jsonstringify
     const singleSpotCopy = {...singleSpot}
-    const singleSpotUser = singleSpotCopy.User
+    const singleSpotUser = singleSpotCopy.Owner
     // const newUserCopy = {...singleSpotUser}
     // const allSpotReviewsCopy = {...allSpotReviews}
     // const sessionUserCopy = {...sessionUser}
@@ -54,7 +54,8 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
     const convertedAllSpotReviews = Object.values(allSpotReviews)
     // console.log(convertedAllSpotReviews)
     const sortedReviews = convertedAllSpotReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
+    // const foundReview = convertedAllSpotReviews.find(review => review.userId === sessionUser.id)
+    // console.log(foundReview)
     const clickHandler = () => {
 
         closeModal()
@@ -111,7 +112,6 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
             <i className="fa fa-star"></i>
             <h2>{singleSpot.avgStarRating}</h2>
             {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
-            {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
             {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <p>1 Review</p>}
             {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h2>New</h2>}
             {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <p>{`${singleSpot.Reviews.length} Reviews`}</p>}
@@ -136,9 +136,12 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
              {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h2>New</h2>}
             {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h2>{`${singleSpot.Reviews.length} Reviews`}</h2>}
             </div>
-            {   sessionUser &&
+            {
+                sessionUser &&
                 Object.values(sessionUser).length > 0 &&
                 sessionUser?.id !== singleSpot.ownerId &&
+                // foundReview &&
+                // Object.keys(foundReview).length === 1 &&
             singleSpot.Reviews &&
             <div className='post-review-container'>
 

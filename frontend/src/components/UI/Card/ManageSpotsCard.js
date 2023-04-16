@@ -51,7 +51,7 @@ const ManageSpotsCard = ({userSpots}) => {
     return (
         <div>
         <h1>Manage Spots</h1>
-        <button onClick={clickCreateSpotHandler}>Create a New Spot</button>
+        {/* <button onClick={clickCreateSpotHandler}>Create a New Spot</button> */}
         {userSpots.length > 0 ?
         userSpots.map(spot => {
             // console.log(spot)
