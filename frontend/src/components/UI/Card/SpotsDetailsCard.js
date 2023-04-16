@@ -106,12 +106,16 @@ const SpotsDetailsCard = ({singleSpot, allSpotReviews, sessionUser}) => {
 
     return (
 
-        <div>
+        <div className ='spots-details-container'>
              <h1>{singleSpot.name}</h1>
              <div>
              {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
                 return (
-                <img src={spotImage.url} alt='location' key={spotImage.url}/>
+                <img src={spotImage.url}
+                alt='location'
+                key={spotImage.url}
+                className='spot-details-image'
+                />
                 )
             })}
              </div>

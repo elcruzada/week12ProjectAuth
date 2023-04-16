@@ -17,7 +17,7 @@ img {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+/*
 .card-image-container img {
   transition: all 0.2s ease-in-out;
   width: 100%;
@@ -51,10 +51,14 @@ img {
   border-radius: 0.25rem;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
 .home-page-tooltip:hover .home-page-tooltip-text {
   opacity: 1;
   visibility: visible;
+}
+
+.spot-container {
+  cursor: pointer;
 }

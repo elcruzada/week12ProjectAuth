@@ -41,7 +41,7 @@
   }
 
   .profile-dropdown {
-    position: absolute; /* Set the position to absolute */
+    position: flex; /* Set the position to absolute */
     margin-top: 40px; /* Set the distance from the top of the container */
     right: 0; /* Set the position from the right */
     z-index: 1; /* Set the z-index to be on top of other elements */

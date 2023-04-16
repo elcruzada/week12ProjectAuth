@@ -32,6 +32,7 @@ const LoginFormModal = () => {
   const demoLoginHandler = () => {
     setCredential(demoUser.credential);
     setPassword(demoUser.password);
+    dispatch(sessionActions.login({credential, password})).then(closeModal)
   };
 
   return (

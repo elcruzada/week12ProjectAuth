@@ -71,7 +71,7 @@
     padding: 0;
   }
 
-  .create-spot-link a {
+  .create-spot-link {
     display: inline-block;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -83,7 +83,7 @@
     transition: background-color 0.3s ease;
   }
 
-  .create-spot-link a:hover {
+  .create-spot-link:hover {
     background-color: #007478;
   }
 
