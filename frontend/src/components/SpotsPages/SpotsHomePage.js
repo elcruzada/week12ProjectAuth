@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllSpotsThunk } from '../../store/spots'
 import HomePageCards from '../UI/Card/HomePageCards'
-import Tooltip from '../UI/Tooltip/Tooltip'
+// import Tooltip from '../UI/Tooltip/Tooltip1'
 import './SpotsHomePage.css'
 
 
@@ -18,18 +18,26 @@ const SpotsHomePage = () => {
 
     // console.log(spotsObjectFromReducer)
     // console.log(spotsDataFromSelector)
-    
+
 
     if (!spotsObjectFromReducer) return null
 
     return (
-        <div className="container">
-         {spotsDataFromSelector.map(spot => (
-            <Tooltip spot={spot} key={spot.id}>
-                <HomePageCards spot={spot} key={spot.id}/>
-            </Tooltip>
-         ))}
-        </div>
+        // <div className="spot-container">
+        //  {spotsDataFromSelector.map(spot => (
+        //     <Tooltip spot={spot} key={spot.id} className="home-page-tooltip">
+        //     <HomePageCards spot={spot} key={spot.id} />
+        //   </Tooltip>
+        //  ))}
+        // </div>
+        <div className="spot-container">
+        {spotsDataFromSelector.map(spot => (
+          <div key={spot.id} className="home-page-tooltip">
+            <HomePageCards spot={spot} />
+            <div className="home-page-tooltip-text">{spot.name}</div>
+          </div>
+        ))}
+      </div>
     )
 
 }

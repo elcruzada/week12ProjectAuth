@@ -4,75 +4,250 @@
 
   .navbar {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    padding: 0 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-items {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 4rem;
-    padding: 0 1.875rem;
-    background-color: white;
-    box-shadow: 0px 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
   }
 
   .logo {
-    height: 2.5rem;
+    height: 50px;
   }
 
-
-.nav-items {
-    position: relative;
+  .session-links {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    list-style: none;
+    list-style-type: none;
     margin: 0;
     padding: 0;
   }
 
-  .nav-items li {
-    margin: 0 0.625rem;
-    font-weight: bold;
-    font-size: 1rem;
+  .profile {
+    display: flex;
+    align-items: center;
   }
 
-  .nav-items li:first-child {
-    margin-right: auto;
-  }
-
-  .nav-items li:last-child {
-    margin-left: auto; /* Set margin-left:auto instead of 1.25rem */
+  .profile-link {
+    margin-right: 1.5rem;
   }
 
   .create-spot-link {
-    padding-right: 1.25rem;
+    margin-right: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .profile-link {
+      display: none;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .create-spot-link {
+      display: none;
+    }
+  }
+
+  .create-spot-link {
+    margin-left: 1.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .create-spot-link a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    background-color: #008489;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .create-spot-link a:hover {
+    background-color: #007478;
+  }
+
+  .modal-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #008489;
+    transition: color 0.3s ease;
+  }
+
+  .modal-button:hover {
+    color: #007478;
+  }
+
+
+
+
+
+
+  /* .profile{
+    margin-left: auto;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 2rem;
+  }
+
+  .nav-items {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .session-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .session-links-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+  }
+
+  .create-spot-link {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+  }
+
+  .create-spot-link a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    background-color: #008489;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .create-spot-link a:hover {
+    background-color: #007478;
+  }
+
+  .modal-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  .modal-button:hover {
+    text-decoration: underline;
+  } */
+  /* .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 2rem;
+  }
+
+  .nav-items {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .session-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .session-links-item {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .create-spot-link {
+    margin-left: 1.5rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .create-spot-link a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    background-color: #008489;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .create-spot-link a:hover {
+    background-color: #007478;
   }
 
   .session-links-item {
     margin-left: auto;
-  }
-
-  .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    background-color: white;
-    width: 30rem;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
-  }
-
-  .menu-container {
-    position: relative;
-  }
-
-  .profile-dropdown {
-    position: absolute;
-    top: 100%; /* adjust the value as needed */
-    right: 0;
-    width: 200px;
-    padding: 8px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  }
+  } */

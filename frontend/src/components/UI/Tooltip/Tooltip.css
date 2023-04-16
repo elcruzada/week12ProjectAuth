@@ -14,15 +14,15 @@
 }
 */
 
-.tooltip {
+.tooltip-container {
   position: relative;
 }
 
-.tooltip:hover .tooltip-content {
+.tooltip-container:hover .tooltip-content {
   display: block;
 }
 
-.tooltip .tooltip-content {
+.tooltip-container .tooltip-content {
   display: flex;
   position: absolute;
   top: 8rem;
