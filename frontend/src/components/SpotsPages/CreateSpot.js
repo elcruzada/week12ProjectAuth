@@ -19,10 +19,10 @@ const CreateSpot = () => {
         title: '',
         price: '',
         previewImage: '',
-        // image1: '',
-        // image2: '',
-        // image3: '',
-        // image4: ''
+        image1: '',
+        image2: '',
+        image3: '',
+        image4: ''
     })
 
 
@@ -39,6 +39,13 @@ const CreateSpot = () => {
         if (!createSpotInputs.title) errorObj.title = "Name is required"
         if (!createSpotInputs.price) errorObj.price = "Price is required"
         if (!createSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
+
+        if (createSpotInputs.previewImage &&
+            !(createSpotInputs.previewImage.endsWith('.png') ||
+                createSpotInputs.previewImage.endsWith('.jpg') ||
+                createSpotInputs.previewImage.endsWith('.jpeg'))) {
+            errorObj.previewImage = 'Image URL must end in .png, .jpg, or .jpeg';
+        }
         // if (!createSpotInputs.image1.endsWith('.png')
         //     && !createSpotInputs.image1.endsWith('.jpg')
         //     && !createSpotInputs.image1.endsWith('.jpeg')) errorObj.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
@@ -66,30 +73,30 @@ const CreateSpot = () => {
 
         if (Object.keys(errorObj).length === 0) {
 
-        const spotObj = {
-            ownerId: sessionUser.id,
-            country: createSpotInputs.country,
-            address: createSpotInputs.streetAddress,
-            city: createSpotInputs.city,
-            state: createSpotInputs.state,
-            description: createSpotInputs.description,
-            name: createSpotInputs.title,
-            price: createSpotInputs.price,
-            spotImages: previewImageURL,
-            lat: 90,
-            lng: -90
-            // image1: createSpotInputs.image1,
-            // image2: createSpotInputs.image2,
-            // image3: createSpotInputs.image3,
-            // image4: createSpotInputs.image4
-        }
+            const spotObj = {
+                ownerId: sessionUser.id,
+                country: createSpotInputs.country,
+                address: createSpotInputs.streetAddress,
+                city: createSpotInputs.city,
+                state: createSpotInputs.state,
+                description: createSpotInputs.description,
+                name: createSpotInputs.title,
+                price: createSpotInputs.price,
+                spotImages: previewImageURL,
+                lat: 90,
+                lng: -90
+                // image1: createSpotInputs.image1,
+                // image2: createSpotInputs.image2,
+                // image3: createSpotInputs.image3,
+                // image4: createSpotInputs.image4
+            }
 
-        const dispatchedCreatedSpot = await dispatch(createSpotsThunk(spotObj))
-        if (dispatchedCreatedSpot) {
-            history.push(`/spots/${dispatchedCreatedSpot.id}`)
-            return
+            const dispatchedCreatedSpot = await dispatch(createSpotsThunk(spotObj))
+            if (dispatchedCreatedSpot) {
+                history.push(`/spots/${dispatchedCreatedSpot.id}`)
+                return
+            }
         }
-    }
 
 
 
@@ -122,9 +129,9 @@ const CreateSpot = () => {
     return (
         <div className='form-container'>
             <form onSubmit={submitHandler}>
-            <h1>Create a New Spot</h1>
-            <h2>Where's your place located?</h2>
-            <p>Guests will only get your exact address once they booked a reservation.</p>
+                <h1>Create a New Spot</h1>
+                <h2>Where's your place located?</h2>
+                <p>Guests will only get your exact address once they booked a reservation.</p>
                 <div className='form-row'>
                     <label htmlFor='country'>Country</label>
                     <input
@@ -147,6 +154,37 @@ const CreateSpot = () => {
                     />
                 </div>
                 {errors.streetAddress && <p className='error'>{`${errors.streetAddress}`}</p>}
+                <div className='form-row-container2'>
+                    <div className='form-row form-row2'>
+                        <label htmlFor='city'>City</label>
+                        <input
+                            id='city'
+                            type='text'
+                            value={createSpotInputs.city}
+                            onChange={changeHandler}
+                            placeholder='City'
+                          className='city-input'
+                        />
+                        {errors.city && <p className='error'>{`${errors.city}`}</p>}
+                    </div>
+                    <div className='comma'>,</div>
+                    <div className='form-row form-row2'>
+                        <label htmlFor='state'>State</label>
+                        <div className='state-input-container2'>
+                            <input
+                                id='state'
+                                type='text'
+                                value={createSpotInputs.state}
+                                onChange={changeHandler}
+                                placeholder='STATE'
+                            className='state-input'
+                            />
+                            {errors.state && <p className='error'>{`${errors.state}`}</p>}
+                        </div>
+                    </div>
+                </div>
+                {/* <div className='city-state-div'>
+
                 <div className='form-row'>
                     <label htmlFor='city'>City</label>
                     <input
@@ -167,8 +205,9 @@ const CreateSpot = () => {
                         onChange={changeHandler}
                         placeholder='STATE'
                     />
-                </div>
                 {errors.state && <p className='error'>{`${errors.state}`}</p>}
+                </div>
+                </div> */}
                 <div className='form-row'>
                     <label htmlFor='description'>Describe your place to guests</label>
                     <textarea
@@ -196,14 +235,17 @@ const CreateSpot = () => {
                 <div className='form-row'>
                     <label htmlFor='price'>Set a base price for your spot</label>
                     <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
-                <i class="fa-duotone fa-dollar-sign"></i>
-                    <input
-                        id='price'
-                        type='text'
-                        value={createSpotInputs.price}
-                        onChange={changeHandler}
-                        placeholder='Price per night(USD)'
-                    />
+                    <div className='dollar-price-container'>
+
+                        <i className="fa-duotone fa-dollar-sign"></i>
+                        <input
+                            id='price'
+                            type='text'
+                            value={createSpotInputs.price}
+                            onChange={changeHandler}
+                            placeholder='Price per night(USD)'
+                        />
+                    </div>
                 </div>
                 {errors.price && <p className='error'>{`${errors.price}`}</p>}
                 <div className='form-row'>
@@ -217,6 +259,12 @@ const CreateSpot = () => {
                         placeholder='Preview Image URL'
                     />
                     {errors.previewImage && <p className='error'>{`${errors.previewImage}`}</p>}
+                    <div className='create-spot-button'>
+
+                        <button type='submit'
+
+                        >Create Spot</button>
+                    </div>
                 </div>
                 {/* <div className='form-row'>
                     <label htmlFor='image1'></label>
@@ -225,7 +273,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image1}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image1 && <p className='error'>{`${errors.image1}`}</p>}
                 </div>
@@ -236,7 +284,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image2}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image2 && <p className='error'>{`${errors.image2}`}</p>}
                 </div>
@@ -247,7 +295,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image3}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image3 && <p className='error'>{`${errors.image3}`}</p>}
                 </div>
@@ -258,11 +306,14 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image4}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image4 && <p className='error'>{`${errors.image4}`}</p>}
                 </div> */}
-                <button type='submit'>Create Spot</button>
+                {/* <div> */}
+
+                {/* </div> */}
+
             </form >
         </div>
 

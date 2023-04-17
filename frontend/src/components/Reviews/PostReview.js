@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { useModal } from '../../context/Modal'
 import { postReviewThunk } from '../../store/reviews'
 import StarRating from '../UI/Rating/StarRating'
+import './PostReview.css'
 
 
 //need star rating
@@ -65,17 +66,24 @@ const PostReviewModal = ({singleSpot, reviewsUpdatedHandler, allSpotReviews}) =>
             onSubmit={submitHandler}
         >
 
-        <h1>How was your stay?</h1>
+        <h1 className='how-stay'>How was your stay?</h1>
         <textarea
+          className="reviewModalText"
           id='postReviewModal'
           type='text'
           placeholder='Leave your review here...'
           value={reviewContent}
           onChange={(e) => setReviewContent(e.target.value)}
         />
-        <StarRating rating={starRating}  disabled={false} onChange={setStarRating}/>
+        <div className='star-rating-container'>
+
+        <StarRating rating={starRating}  disabled={false} onChange={setStarRating}
+        className="star-rating"
+        />
         <p>Stars</p>
+        </div>
         <button
+        className='post-review-modal-button'
         disabled={reviewContent.length < 10 ? true : false}
         >Submit Your Review</button>
         </form>

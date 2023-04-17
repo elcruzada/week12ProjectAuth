@@ -7,11 +7,7 @@ const StarRating = ({ rating, disabled, onChange }) => {
     useEffect(() => {
       setActiveRating(rating);
     }, [rating]);
-    // NOTE: This useEffect isn't necessary to have for this scenario, but if you
-    // have a scenario which requires this input to be re-rendered with an updated
-    // rating prop instead of unmounted and remounted with an updated rating, then
-    // this useEffect is necessary.
-
+ 
     const starIcon = (number) => {
       const functions = {};
       if (!disabled) {

@@ -4,6 +4,7 @@
   grid-gap: 10px;
   grid-auto-rows: minmax(200px, auto);
   margin-top: 6rem;
+  margin-left: 2rem;
 }
 
 
