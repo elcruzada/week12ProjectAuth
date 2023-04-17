@@ -3,9 +3,9 @@ This project takes inspiration from Airbnb in terms of its entire backend and fr
 The technologies used in this endeavor included Javascript, React, Redux, Express and, Sequelize.
 
 
+The features used here are being able to signup, login, create spots (aka a location), check that spots details page and see more about that spot, where you can view review items and an alert, manage your own spots page by updating and deleting your own spots, and being able to post reviews and delete your own reviews.
 
-
-
+All of this happens while the backend database updates with information taken from the frontend.
 
 1. Launch the item by typing the cd command into the backend folder. Afterwards, run npm install to install the dependencies. Create another terminal and cd into the frontend as well, installing the dependencies with npm install.
 
