@@ -25,7 +25,9 @@ const SignupFormModal = () => {
     if (password.length < 6) signUpErrors.password = "Password cannot be less than 6 characters";
     if (password !== confirmPassword) signUpErrors.confirmPassword = "Passwords do not match";
     setErrors(signUpErrors);
-
+    if (Object.values(signUpErrors).length) {
+      return
+    }
     // Check for errors in the signUpErrors object instead of the errors object
     if (Object.values(signUpErrors).length === 0) {
       dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
@@ -34,6 +36,7 @@ const SignupFormModal = () => {
           const data = await res.json();
           console.log(data.errors)
           if (data && data.errors) {
+            console.log(data.errors)
             if (Array.isArray(data.errors)){
               for (const err of data.errors) {
                 if (err === 'Please provide a valid email.') signUpErrors.email = 'Please provide a valid email.';
@@ -51,6 +54,7 @@ const SignupFormModal = () => {
           }
         });
     }
+
   };
 
   useEffect(() => {
@@ -132,7 +136,8 @@ const SignupFormModal = () => {
           <p>{errors.confirmPassword}</p>
         )}
         <button type="submit"
-        disabled={Object.values(errors).length > 0}
+        disabled={Object.values(errors).length > 0 || !email || !username || !firstName || !lastName || !password || !confirmPassword}
+        className={Object.values(errors).length > 0 ? 'disabled' : ''}
         >Sign Up</button>
         {/* <ul>
         {errors.length &&

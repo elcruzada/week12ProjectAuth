@@ -28,7 +28,7 @@ const LoginFormModal = () => {
 
   const demoLoginHandler = (e) => {
     e.preventDefault()
-  
+
 
     const credential = 'DemoUser'
     const password = 'password'
@@ -60,7 +60,8 @@ const LoginFormModal = () => {
         {Object.values(errors).length > 0 && (
           <p className="error">{errors}</p>
         )}
-        <button type="submit" disabled={Object.values(errors).length > 0}>
+        <button type="submit"
+        disabled={!credential || !password || Object.values(errors).length > 0}>
           Log In
         </button>
         <button type="button" onClick={demoLoginHandler}>
