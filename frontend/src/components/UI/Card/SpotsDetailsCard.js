@@ -105,22 +105,33 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
     }
 
     return (
-
-        <div className='spots-details-container'>
+        <>
             <h1>{singleSpot.name}</h1>
-            <div className='image-containr'>
                 <p>
                     {`${singleSpot?.city}, ${singleSpot?.state}, ${singleSpot?.country}`}
                 </p>
+
+        <div className='spots-details-container'>
+            <div className='spot-details-images-container'>
                 {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
                     return (
                         <img src={spotImage.url}
                             alt='location'
                             key={spotImage.url}
-                            className='spot-details-image'
+                            className='spot-details-preview-image'
                         />
                     )
                 })}
+                <div className='placeholder-images-container'>
+                    <div className='placeholder-images'>
+                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon' className='images-soon'/>
+                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon'className='images-soon'/>
+                    </div>
+                    <div className='placeholder-images'>
+                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon'className='images-soon'/>
+                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon'className='images-soon'/>
+                    </div>
+                </div>
             </div>
             <div className='div-two-columns-below-image'>
 
@@ -257,7 +268,7 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
             </div>
 
         </div>
-
+        </>
 
     )
 }

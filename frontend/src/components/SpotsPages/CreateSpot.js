@@ -19,10 +19,10 @@ const CreateSpot = () => {
         title: '',
         price: '',
         previewImage: '',
-        // image1: '',
-        // image2: '',
-        // image3: '',
-        // image4: ''
+        image1: '',
+        image2: '',
+        image3: '',
+        image4: ''
     })
 
 
@@ -38,7 +38,14 @@ const CreateSpot = () => {
         if (createSpotInputs.description.length < 30) errorObj.description = "Description needs a minimum of 30 characters"
         if (!createSpotInputs.title) errorObj.title = "Name is required"
         if (!createSpotInputs.price) errorObj.price = "Price is required"
-        if (!createSpotInputs.previewImage) errorObj.previewImage = "Preview image is required"
+        if (!createSpotInputs.previewImage)  errorObj.previewImage = "Preview image is required"
+
+        if (createSpotInputs.previewImage &&
+            !(createSpotInputs.previewImage.endsWith('.png') ||
+              createSpotInputs.previewImage.endsWith('.jpg') ||
+              createSpotInputs.previewImage.endsWith('.jpeg'))) {
+          errorObj.previewImage = 'Image URL must end in .png, .jpg, or .jpeg';
+        }
         // if (!createSpotInputs.image1.endsWith('.png')
         //     && !createSpotInputs.image1.endsWith('.jpg')
         //     && !createSpotInputs.image1.endsWith('.jpeg')) errorObj.image1 = 'Image URL must end in .png, .jpg, or .jpeg'
@@ -225,7 +232,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image1}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image1 && <p className='error'>{`${errors.image1}`}</p>}
                 </div>
@@ -236,7 +243,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image2}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image2 && <p className='error'>{`${errors.image2}`}</p>}
                 </div>
@@ -247,7 +254,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image3}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image3 && <p className='error'>{`${errors.image3}`}</p>}
                 </div>
@@ -258,7 +265,7 @@ const CreateSpot = () => {
                         type='text'
                         value={createSpotInputs.image4}
                         onChange={changeHandler}
-                        placeholder='Image URL'
+                        placeholder='Image URL (Coming Soon)'
                     />
                     {errors.image4 && <p className='error'>{`${errors.image4}`}</p>}
                 </div> */}
