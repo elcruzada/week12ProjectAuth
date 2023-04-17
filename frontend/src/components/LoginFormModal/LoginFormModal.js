@@ -4,10 +4,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 
-const demoUser = {
-  credential: "DemoUser",
-  password: "password",
-};
+
 
 const LoginFormModal = () => {
   const dispatch = useDispatch();
@@ -29,9 +26,13 @@ const LoginFormModal = () => {
       });
   };
 
-  const demoLoginHandler = () => {
-    setCredential(demoUser.credential);
-    setPassword(demoUser.password);
+  const demoLoginHandler = (e) => {
+    e.preventDefault()
+  
+
+    const credential = 'DemoUser'
+    const password = 'password'
+    return dispatch(sessionActions.login({credential, password})).then(closeModal)
   };
 
   return (

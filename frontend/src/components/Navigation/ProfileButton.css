@@ -4,7 +4,7 @@
     position: relative;
   } */
 
-  button {
+  /* button {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -14,11 +14,52 @@
 
   button:focus {
     outline: none;
-  }
+  } */
+  /* .fas.fa-user-circle {
+  } */
+
+.button-container-nav {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.profile-container {
+  float: inherit;
+
+  /* overflow: hidden */
+}
+
+.fa-solid {
+  color: #444;
+  position: relative;
+  font-size: 24px;
+  padding: 5px;
+}
 
   .fa-user-circle {
     color: #444;
+    position: relative;
+    font-size: 24px;
+    /* float: left;
+    overflow:hidden; */
   }
+  .profile-dropdown {
+    /* styles here */
+    font-size: 12px;
+
+      /* display: none; */
+      /* float: left; */
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 100px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      /* margin-right: 10px */
+      padding: 10px;
+  }
+
 
   /* .profile-dropdown {
     position: absolute;
@@ -35,35 +76,15 @@
     min-width: 160px;
   } */
 
-  .menu-container {
-    position: relative; /* Set the position to relative */
-    margin-top: 5rem;
-  }
+  /* .menu-container { */
+    /* position: absolute;  */
+    /* margin-top: 10rem; */
+  /* } */
 
-  .profile-dropdown {
-    position: absolute; /* Set the position to absolute */
-    margin-top: 40px; /* Set the distance from the top of the container */
-    right: 0; /* Set the position from the right */
-    z-index: 1; /* Set the z-index to be on top of other elements */
-    margin-top: 10px; /* Add margin to move the button down */
-  }
-  .profile-dropdown.hidden {
-    display: none;
-  }
-
-  .profile-dropdown li {
-    padding: 5px;
-  }
-
-  .profile-dropdown li:hover {
-    background-color: #f7f7f7;
-  }
-
-  .profile-dropdown a {
-    color: #444;
-    text-decoration: none;
-  }
-
-  .profile-dropdown a:hover {
-    color: #333;
-  }
+  /* .profile-dropdown {
+    position: sticky;
+    margin-top: 40px;
+    right: 0;
+    z-index: 1;
+    margin-top: 10px;
+  } */
