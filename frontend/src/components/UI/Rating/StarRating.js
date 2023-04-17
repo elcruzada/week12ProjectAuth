@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import './StarRating.css'
 
 const StarRating = ({ rating, disabled, onChange }) => {
     const [activeRating, setActiveRating] = useState(rating);

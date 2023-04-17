@@ -121,10 +121,10 @@ const CreateSpot = () => {
     // },[errors])
     return (
         <div className='form-container'>
+            <form onSubmit={submitHandler}>
             <h1>Create a New Spot</h1>
             <h2>Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
-            <form onSubmit={submitHandler}>
                 <div className='form-row'>
                     <label htmlFor='country'>Country</label>
                     <input
@@ -196,6 +196,7 @@ const CreateSpot = () => {
                 <div className='form-row'>
                     <label htmlFor='price'>Set a base price for your spot</label>
                     <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
+                <i class="fa-duotone fa-dollar-sign"></i>
                     <input
                         id='price'
                         type='text'

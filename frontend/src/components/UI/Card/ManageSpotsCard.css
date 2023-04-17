@@ -1,3 +1,172 @@
+.manage-spots-title1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.manage-spots-container1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 2rem;
+}
+
+.card-container1 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+}
+
+.card-image-container1 {
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-image1 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-details1 {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-city1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-price1 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-actions1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f1f1f1;
+  margin-top: auto;
+}
+
+.card-actions-container1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.update-button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease-in-out;
+  margin-right: 1rem;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.update-button:hover {
+  background-color: #6CCB5F;
+}
+
+.delete-button:hover {
+  background-color: #F56A5D;
+}
+
+
+/* .manage-spots-title1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.manage-spots-container1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 2rem;
+}
+
+.card-container1 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+}
+
+.card-image-container1 {
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-image1 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-details1 {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-city1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-price1 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-actions1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f1f1f1;
+}
+
+.card-action1 {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease-in-out;
+  margin-top: 1rem; /* add margin to separate buttons
+} */
+
+
 /* .delete {
   background-color: crimson;
   font-weight: bold;
@@ -83,3 +252,81 @@
 .modal-content button:last-child {
   margin-right: 0;
 } */
+/*
+ .manage-spots-card-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+} */
+/*
+.manage-spots-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, calc((100% - 50px) / 4)));
+  grid-gap: 10px;
+  grid-auto-rows: minmax(200px, auto);
+  margin-top: 6rem;
+}
+
+
+.manage-spots-details {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -35px;
+} */
+/*
+.manage-spots-rating {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.manage-spots-price {
+  font-size: 14px;
+  color: #333;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.manage-spots-city {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1024px) {
+  .card-container {
+    flex-wrap: nowrap;
+  }
+
+  .card {
+    flex-basis: 25%;
+    max-width: 25%;
+  }
+}
+
+
+.manage-spots-container {
+  position: relative;
+  /* z-index: 1; */
+  /* transition: z-index 0.3s ease-in-out; */
+/* }  */
+.card-container {
+  position: relative;
+}
+
+.update-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.delete-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

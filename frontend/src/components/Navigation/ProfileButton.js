@@ -6,6 +6,8 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem'
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
+import "./ProfileButton.css"
+import './Navigation.css'
 
 const ProfileButton = ({ user }) => {
   const dispatch = useDispatch();
@@ -46,17 +48,31 @@ const ProfileButton = ({ user }) => {
 //   console.log('showMenu', showMenu)
 
   return (
-    <div className="menu-container">
-    <button onClick={openMenu}>
-      <i className="fas fa-user-circle" />
+    <>
+
+
+    {/* <button > */}
+    <div
+      className='button-container-nav'
+      onClick={openMenu}
+    >
+
+      <i className="fa-solid fa-bars"
+      ></i>
+      <i className="fas fa-user-circle"
+      />
+    </div>
       {/* <i className="fa-duotone fa-bars"/> */}
-    </button>
+    {/* </button> */}
+
+    <div className='profile-container'>
+
     <ul className={ulClassName} ref={ulRef}>
       {user ? (
         <>
           <li>Hello {user.firstName}</li>
-          <li>{user.username}</li>
-          <li>{user.firstName} {user.lastName}</li>
+          {/* <li>{user.username}</li> */}
+          {/* <li>{user.firstName} {user.lastName}</li> */}
           <li>{user.email}</li>
           <li>
             <Link to='/spots/current'>Manage Spots</Link>
@@ -71,16 +87,17 @@ const ProfileButton = ({ user }) => {
           itemText="Log In"
           onItemClick={closeMenu}
           modalComponent={<LoginFormModal />}
-        />
+          />
         <OpenModalMenuItem
           itemText="Sign Up"
           onItemClick={closeMenu}
           modalComponent={<SignupFormModal />}
-        />
+          />
       </>
       )}
     </ul>
-  </div>
+      </div>
+  </>
   );
 }
 
