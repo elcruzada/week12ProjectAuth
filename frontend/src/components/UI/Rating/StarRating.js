@@ -7,13 +7,13 @@ const StarRating = ({ rating, disabled, onChange }) => {
     useEffect(() => {
       setActiveRating(rating);
     }, [rating]);
- 
+
     const starIcon = (number) => {
       const functions = {};
       if (!disabled) {
+        functions.onClick = () => onChange(number);
         functions.onMouseEnter = () => setActiveRating(number);
         functions.onMouseLeave = () => setActiveRating(rating);
-        functions.onClick = () => onChange(number);
       }
       return (
         <div
@@ -27,9 +27,7 @@ const StarRating = ({ rating, disabled, onChange }) => {
     };
 
     return (
-      <div className="rating-input">
-        {[1, 2, 3, 4, 5].map((number) => starIcon(number))}
-      </div>
+      <div className="rating-input"> {[1, 2, 3, 4, 5].map((number) => starIcon(number))} </div>
     );
   };
 
