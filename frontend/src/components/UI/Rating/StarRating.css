@@ -15,6 +15,7 @@
 
   .rating-input .filled {
     color: #CE5959;
+    cursor: pointer
   }
 
   .rating-input .empty {

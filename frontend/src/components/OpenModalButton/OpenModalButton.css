@@ -1,7 +1,9 @@
 .nav-button {
-    background-color: #4c7faf;
-    border: none;
+    background-color: rgb(235, 109, 170);
+    box-shadow: bisque;
+    border: line;
     color: white;
+    font-weight: bold;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
