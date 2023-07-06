@@ -11,6 +11,7 @@ import UpdateSpot from "./components/SpotsPages/UpdateSpot";
 import Navigation from "./components/Navigation/Navigation";
 import * as sessionActions from "./store/session";
 import CurrentBookings from "./components/BookingsPages/CurrentBookings";
+import CreateBooking from "./components/BookingsPages/CreateBooking";
 // import SpotsDetailsReviewsState from "./components/StateHandling/SpotsDetailsReviewsState";
 
 function App() {
@@ -45,6 +46,9 @@ function App() {
           </Route>
           <Route exact path='/bookings/current'>
             <CurrentBookings />
+          </Route>
+          <Route exact path='/bookings/reserve'>
+            <CreateBooking />
           </Route>
           <Route exact path='/login'>
             <LoginFormModal />

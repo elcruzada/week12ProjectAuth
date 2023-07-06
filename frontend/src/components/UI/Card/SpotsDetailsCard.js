@@ -14,6 +14,9 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
     const dispatch = useDispatch()
     const { closeModal, showModal } = useModal()
     const [reviewsUpdated, setReviewsUpdated] = useState(false)
+    const [checkin, setCheckin] = useState('')
+    const [checkout, setCheckout] = useState('')
+
     const reviewsUpdatedHandler = () => {
         setReviewsUpdated(true)
     }
@@ -77,98 +80,125 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
 
     }
 
+    const createBookingHandler = () => {
+        const bookingErrors = {}
+
+        if (!checkin) bookingErrors.checkin = "Check-in is required"
+        if (!checkout) bookingErrors.checkout = "Checkout is required"
+
+        if (Object.values(bookingErrors).length === 0) {
+            history.push('/bookings/reserve')
+        }
+    }
+
     return (
         <>
             <h1>{singleSpot.name}</h1>
-                <p>
-                    {`${singleSpot?.city}, ${singleSpot?.state}, ${singleSpot?.country}`}
-                </p>
+            <p>
+                {`${singleSpot?.city}, ${singleSpot?.state}, ${singleSpot?.country}`}
+            </p>
 
-        <div className='spots-details-container'>
-            <div className='spot-details-images-container'>
-                {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
-                    return (
-                        <img src={spotImage.url}
-                            alt='location'
-                            key={spotImage.url}
-                            className='spot-details-preview-image'
-                        />
-                    )
-                })}
-                <div className='placeholder-images-container'>
-                    <div className='placeholder-images'>
-                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon' className='images-soon'/>
-                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon'className='images-soon'/>
-                    </div>
-                    <div className='placeholder-images'>
-                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon'className='images-soon'/>
-                        <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon'className='images-soon'/>
+            <div className='spots-details-container'>
+                <div className='spot-details-images-container'>
+                    {singleSpot.SpotImages && singleSpot.SpotImages.map(spotImage => {
+                        return (
+                            <img src={spotImage.url}
+                                alt='location'
+                                key={spotImage.url}
+                                className='spot-details-preview-image'
+                            />
+                        )
+                    })}
+                    <div className='placeholder-images-container'>
+                        <div className='placeholder-images'>
+                            <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon' className='images-soon' />
+                            <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon' className='images-soon' />
+                        </div>
+                        <div className='placeholder-images'>
+                            <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon' className='images-soon' />
+                            <img src='https://digitalcommons.georgiasouthern.edu/jesuit-gallery205/1000/preview.jpg' alt='images-soon' className='images-soon' />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='div-two-columns-below-image'>
+                <div className='div-two-columns-below-image'>
 
-                <div className='column-details-page1'>
-                    {singleSpotUser?.firstName &&
-                        singleSpotUser?.lastName &&
-                        <h2>
-                            {`Hosted by: ${singleSpotUser.firstName}, ${singleSpotUser.lastName}`}
-                        </h2>
-                    }
-                    <div>
-                        {
-                            singleSpot?.description &&
-                            <p>
-                                {singleSpot.description}
-                            </p>
+                    <div className='column-details-page1'>
+                        {singleSpotUser?.firstName &&
+                            singleSpotUser?.lastName &&
+                            <h2>
+                                {`Hosted by: ${singleSpotUser.firstName}, ${singleSpotUser.lastName}`}
+                            </h2>
                         }
+                        <div>
+                            {
+                                singleSpot?.description &&
+                                <p>
+                                    {singleSpot.description}
+                                </p>
+                            }
+                        </div>
                     </div>
-                </div>
-                <div className='column-details-page2'>
-                    <div className='outerBorder-ratings-container'>
-                        <div className='inner-border-ratings-container'>
+                    <div className='column-details-page2'>
+                        <div className='outerBorder-ratings-container'>
+                            <div className='inner-border-ratings-container'>
 
-                            <div className='left-margin-reserve-box'>
+                                <div className='left-margin-reserve-box'>
 
-                            <h2>{`$${singleSpot.price} / night`}</h2>
+                                    <h2>{`$${singleSpot.price} / night`}</h2>
+
+                                </div>
+
+                                <div className='right-margin-reserve-box'>
+                                    <i className="fa fa-star"></i>
+
+                                    <h3>{singleSpot.avgStarRating}</h3>
+
+                                    {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
+                                    {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <h3>1 Review</h3>}
+                                    {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h3>New</h3>}
+                                    {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h3>{`${singleSpot.Reviews.length} Reviews`}</h3>}
+                                </div>
 
                             </div>
-
-                            <div className='right-margin-reserve-box'>
-                            <i className="fa fa-star"></i>
-
-                            <h3>{singleSpot.avgStarRating}</h3>
-
-                            {singleSpot.Reviews && singleSpot.Reviews.length > 0 && <h1>·</h1>}
-                            {singleSpot.Reviews && singleSpot.Reviews.length === 1 && <h3>1 Review</h3>}
-                            {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h3>New</h3>}
-                            {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h3>{`${singleSpot.Reviews.length} Reviews`}</h3>}
-                            </div>
-
-                        </div>
-                        <div
-                            className='check-in-checkout-container'
-                            style={{display: 'flex', justifyContent: 'space-between'}}
-                        >
                             <div
+                                className='check-in-checkout-container'
+                                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}
                             >
-
-                            CHECK-IN
-                            <input type='date'>
-                            </input>
+                                <div
+                                    style={{ display: 'flex', flexDirection: 'column' }}
+                                >
+                                    CHECK-IN
+                                    <input type='date'
+                                        value={checkin}
+                                        onChange={(e) => setCheckin(e.target.value)}
+                                    >
+                                    </input>
+                                </div>
+                                <div
+                                    style={{ display: 'flex', flexDirection: 'column' }}
+                                >
+                                    CHECKOUT
+                                    <input type='date'
+                                        value={checkout}
+                                        onChange={(e) => setCheckout(e.target.value)}
+                                    >
+                                    </input>
+                                </div>
                             </div>
-                            <div>
-                            CHECKOUT
-                            <input type='date'>
-                            </input>
-                            </div>
-                        </div>
-                        <button onClick={() => alert('Feature coming soon')}
+                            <button
+                        // onClick={() => alert('Feature coming soon')}
+                        onClick={() => createBookingHandler(singleSpot.id)}
                         className='reserve-button'
                         >Reserve</button>
+                            {/* <OpenModalMenuItem
+                                itemText={<button className='reserve-button'>
+                                    Complete your booking
+                                </button>}
+                                modalComponent={<CreateBookingModal />}
+                            /> */}
+                        </div>
                     </div>
                 </div>
-            </div>
                 <hr style={{ color: 'black', backgroundColor: 'black', height: 1 }} />
                 <div className='details-ratings-container'>
 
@@ -181,76 +211,76 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                     {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <h2>New</h2>}
                     {singleSpot.Reviews && singleSpot.Reviews.length > 1 && <h2>{`${singleSpot.Reviews.length} Reviews`}</h2>}
                 </div>
-            {/* {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>} */}
+                {/* {singleSpot.Reviews && singleSpot.Reviews.length === 0 && <i className="fa-solid fa-period"></i>} */}
 
-            {
-                sessionUser &&
-                Object.values(sessionUser).length > 0 &&
-                sessionUser.id !== singleSpot.ownerId &&
+                {
+                    sessionUser &&
+                    Object.values(sessionUser).length > 0 &&
+                    sessionUser.id !== singleSpot.ownerId &&
 
-                !foundReview &&
-                // Object.keys(foundReview).length === 1 &&
-                singleSpot.Reviews &&
-                <div className='post-review-container'>
+                    !foundReview &&
+                    // Object.keys(foundReview).length === 1 &&
+                    singleSpot.Reviews &&
+                    <div className='post-review-container'>
 
-                    <OpenModalMenuItem
-                        itemText={
-                            <button className='post-review-container'
-                            >Post your review</button>
+                        <OpenModalMenuItem
+                            itemText={
+                                <button className='post-review-container'
+                                >Post your review</button>
+                            }
+                            modalComponent={<PostReviewModal
+                                singleSpot={singleSpot}
+                                reviewsUpdatedHandler={reviewsUpdatedHandler}
+                                allSpotReviews={allSpotReviews}
+                            />}
+                        />
+                    </div>
+
+                }
+
+                <div className='review-list-container'>
+                    {Object.values(allSpotReviews).length === 0 &&
+                        sessionUser &&
+                        convertedAllSpotReviews &&
+                        Object.values(sessionUser).length > 0 &&
+                        sessionUser?.id !== singleSpot.ownerId &&
+                        <h3>Be the first to review!</h3>}
+                    <ul>
+                        {Object.values(allSpotReviews).length > 0 &&
+                            sortedReviews.map(review => {
+                                const date = new Date(review.createdAt);
+                                const formattedDate = date.toLocaleString("en-US", {
+                                    month: "long",
+                                    year: "numeric",
+                                });
+                                return (
+                                    review &&
+                                    review.User &&
+                                    review?.id &&
+                                    sessionUser &&
+                                    sessionUser?.id &&
+                                    <div key={review.id}>
+                                        <li>
+                                            {review.User.firstName && <h3>{review.User.firstName}</h3>}
+                                            {review.review && <p>{review.review}</p>}
+                                            {review.createdAt && <p>{formattedDate}</p>}
+                                            {sessionUser.id === review.userId &&
+
+                                                <button
+                                                    className='spots-details-delete-button'
+                                                    onClick={() => deleteReviewHandler(review.id)}
+                                                >Delete</button>
+
+                                            }
+                                        </li>
+                                    </div>
+                                )
+                            })
                         }
-                        modalComponent={<PostReviewModal
-                            singleSpot={singleSpot}
-                            reviewsUpdatedHandler={reviewsUpdatedHandler}
-                            allSpotReviews={allSpotReviews}
-                        />}
-                    />
+                    </ul>
                 </div>
 
-            }
-
-            <div className='review-list-container'>
-                {Object.values(allSpotReviews).length === 0 &&
-                    sessionUser &&
-                    convertedAllSpotReviews &&
-                    Object.values(sessionUser).length > 0 &&
-                    sessionUser?.id !== singleSpot.ownerId &&
-                    <h3>Be the first to review!</h3>}
-                <ul>
-                    {Object.values(allSpotReviews).length > 0 &&
-                        sortedReviews.map(review => {
-                            const date = new Date(review.createdAt);
-                            const formattedDate = date.toLocaleString("en-US", {
-                                month: "long",
-                                year: "numeric",
-                            });
-                            return (
-                                review &&
-                                review.User &&
-                                review?.id &&
-                                sessionUser &&
-                                sessionUser?.id &&
-                                <div key={review.id}>
-                                    <li>
-                                        {review.User.firstName && <h3>{review.User.firstName}</h3>}
-                                        {review.review && <p>{review.review}</p>}
-                                        {review.createdAt && <p>{formattedDate}</p>}
-                                        {sessionUser.id === review.userId &&
-
-                                            <button
-                                                className='spots-details-delete-button'
-                                                onClick={() => deleteReviewHandler(review.id)}
-                                            >Delete</button>
-
-                                        }
-                                    </li>
-                                </div>
-                            )
-                        })
-                    }
-                </ul>
             </div>
-
-        </div>
         </>
 
     )

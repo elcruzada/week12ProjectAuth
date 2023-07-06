@@ -98,7 +98,7 @@ export const deleteBookingThunk = (bookingId) => async (dispatch) => {
     })
 
     if (res.ok) {
-        dispatch(deleteBookingThunk(bookingId))
+        dispatch(deleteBookingAction(bookingId))
     }
 }
 
