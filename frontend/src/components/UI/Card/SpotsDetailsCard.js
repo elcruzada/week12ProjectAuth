@@ -19,40 +19,13 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
     }
     const [reviewsUpdated2, setReviewsUpdated2] = useState(false)
 
-
-    // useEffect(() => {
-    //     setReviewsUpdated2(true)
-
-    // }, [reviewsUpdated2, singleSpot.Reviews])
-
-    // const rerender = Object.values(allSpotReviews)
-    // console.log(rerender)
-
-    // useEffect(() => {
-    //     console.log(rerender.length)
-    // },[rerender.length])
-    // if (Object.values(allSpotReviews).length === 0) return null
-    // console.log('spotsDetails', spotsDetails)
     console.log('allSpotReviews', allSpotReviews)
     console.log('singleSpot', singleSpot)
     console.log('sessionUser', sessionUser)
-    // console.log('owner', owner)
-    // console.log(singleSpot)
-    // const {singleSpot} = singleSpot
-    //jsonstringify
+
     const singleSpotCopy = { ...singleSpot }
     const singleSpotUser = singleSpotCopy.Owner
-    // const newUserCopy = {...singleSpotUser}
-    // const allSpotReviewsCopy = {...allSpotReviews}
-    // const sessionUserCopy = {...sessionUser}
-    // console.log('allSpotReviewCopy', allSpotReviewsCopy)
-    // console.log('singleSpotCopy', singleSpotCopy)
-    // console.log('sessionUser', sessionUserCopy)
-    // console.log(Object.values(allSpotReviews).every(review => review.userId !== sessionUser.id))
-    // const singleSpotCopy.Reviews.length
-    //do 20 - 23 later on
-    // console.log(Object.values(sessionUserCopy).length > 0)
-    // console.log(allSpotReviews)
+
     const convertedAllSpotReviews = Object.values(allSpotReviews)
     // console.log(convertedAllSpotReviews)
     if (!convertedAllSpotReviews) return null
@@ -173,6 +146,23 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                             </div>
 
                         </div>
+                        <div
+                            className='check-in-checkout-container'
+                            style={{display: 'flex', justifyContent: 'space-between'}}
+                        >
+                            <div
+                            >
+
+                            CHECK-IN
+                            <input type='date'>
+                            </input>
+                            </div>
+                            <div>
+                            CHECKOUT
+                            <input type='date'>
+                            </input>
+                            </div>
+                        </div>
                         <button onClick={() => alert('Feature coming soon')}
                         className='reserve-button'
                         >Reserve</button>
@@ -215,14 +205,7 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                         />}
                     />
                 </div>
-                // Object.values(allSpotReviewsCopy).length > 0 &&
-                // Object.values(allSpotReviewsCopy).every(review => review.userId !== sessionUser.id) &&
-                // <div className='post-revew-button-container'>
-                //     <button
-                //     className='post-review-button'
-                //     onClick={() => postReviewHandler()}
-                //     >Post Your Review</button>
-                // </div>
+
             }
 
             <div className='review-list-container'>
