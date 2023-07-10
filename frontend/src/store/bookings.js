@@ -58,9 +58,7 @@ export const createBookingThunk = (spotId, userInput) => async (dispatch) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            userInput
-        })
+        body: JSON.stringify(userInput)
     })
 
     if (res.ok) {
@@ -72,21 +70,60 @@ export const createBookingThunk = (spotId, userInput) => async (dispatch) => {
 
 export const editBookingThunk = (userInput, bookingId) => async (dispatch) => {
 
-    const res =  await csrfFetch(`/api/bookings/${bookingId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({userInput})
-    });
+    //     const res =  await csrfFetch(`/api/bookings/${bookingId}`, {
+    //       method: 'PUT',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(userInput)
+    //     });
 
-    if (res.ok) {
-      const updatedBooking = await res.json();
+    //     const data = await res.json()
 
-      dispatch(editBookingAction(updatedBooking));
-      return updatedBooking;
-    }
-  };
+    //     if (res.ok) {
+    //     //   const updatedBooking = await res.json();
+
+    //       dispatch(editBookingAction(data));
+    //       dispatch(getCurrentBookingsThunk())
+    //       return data;
+    //     } else {
+    //         // const errorResponse = await res.json();
+    //         // console.log('EERRRROR', errorResponse.data);
+    //         // return errorResponse
+    //         console.error('ERROR', data)
+    //         throw new Error(data.errors.endDate || 'An error occurred');
+    //     }
+    // try {
+    //     console.log("ccruzada ", userInput)
+        const res = await csrfFetch(`/api/bookings/${bookingId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInput)
+        });
+
+    
+        if (res.ok) {
+            console.log('REEEEEEES', res)
+            const updatedBooking = await res.json();
+            await dispatch(editBookingAction(updatedBooking));
+            // return updatedBooking;
+
+        }
+    // } catch (err) {
+    //     console.error('Uncaught error in editBookingThunk:', err);
+
+    //     if (err instanceof Response) {
+    //         const errorMessage = await err.json();
+    //         console.log('Server response on error:', errorMessage);
+    //         return errorMessage;
+    //     } else {
+    //         console.error('Uncaught error:', err);
+    //         return { message: err.message };
+    //     }
+    // }
+};
 
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
@@ -114,7 +151,7 @@ const bookingsReducer = (state = initialState, action) => {
         })
     }
     let newBookingsState;
-    switch(action.type) {
+    switch (action.type) {
         case GET_CURRENTBOOKINGS:
             // console.log('AACCTION', action)
             newBookingsState = { ...state, allBookings: {} }
@@ -133,7 +170,7 @@ const bookingsReducer = (state = initialState, action) => {
             newBookingsState.singleBooking[action.userInput.id] = action.userInput;
             return newBookingsState;
         case DELETE_BOOKING:
-            newBookingsState = { ...state, allBookings: {...state.allBookings} }
+            newBookingsState = { ...state, allBookings: { ...state.allBookings } }
             delete newBookingsState.allBookings[action.spotId]
             return newBookingsState
         default:

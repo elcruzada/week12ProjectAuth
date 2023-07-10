@@ -1,1 +1,9 @@
-
+.bookings-city-card {
+    width: 50rem;
+    margin-top: 2rem;
+    border: 2px solid gray;
+}
+.bookings-city-card-left-right-wrapper {
+    display: flex;
+    justify-content: space-between;
+}

@@ -81,14 +81,9 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
     }
 
     const createBookingHandler = () => {
-        const bookingErrors = {}
 
-        if (!checkin) bookingErrors.checkin = "Check-in is required"
-        if (!checkout) bookingErrors.checkout = "Checkout is required"
+            if (singleSpot && singleSpot.id) history.push(`/bookings/reserve/${singleSpot.id}`)
 
-        if (Object.values(bookingErrors).length === 0) {
-            history.push('/bookings/reserve')
-        }
     }
 
     return (
@@ -160,7 +155,7 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                                 </div>
 
                             </div>
-                            <div
+                            {/* <div
                                 className='check-in-checkout-container'
                                 style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}
                             >
@@ -184,7 +179,7 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                                     >
                                     </input>
                                 </div>
-                            </div>
+                            </div> */}
                             <button
                         // onClick={() => alert('Feature coming soon')}
                         onClick={() => createBookingHandler(singleSpot.id)}

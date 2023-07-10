@@ -7,7 +7,7 @@ import BookingsCard from '../UI/Card/BookingsCard'
 const CurrentBookings = () => {
     const dispatch = useDispatch()
     const bookings = useSelector(state => Object.values(state.bookings.allBookings))
-    console.log('BOOOKINGS', bookings)
+    // console.log('BOOOKINGS', bookings)
 
     useEffect(() => {
         dispatch(getCurrentBookingsThunk())
@@ -15,7 +15,7 @@ const CurrentBookings = () => {
 
     return (
         <>
-            <h1>Where you've been</h1>
+            <h1>Your bookings</h1>
             {bookings?.map(booking => {
                 // console.log('booking', booking.Spot.city)
 

@@ -47,7 +47,7 @@ function App() {
           <Route exact path='/bookings/current'>
             <CurrentBookings />
           </Route>
-          <Route exact path='/bookings/reserve'>
+          <Route exact path='/bookings/reserve/:spotId'>
             <CreateBooking />
           </Route>
           <Route exact path='/login'>
