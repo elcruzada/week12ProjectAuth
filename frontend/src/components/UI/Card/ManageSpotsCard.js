@@ -148,6 +148,7 @@ const ManageSpotsCard = ({ userSpots }) => {
                                         src={spot.previewImage}
                                         alt="location"
                                         className="card-image1"
+                                        style={{cursor: 'pointer'}}
                                     />
                                 </div>
                                 <div className="card-details1">
@@ -163,12 +164,14 @@ const ManageSpotsCard = ({ userSpots }) => {
                                         <button
                                             onClick={() => updateSpotRedirectHandler(spot.id)}
                                             className="card-action1 card-update1"
-                                        >
+                                            style={{cursor: 'pointer'}}
+                                            >
                                             Update
                                         </button>
                                         <button
                                             onClick={() => deleteSpotHandler(spot.id)}
                                             className="card-action1 card-delete1"
+                                            style={{cursor: 'pointer'}}
                                         >
                                             Delete
                                         </button>
@@ -178,11 +181,14 @@ const ManageSpotsCard = ({ userSpots }) => {
                         );
                     })
                 ) : (
-                    <div className="no-spots-message">
+                    <div className="no-spots-message"
+                    style={{textAlign: 'center'}}
+                    >
                         <h2>You have not added any spots yet!</h2>
                         <button
                             className="manage-spots-create-button"
                             onClick={clickCreateSpotHandler}
+                            style={{cursor: 'pointer'}}
                         >
                             Add a Spot
                         </button>

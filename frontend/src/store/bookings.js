@@ -103,12 +103,12 @@ export const editBookingThunk = (userInput, bookingId) => async (dispatch) => {
             body: JSON.stringify(userInput)
         });
 
-    
+
         if (res.ok) {
-            console.log('REEEEEEES', res)
-            const updatedBooking = await res.json();
-            await dispatch(editBookingAction(updatedBooking));
-            // return updatedBooking;
+
+            const updatedBooking = await res.json()
+            await dispatch(editBookingAction(updatedBooking))
+            return updatedBooking
 
         }
     // } catch (err) {
@@ -128,14 +128,13 @@ export const editBookingThunk = (userInput, bookingId) => async (dispatch) => {
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
     const res = await csrfFetch(`/api/bookings/${bookingId}`, {
-        method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        method: "DELETE"
     })
 
     if (res.ok) {
+        const data = await res.json()
         dispatch(deleteBookingAction(bookingId))
+        return data
     }
 }
 

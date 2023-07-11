@@ -1,36 +1,69 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useModal } from '../../context/Modal'
 import './CreateBooking.css'
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import { createBookingThunk, editBookingThunk } from '../../store/bookings'
 import { useHistory, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-const UpdateBookingModal = ({ bookingId }) => {
+
+
+const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+    <button onClick={onClick} ref={ref}
+    >
+      Select Check-in Date
+    </button>
+  ));
+const CustomInput2 = React.forwardRef(({ value, onClick }, ref) => (
+    <button onClick={onClick} ref={ref}>
+      Select Checkout Date
+    </button>
+  ));
+
+const UpdateBookingModal = ({ booking, bookingId, bookingSpot }) => {
     const { closeModal } = useModal()
-    // const { bookingId } = useParams()
-    const bookingToUpdate = useSelector(state => Object.values(state.bookings?.allBookings)[bookingId])
-    // console.log('BOOOKING', bookingToUpdate)
+
+    const bookingSpotId = bookingSpot?.id
+    // console.log(bookingSpotId)
     const dispatch = useDispatch()
     const history = useHistory()
-    const [checkin, setCheckin] = useState('')
-    const [checkout, setCheckout] = useState('')
+    const [checkin, setCheckin] = useState(new Date())
+    const [checkout, setCheckout] = useState(new Date())
+    const [bookedDates, setBookedDates] = useState([])
     const [formErrors, setFormErrors] = useState({})
 
-    useEffect(() => {
-        setCheckin(bookingToUpdate?.startDate)
-        setCheckout(bookingToUpdate?.endDate)
-    }, [bookingToUpdate])
 
     useEffect(() => {
         console.log('RRROZZZ', formErrors)
     }, [formErrors])
+
+    useEffect(() => {
+        fetch(`/api/bookings/booked/${bookingSpotId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                const dateArray = data.map((dateStr) => {
+                    const date = new Date(dateStr);
+                    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                    return date;
+                });
+                setBookedDates(dateArray);
+            })
+            .catch((error) => console.error(error));
+    }, [bookedDates, bookingSpotId]);
+
+    const dateFormatter = (dateInput) => {
+
+        let date = new Date(dateInput);
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    }
 
     const updateBookingHandler = async () => {
 
         const errors = {}
         if (!checkin) errors.checkin = "Start date is required"
         if (!checkout) errors.checkout = "End date is required"
-
+        if (new Date(checkin) > new Date(checkout)) errors.order = "Start date should not come after end date"
 
 
 
@@ -41,70 +74,20 @@ const UpdateBookingModal = ({ bookingId }) => {
                 endDate: checkout
             }
 
-            // console.log('DISPATCHED', dispatchedCheckIn)
-            //     if (dispatchedCheckIn) {
-            //         setFormErrors(dispatchedCheckIn);
-            //         history.push('/bookings/current')
-
-            //         closeModal()
-            //     } else {
-            //         setFormErrors(dispatchedCheckIn);
-
-            //     }
-            // } else {
-            //     setFormErrors(errors);
-            // }
-            //     const dispatchedCheckIn = await dispatch(editBookingThunk(bookingInput, bookingId))
-            //     console.log('DIIIISPATCHED', dispatchedCheckIn)
-            //     if (dispatchedCheckIn?.errors) {
-            //         console.log('DIIIISPATCHED', dispatchedCheckIn)
-            //         setFormErrors(dispatchedCheckIn.errors);
-            //     } else {
-            //         history.push('/bookings/current')
-            //         closeModal()
-            //     }
-            // } else {
-            //     setFormErrors(errors);
-            // }
-            //     try {
-            //         await dispatch(editBookingThunk(bookingInput, bookingId))
-            //         history.push('/bookings/current')
-            //         closeModal()
-            //     } catch (err) {
-            //         console.error('EEERROR', err)
-            //         setFormErrors({ api: err.message });
-            //     }
-            // } else {
-            //     setFormErrors(errors);
-            // }
-            //     try {
-            //         const dispatchedCheckIn = await dispatch(editBookingThunk(bookingInput, bookingId))
-
-            //         if (dispatchedCheckIn?.statusCode === 200) {
-            //             history.push('/bookings/current')
-            //             closeModal()
-            //         } else {
-            //             // We are assuming here that the server will always return an object with 'errors' property
-            //             setFormErrors(dispatchedCheckIn.errors || { api: dispatchedCheckIn.message });
-            //         }
-            //     } catch (err) {
-            //         console.error('Error in updateBookingHandler:', err);
-            //         setFormErrors({ api: 'An error occurred while trying to update the booking. Please try again.' });
-            //     }
-            // } else {
-            //     setFormErrors(errors);
-            // }
 
 
             const result = await dispatch(editBookingThunk(bookingInput, bookingId));
             if (!result.ok) {
-                    console.log('RESSSULT', formErrors)
+                    // console.log('RESSSULT', formErrors)
                     setFormErrors(result);
                 } else {
                     history.push('/bookings/current');
                     closeModal();
                 }
 
+        } else {
+            setFormErrors(errors)
+            return
         }
     }
 
@@ -123,21 +106,41 @@ const UpdateBookingModal = ({ bookingId }) => {
                             style={{ display: 'flex', flexDirection: 'column' }}
                         >
                             CHECK-IN
-                            <input type='date'
+                            <p>{dateFormatter(checkin)}</p>
+                            {/* <input type='date'
                                 value={checkin}
                                 onChange={(e) => setCheckin(e.target.value)}
                             >
-                            </input>
+                            </input> */}
+
+                             <DatePicker
+                            selected={checkin}
+                            onChange={(date) => setCheckin(date)}
+                            excludeDates={bookedDates}
+                            minDate={new Date()}
+                            style={{cursor: 'pointer'}}
+                            customInput={<CustomInput />}
+                            />
+
                         </div>
                         <div
                             style={{ display: 'flex', flexDirection: 'column' }}
                         >
                             CHECKOUT
-                            <input type='date'
+                            {/* <input type='date'
                                 value={checkout}
                                 onChange={(e) => setCheckout(e.target.value)}
                             >
-                            </input>
+                            </input> */}
+                            <p>{dateFormatter(checkout)}</p>
+                            <DatePicker
+                            selected={checkout}
+                            onChange={(date) => setCheckout(date)}
+                            excludeDates={bookedDates}
+                            minDate={new Date()}
+                            style={{cursor: 'pointer'}}
+                            customInput={<CustomInput2 />}
+                            />
                         </div>
                     </div>
                 </div>

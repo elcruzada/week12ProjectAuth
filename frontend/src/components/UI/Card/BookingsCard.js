@@ -3,13 +3,12 @@ import UpdateBookingModal from '../../BookingsPages/UpdateBookingModal'
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
 import './BookingsCard.css'
 
-const BookingsCard = ({ booking }) => {
+const BookingsCard = ({ booking, bookingSpot }) => {
 
     const bookingId = booking?.id
 
     return (
         <div className='bookings-city-card'>
-
             <div className='bookings-city-card-left-right-wrapper'>
                 <div className='bookings-city-card-left-column'>
                     <img src={booking?.Spot.previewImage} alt='bookings-card'
@@ -33,16 +32,16 @@ const BookingsCard = ({ booking }) => {
 
             </div>
             <div classnName='bookings-update-delete'
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}
             >
                 <OpenModalMenuItem
                 itemText={<button className='post-booking-container'>Update</button>}
-                modalComponent={<UpdateBookingModal bookingId={bookingId}/>}
+                modalComponent={<UpdateBookingModal booking={booking} bookingId={bookingId} bookingSpot={bookingSpot}/>}
                 />
-                
+
                 <OpenModalMenuItem
                 itemText={<button className='post-booking-container'>Delete</button>}
-                modalComponent={<DeleteBookingModal bookingId={bookingId}/>}
+                modalComponent={<DeleteBookingModal booking={booking} bookingId={bookingId} bookingSpot={bookingSpot} />}
                 />
 
             </div>

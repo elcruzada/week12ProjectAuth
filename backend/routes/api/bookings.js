@@ -47,9 +47,10 @@ router.get('/current', [restoreUser, requireAuth], async (req, res) => {
 
 
     const bookingsObj = []
-    const payload = {}
+
 
     for (let booking of currentUserBookings) {
+        const payload = {}
 
 
         const jsonConversion = booking.toJSON();
@@ -101,11 +102,11 @@ router.get('/current', [restoreUser, requireAuth], async (req, res) => {
 
         delete jsonConversion.Spot.SpotImages
 
+        bookingsObj.push(payload)
     }
 
-    bookingsObj.push(payload)
 
-
+    // console.log('BOOKKING', bookingsObj)
     return res.json(
         {
             Bookings: bookingsObj
@@ -186,18 +187,32 @@ router.put('/:bookingId', restoreUser, requireAuth, validateEditBooking, async (
     for (let j = 0; j < convertedConflicts.length; j++) {
         let conflict = convertedConflicts[j]
         // console.log(bookingToFind.id)
-        if (conflict.id !== bookingToFind.id) {
-            return res.status(403).json({
-                "message": "Sorry, this spot is already booked for the specified dates",
-                "statusCode": 403
-            })
+        // if (conflict.id !== bookingToFind.id) {
+        //     return res.status(403).json({
+        //         "message": "Sorry, this spot is already booked for the specified dates",
+        //         "statusCode": 403
+        //     })
 
+        // }
+
+        if (conflict.id === bookingToFind.id) {
+            continue;
         }
         // console.log(new Date(conflict.startDate).getTime())
         const conflictingStartDate = new Date(conflict.startDate).getTime()
         const conflictingEndDate = new Date(conflict.endDate).getTime()
         const convertedStartDate = new Date(startDate).getTime()
         const convertedEndDate = new Date(endDate).getTime()
+
+        // if ((convertedStartDate >= conflictingStartDate && convertedStartDate <= conflictingEndDate) ||
+        // (convertedEndDate >= conflictingStartDate && convertedEndDate <= conflictingEndDate)) {
+        // return res.status(400).json({
+        //     message: "Your booking conflicts with an existing booking",
+        //     statusCode: 400,
+        //     conflictingStartDate: conflict.startDate,
+        //     conflictingEndDate: conflict.endDate
+        // });
+        // }
 
         //error for trying to book between start and end
         if ((conflictingStartDate <= convertedStartDate && conflictingStartDate >= convertedStartDate) &&
@@ -306,5 +321,46 @@ router.delete('/:bookingId', [restoreUser, requireAuth], async (req, res) => {
         "statusCode": 200
     })
 })
+
+router.get('/booked/:spotId', async (req, res) => {
+    const spotId = req.params.spotId;
+
+    const bookings = await Booking.findAll({
+        where: {
+            spotId: spotId,
+        },
+        include: [
+            {
+                model: Spot,
+                attributes: {
+                    exclude: ['description', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    {
+                        model: SpotImage,
+                        attributes: ['url', 'preview']
+                    }
+                ]
+            }
+        ],
+        attributes: ['startDate', 'endDate']
+    });
+
+    // console.log('boooookings', bookings)
+    let bookedDates = [];
+    bookings.forEach(booking => {
+        let currentDate = new Date(booking.startDate);
+        let endDate = new Date(booking.endDate);
+        while (currentDate <= endDate) {
+            bookedDates.push(new Date(currentDate));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+    });
+
+    // console.log('BOOOOKED', bookedDates)
+    return res.json(bookedDates);
+});
+
+
 
 module.exports = router

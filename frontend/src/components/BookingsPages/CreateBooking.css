@@ -1,4 +1,32 @@
 .create-booking-container {
-    height: 50rem;
-    width: 50rem;
+   margin-top: 4rem;
+   margin-left: 10rem;
+   margin-right: 10rem;
+   height: 40rem;
+}
+
+.create-booking-column-container {
+    width: 50%;
+}
+
+.create-booking-container-booking-image {
+    display: flex;
+    justify-content: space-between;
+}
+
+.create-booking-column-image-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.select-checkin-checkout {
+    padding: .5rem;
+    border-radius: 5px;
+    border: 3px solid black;
+    cursor: pointer;
+}
+
+.confirm-booking-button:hover {
+    background-color: #CE5959;
 }

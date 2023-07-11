@@ -554,6 +554,15 @@ router.get('/:spotId', async (req, res) => {
         spotObject.Owner = spotObject.User;
         delete spotObject.User;
 
+        if (spotObject.SpotImages.length > 0) {
+            for (let i = 0; i < spot.SpotImages.length; i++) {
+                const image = spot.SpotImages[i]
+                if (image.preview === true) {
+                    spotObject.previewImage = image.url
+                }
+            }
+        }
+
         res.status(200).json(spotObject);
     } catch (error) {
         console.error(error);
@@ -991,79 +1000,6 @@ router.post('/:spotId/bookings', [requireAuth, restoreUser], async (req, res) =>
         }
 
     }
-
-    // const bookingConflictDates = await Booking.findAll({
-    //     where: {
-    //         spotId: currentSpotId
-    //     }
-    // })
-
-    // console.log(bookingConflictDates)
-
-    // const bookingErrorObj = {
-    //     "message": "Sorry, this spot is already booked for the specified dates",
-    //         "statusCode": 403,
-    //         "errors": {}
-    // }
-
-
-    // const bookingsConflictDates = await Booking.findAll({
-    //     where: {
-    //       spotId: currentSpotId,
-    //       startDate: {
-    //         [Op.lte]: endDate
-    //         },
-    //     }
-    //   });
-
-    //   const bookingsConflictDates2 = await Booking.findAll({
-    //     where: {
-    //       spotId: currentSpotId,
-    //       endDate: {
-    //         [Op.gte]: startDate
-    //         }
-    //       }
-
-    //   });
-
-    // //   console.log(bookingsConflictDates)
-    // if (bookingsConflictDates.length){
-
-    //         bookingErrorObj.errors.startDate = "Start date conflicts with an existing booking"
-    //     }
-
-    //     if (bookingsConflictDates2.length){
-
-    //         bookingErrorObj.errors.endDate = "End date conflicts with an existing booking"
-    //         // res.status(403).json(bookingErrorObj)
-    //     }
-    //  if (bookingsConflictDates.length || bookingsConflictDates2.length)  return res.status(403).json(bookingErrorObj)
-
-
-    // if (bookingsConflictDates.length){
-    //     res.status(403).json(
-    //         {
-    //         "message": "Sorry, this spot is already booked for the specified dates",
-    //         "statusCode": 403,
-    //         "errors": {
-    //           "startDate": "Start date conflicts with an existing booking",
-    //           "endDate": "End date conflicts with an existing booking"
-    //         }
-    //       }
-    //     )
-    // }
-    // const bookingConflictDatesArray = []
-    // for (let i = 0; i < bookingConflictDates[0].length; i++) {
-    //         let booking = bookingConflictDates[0][i].dataValues
-    //         bookingConflictDatesArray.push(booking.toJSON())
-    // }
-
-
-    // console.log(bookingConflictDates)
-    // for (let j = 0; j < bookingConflictDatesArray.length; j++) {
-    //     let booking = bookingConflictDatesArray[j].startDate
-    //     console.log(booking)
-    // }
 
     const foundSpotId = getSpotId.dataValues.id
 

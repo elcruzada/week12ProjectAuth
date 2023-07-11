@@ -79,6 +79,9 @@ const ProfileButton = ({ user }) => {
             <Link to='/spots/current'>Manage Spots</Link>
           </li>
           <li>
+            <Link to='/bookings/current'>Manage Bookings</Link>
+          </li>
+          <li>
             <button onClick={logout}>Log Out</button>
           </li>
         </>

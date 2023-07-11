@@ -14,16 +14,19 @@ const CurrentBookings = () => {
     }, [dispatch])
 
     return (
-        <>
+        <div className='your-bookings-container'>
             <h1>Your bookings</h1>
             {bookings?.map(booking => {
-                // console.log('booking', booking.Spot.city)
+                // console.log('booking', booking.Spot)
 
                 return (
-                    <BookingsCard booking={booking} />
+                    <BookingsCard
+                    booking={booking}
+                    bookingSpot={booking.Spot}
+                    />
                 )
             })}
-        </>
+        </div>
     )
 }
 
