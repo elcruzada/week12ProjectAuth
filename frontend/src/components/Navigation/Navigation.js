@@ -184,6 +184,7 @@ function Navigation({ isLoaded }) {
               <Logo className="logo" />
             </NavLink>
           </li>
+          
           {sessionUser &&
           <li className="create-spot-link">
             <NavLink exact to='/spots/new'>

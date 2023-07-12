@@ -7,7 +7,7 @@ const { User, Spot, Review, ReviewImage, SpotImage, Booking, sequelize } = requi
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const spot = require('../../db/models/spot');
-const { Op } = require('sequelize')
+const { Op, fn, col } = require('sequelize')
 // const Sequelize = require("sequelize")
 
 
@@ -275,6 +275,82 @@ router.get('/', spotsValidatorForQuery, async (req, res) => {
     //     // Rating
     // })
 })
+
+// router.get('/search', async (req, res) => {
+//     let { searchQuery } = req.query;
+
+//     if (!searchQuery) {
+//         return res.status(400).json({ error: 'You must provide a search term' });
+//     }
+
+
+
+//     const searchedSpots = await Spot.findAll({
+//         where: {
+
+//             name: {
+
+//                 [Op.like]: '%' + searchQuery + '%'
+//             }
+
+//         }
+//     });
+
+
+
+//     return res.status(200).json(searchedSpots);
+// })
+router.get('/search', async (req, res) => {
+    let { searchQuery } = req.query;
+
+    if (!searchQuery) {
+        return res.status(400).json({ error: 'You must provide a search term' });
+    }
+
+    const searchedSpots = await Spot.findAll({
+        where: {
+            name: {
+                [Op.like]: '%' + searchQuery + '%'
+            }
+        },
+        include: {
+            model: SpotImage,
+            required: false,
+        }
+    });
+
+
+    const spotObjects = searchedSpots.map(spot => spot.toJSON());
+
+    for (let spot of spotObjects) {
+
+        const previewImage = spot.SpotImages.find(image => image.preview);
+        spot.previewImage = previewImage ? previewImage.url : "No preview for this image";
+
+
+        delete spot.SpotImages;
+
+    
+        const reviewStars = await Review.findOne({
+            where: {
+                spotId: spot.id
+            },
+            attributes: [
+                [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']
+            ]
+        });
+
+        let starAVG = reviewStars.getDataValue('avgRating');
+
+        if (starAVG) {
+            spot.avgRating = Number(starAVG).toFixed(1);
+        } else {
+            spot.avgRating = 'No stars yet';
+        }
+    }
+
+    return res.status(200).json(spotObjects);
+});
 
 
 router.post('/', requireAuth, async (req, res) => {
