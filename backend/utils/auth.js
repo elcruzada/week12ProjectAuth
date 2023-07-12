@@ -56,6 +56,9 @@ const setTokenCookie = (res, user) => {
     err.title = 'Authentication required';
     err.errors = ['Authentication required'];
     err.status = 401;
+
+    // console.log("Middleware error:", err);
+
     return next(err);
   }
 

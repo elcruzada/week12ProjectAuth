@@ -281,24 +281,25 @@ router.delete('/:bookingId', [restoreUser, requireAuth], async (req, res) => {
     console.log(bookingToDelete)
 
 
-    if (bookingToDelete.userId !== req.user.id) {
-        // throw new Error('Invalid')
-        return res.status(403).json({
-            "message": "Forbidden",
-            "statusCode": 403
-        })
-    }
+    // if (bookingToDelete.userId !== req.user.id) {
+    //     // throw new Error('Invalid')
+    //     return res.status(403).json({
+    //         "message": "Forbidden",
+    //         "statusCode": 403
+    //     })
+    // }
 
-    if (req.user.id !== spotOwnerIdCheck) {
-        return res.status(403).json({
-            "message": "Forbidden",
-            "statusCode": 403
-        })
-    }
+    // if (req.user.id !== spotOwnerIdCheck) {
+    //     return res.status(403).json({
+    //         "message": "Forbidden",
+    //         "statusCode": 403
+    //     })
+    // }
 
     const startedBookingCheck = bookingToDelete.toJSON().startDate
     // console.log(new Date(startedBookingCheck))
     // console.log(new Date())
+    //backend validation
     if (new Date(startedBookingCheck) <= new Date()) {
         return res.status(403).json({
             "message": "Bookings that have been started can't be deleted",

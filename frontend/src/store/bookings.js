@@ -127,14 +127,40 @@ export const editBookingThunk = (userInput, bookingId) => async (dispatch) => {
 
 
 export const deleteBookingThunk = (bookingId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/bookings/${bookingId}`, {
-        method: "DELETE"
-    })
+    // const res = await csrfFetch(`/api/bookings/${bookingId}`, {
+    //     method: "DELETE"
+    // })
 
-    if (res.ok) {
-        const data = await res.json()
-        dispatch(deleteBookingAction(bookingId))
-        return data
+    // const data = await res.json()
+    // if (res.ok) {
+    //     dispatch(deleteBookingAction(bookingId))
+    //     return data
+    // } else {
+    //     console.log('DAAATAAA', data)
+    // }
+    try {
+        const res = await csrfFetch(`/api/bookings/${bookingId}`, {
+            method: "DELETE"
+        });
+
+        // Check if the content type is JSON
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const data = await res.json();
+            if (!res.ok) {
+                console.log('DAAATAAA', data.message);
+            } else {
+                dispatch(deleteBookingAction(bookingId));
+                return data;
+            }
+        } else {
+            throw new TypeError("Oops, we haven't got JSON!");
+        }
+    } catch (error) {
+        // console.error('Error:', error.message);
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
+        console.error('Full error:', error);
     }
 }
 

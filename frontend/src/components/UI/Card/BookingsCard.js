@@ -34,15 +34,26 @@ const BookingsCard = ({ booking, bookingSpot }) => {
             <div classnName='bookings-update-delete'
                 style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}
             >
-                <OpenModalMenuItem
-                itemText={<button className='post-booking-container'>Update</button>}
-                modalComponent={<UpdateBookingModal booking={booking} bookingId={bookingId} bookingSpot={bookingSpot}/>}
-                />
 
-                <OpenModalMenuItem
-                itemText={<button className='post-booking-container'>Delete</button>}
-                modalComponent={<DeleteBookingModal booking={booking} bookingId={bookingId} bookingSpot={bookingSpot} />}
-                />
+                {
+                    new Date(booking?.startDate) < new Date() ?
+                        <p style={{fontWeight: 'bold'}}>Bookings that have been started can't be updated</p> :
+
+                        <OpenModalMenuItem
+                            itemText={<button className='post-booking-container'>Update</button>}
+                            modalComponent={<UpdateBookingModal booking={booking} bookingId={bookingId} bookingSpot={bookingSpot} />}
+                        />
+                }
+
+                {
+                    new Date(booking?.startDate) < new Date() ?
+                        <p style={{fontWeight: 'bold'}}>Bookings that have been started can't be deleted</p> :
+
+                        <OpenModalMenuItem
+                            itemText={<button className='post-booking-container'>Delete</button>}
+                            modalComponent={<DeleteBookingModal booking={booking} bookingId={bookingId} bookingSpot={bookingSpot} />}
+                        />
+                }
 
             </div>
         </div>
