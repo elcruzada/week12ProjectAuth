@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import PostReviewModal from '../../Reviews/PostReview'
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
 import { useHistory } from 'react-router-dom'
+import UpdateReviewModal from '../../Reviews/UpdateReviewModal'
 
 // import reviewsReducer from '../../../store/reviews'
 
@@ -254,17 +255,25 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                                     review?.id &&
                                     sessionUser &&
                                     sessionUser?.id &&
-                                    <div key={review.id}>
+                                    <div key={review.id}
+                                    style={{width: '15rem'}}
+                                    >
                                         <li>
                                             {review.User.firstName && <h3>{review.User.firstName}</h3>}
                                             {review.review && <p>{review.review}</p>}
                                             {review.createdAt && <p>{formattedDate}</p>}
                                             {sessionUser.id === review.userId &&
 
-                                                <button
-                                                    className='spots-details-delete-button'
-                                                    onClick={() => deleteReviewHandler(review.id)}
-                                                >Delete</button>
+                                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                    <OpenModalMenuItem
+                                                        itemText={<button className='spots-details-delete-button'>Update</button>}
+                                                        modalComponent={<UpdateReviewModal reviewId={review.id}/>}
+                                                    />
+                                                    <button
+                                                        className='spots-details-delete-button'
+                                                        onClick={() => deleteReviewHandler(review.id)}
+                                                    >Delete</button>
+                                                </div>
 
                                             }
                                         </li>
