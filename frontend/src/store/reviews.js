@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf'
 
 const GET_ALLREVIEWS = "reviews/GET_ALLREVIEWS"
 const POST_REVIEW = 'reviews/POST_REVIEW'
+const EDIT_REVIEW = 'reviews/EDIT_REVIEW'
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW'
 
 export const getAllReviewsAction = (allReviews) => ({
@@ -11,6 +12,11 @@ export const getAllReviewsAction = (allReviews) => ({
 
 export const postReviewAction = (userInput) => ({
     type: POST_REVIEW,
+    userInput
+})
+
+export const editReviewAction = (userInput) => ({
+    type: EDIT_REVIEW,
     userInput
 })
 
@@ -46,6 +52,23 @@ export const postReviewThunk = (reviewInput) => async (dispatch) => {
     }
 }
 
+export const editReviewThunk = (reviewId, userInput) => async (dispatch) => {
+    // const { review, stars } = userInput
+    const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userInput)
+    })
+
+    if (res.ok) {
+        const reviewData = await res.json()
+        dispatch(editReviewAction(reviewData))
+        return reviewData
+    }
+}
+
 export const deleteReviewThunk = (reviewId) => async (dispatch) => {
     const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: 'DELETE',
@@ -77,17 +100,20 @@ const reviewsReducer = (state = initialState, action) => {
             normalizerFunction((action.allReviews.Reviews), (newReviewsState.spot))
             return newReviewsState
         case POST_REVIEW:
-            newReviewsState = {...state, spot: {...state.spot}, user: {...state.user}}
+            newReviewsState = { ...state, spot: { ...state.spot }, user: { ...state.user } }
             newReviewsState.spot = action.userInput
             newReviewsState.user = action.userInput
             return newReviewsState
-            // newReviewsState.spot =
-
-            case DELETE_REVIEW:
-        newReviewsState = { ...state, spot: { ...state.spot }, user: { ...state.user } }
-        delete newReviewsState.spot[action.reviewId]
-        delete newReviewsState.user[action.reviewId]
-        return newReviewsState
+        // newReviewsState.spot =
+        case EDIT_REVIEW:
+            newReviewsState = { ...state, spot: {...state.spot}, user: { ...state.user } }
+            newReviewsState.spot[action.userInput.id] = action.userInput
+            return newReviewsState
+        case DELETE_REVIEW:
+            newReviewsState = { ...state, spot: { ...state.spot }, user: { ...state.user } }
+            delete newReviewsState.spot[action.reviewId]
+            delete newReviewsState.user[action.reviewId]
+            return newReviewsState
         default:
             return state
     }

@@ -12,7 +12,7 @@ const HomePageCards = ({ spot }) => {
     <div className='card-container'
     onClick={imageClickHandler}>
       <div className="card-image">
-        <img src={spot.previewImage} alt="location"  />
+        <img src={spot?.previewImage} alt="location"  />
       </div>
       <div className="card-content">
         <div>
