@@ -76,6 +76,7 @@ const CreateBooking = () => {
 
             const dispatchedCheckIn = await dispatch(createBookingThunk(spotId, bookingInput))
             if (dispatchedCheckIn) {
+                
                 history.push('/bookings/current')
             }
         }
@@ -83,7 +84,7 @@ const CreateBooking = () => {
 
     return (
         <div className='create-booking-container'>
-            <h1 style={{marginBottom: '5rem'}}>Booking details</h1>
+            <h1 style={{marginBottom: '5rem'}}>Booking Details</h1>
             <div className='create-booking-container-booking-image'>
 
                 <div className='create-booking-column-container'>

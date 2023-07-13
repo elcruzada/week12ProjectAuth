@@ -53,13 +53,13 @@ export const postReviewThunk = (reviewInput) => async (dispatch) => {
 }
 
 export const editReviewThunk = (reviewId, userInput) => async (dispatch) => {
-    const { review, stars } = userInput
-    const res = await csrfFetch(`/api/review/${reviewId}`, {
+    // const { review, stars } = userInput
+    const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: 'PUT',
-        body: JSON.stringify({
-            review,
-            stars
-        })
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userInput)
     })
 
     if (res.ok) {

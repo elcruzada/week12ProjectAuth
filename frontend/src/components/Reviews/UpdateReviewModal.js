@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { editReviewThunk, getAllReviewsThunk } from "../../store/reviews"
 import StarRating from "../UI/Rating/StarRating"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import { useHistory } from "react-router-dom"
 import { useModal } from "../../context/Modal"
 
 const UpdateReviewModal = ({ singleSpot, reviewId }) => {
 
     const dispatch = useDispatch()
     const history = useHistory()
-    const reviewToUpdate = useSelector(state => state.reviews.allReviews[reviewId])
+    // const reviewToUpdate = useSelector(state => state.reviews.allReviews[reviewId])
     // console.log('REEVIEW', reviewToUpdate)
     const { closeModal } = useModal()
     const [reviewContent, setReviewContent] = useState('')

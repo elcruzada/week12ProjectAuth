@@ -252,13 +252,13 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                                 return (
                                     review &&
                                     review.User &&
-                                    review?.id &&
+                                    review.id &&
                                     sessionUser &&
                                     sessionUser?.id &&
                                     <div key={review.id}
                                     style={{width: '15rem'}}
                                     >
-                                        <li>
+                                        <div>
                                             {review.User.firstName && <h3>{review.User.firstName}</h3>}
                                             {review.review && <p>{review.review}</p>}
                                             {review.createdAt && <p>{formattedDate}</p>}
@@ -267,7 +267,7 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                                                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                                                     <OpenModalMenuItem
                                                         itemText={<button className='spots-details-delete-button'>Update</button>}
-                                                        modalComponent={<UpdateReviewModal reviewId={review.id}/>}
+                                                        modalComponent={<UpdateReviewModal singleSpot={singleSpot} reviewId={review?.id}/>}
                                                     />
                                                     <button
                                                         className='spots-details-delete-button'
@@ -276,7 +276,7 @@ const SpotsDetailsCard = ({ singleSpot, allSpotReviews, sessionUser }) => {
                                                 </div>
 
                                             }
-                                        </li>
+                                        </div>
                                     </div>
                                 )
                             })
