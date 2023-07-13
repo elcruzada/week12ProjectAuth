@@ -36,7 +36,7 @@ const SpotsHomePage = () => {
       setIsSearch(false)
     } else if (searchQuery !== '') {
 
-      fetch(`http://localhost:8000/api/spots/search?searchQuery=${searchQuery}`)
+      fetch(`/api/spots/search?searchQuery=${searchQuery}`)
         .then(response => response.json())
         // .then(data => console.log('DDAAATA', data[0]))
         .then(data => {
