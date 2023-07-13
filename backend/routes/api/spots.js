@@ -310,7 +310,7 @@ router.get('/search', async (req, res) => {
     const searchedSpots = await Spot.findAll({
         where: {
             name: {
-                [Op.like]: '%' + searchQuery + '%'
+                [Op.iLike]: '%' + searchQuery + '%'
             }
         },
         include: {
@@ -330,7 +330,7 @@ router.get('/search', async (req, res) => {
 
         delete spot.SpotImages;
 
-    
+
         const reviewStars = await Review.findOne({
             where: {
                 spotId: spot.id
