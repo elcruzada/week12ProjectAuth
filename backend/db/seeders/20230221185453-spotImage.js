@@ -12,7 +12,7 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         spotId: 1,
-        url: 'https://t4.ftcdn.net/jpg/05/34/81/67/360_F_534816786_cnUVHvZpdt8gxmXjwqdOtWJ0sKZ1zEpK.jpg',
+        url: 'https://images.unsplash.com/photo-1624628639856-100bf817fd35?q=80&w=2748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -37,7 +37,7 @@ module.exports = {
       // },
       {
         spotId: 2,
-        url: 'https://1409791524.rsc.cdn77.org/data/images/full/599756/aespa-shares-who-is-naevis-and-black-mamba-hints-at-sm-artists-connection-with-smcu.jpg',
+        url: 'https://images.unsplash.com/photo-1642950810976-e0a9926389ab?q=80&w=1666&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -62,7 +62,7 @@ module.exports = {
       // },
       {
         spotId: 3,
-        url: 'https://s26162.pcdn.co/wp-content/uploads/2021/05/cloudlibrary1-1240x930.jpeg',
+        url: 'https://images.unsplash.com/photo-1648598884813-7dfd1c2886d9?q=80&w=2160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -87,7 +87,7 @@ module.exports = {
       // },
       {
         spotId: 4,
-        url: 'https://w.wallha.com/ws/8/5sfFCgQz.png',
+        url: 'https://images.unsplash.com/photo-1684236836009-5004151224dd?q=80&w=2817&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -112,7 +112,7 @@ module.exports = {
       // },
       {
         spotId: 5,
-        url: 'https://images.squarespace-cdn.com/content/v1/5a8a22c59f8dce86ccc25373/1653109568274-9C8MQFB21PM893K4W5TY/WhatsApp+Image+2022-05-14+at+1.43.42+PM.jpeg?format=2500w',
+        url: 'https://images.unsplash.com/photo-1683573254548-ebb7b94d7def?q=80&w=2706&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -137,7 +137,7 @@ module.exports = {
       // },
       {
         spotId: 6,
-        url: 'https://img.freepik.com/premium-photo/business-people-board-room-meeting_53876-154608.jpg?w=2000',
+        url: 'https://images.unsplash.com/photo-1654260146880-d23437468422?q=80&w=2728&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -162,7 +162,7 @@ module.exports = {
       // },
       {
         spotId: 7,
-        url: 'https://www.pattayamail.com/wp-content/uploads/2021/09/t-05-Thai-Prime-Minister-praises-Lisa-Blackpink-for-promoting-Thai-culture.jpg',
+        url: 'https://images.unsplash.com/photo-1625671680827-fdc3014d516d?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
@@ -187,7 +187,7 @@ module.exports = {
       // },
       {
         spotId: 8,
-        url: 'https://confirmgood.com/wp-content/uploads/2022/04/kstar-karaoke-plaza-singapura-entrance-and-environment-16.jpg',
+        url: 'https://images.unsplash.com/photo-1685317307624-0a77b4d9ac7d?q=80&w=2752&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         preview: true
       },
       // {
