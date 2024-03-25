@@ -13,25 +13,25 @@ module.exports = {
       {
         spotId: 1,
         userId: 5,
-        review: 'You so cool bro',
+        review: 'Best place ever',
         stars: 5
       },
       {
         spotId: 2,
         userId: 1,
-        review: 'You not so cool bro',
+        review: 'Love!',
         stars: 3
       },
       {
         spotId: 3,
         userId: 4,
-        review: 'You really not cool bro',
+        review: 'Everyone was great here!',
         stars: 1
       },
       {
       spotId: 1,
       userId: 2,
-      review: 'Wut mate',
+      review: 'Wow!',
       stars: 2
       }
     ], {});

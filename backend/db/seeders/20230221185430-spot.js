@@ -19,7 +19,7 @@ module.exports = {
         lat: 40.27107528136394,
         lng: -111.02102875668326,
         name: 'Ultimately Abyssal Alcove',
-        description: 'Neo-noir darkness darking up the dark.',
+        description: 'Dark things are to be unpacked here.',
         price: 50003.00
       },
       {
@@ -31,7 +31,7 @@ module.exports = {
         lat: 78.98711575011169,
         lng: -95.57833823015774,
         name: 'SYNK dive',
-        description: 'Formless, limitless place of infinite energy and data',
+        description: 'Formless, limitless place of infinite energy and data.',
         price: 4444.00
       }, {
         ownerId: 3,
@@ -42,7 +42,7 @@ module.exports = {
         lat: 55.98711575011169,
         lng: -80.57833823015774,
         name: 'Shelves of Curiosities',
-        description: 'Read for fun and your brain will be 1.15x bigger',
+        description: 'You can hike up places no one dares to go.',
         price: 3000.00
       },
       {
@@ -53,8 +53,8 @@ module.exports = {
         country: 'United States of Boop',
         lat: 43.98711575011169,
         lng: -88.57833823015774,
-        name: 'Yeeting Paradise',
-        description: "Yeet here and reach yeetlightenment",
+        name: 'The Paradise',
+        description: "Reach another plane of existence here.",
         price: 1000.00
       },
       {
@@ -78,7 +78,7 @@ module.exports = {
         lat: 77.98711575011169,
         lng: -82.57833823015774,
         name: 'Skyscraper Social',
-        description: "Feel important while flaunting a fake Rolex",
+        description: "You can flaunt it all here.",
         price: 25.00
       },
       {
@@ -90,7 +90,7 @@ module.exports = {
         lat: 43.98711575011169,
         lng: -88.57833823015774,
         name: 'Blackpink House',
-        description: "We must kill this love. Sad. But True.",
+        description: "Where people find true love",
         price: 4342.00
       },
       {
